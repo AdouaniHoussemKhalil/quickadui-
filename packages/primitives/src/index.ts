@@ -1,5 +1,14 @@
-// @quickadui/primitives
-//
-// Scaffold placeholder. Real implementation begins in Roadmap Phase 1
-// ("Foundation", v0.1 - v0.4) — see the QuickadUI Blueprint, §15.
-export const QUICKADUI_PACKAGE = "@quickadui/primitives";
+export { composeRefs, type PossibleRef, type RefCallback, type RefObject } from "./lib/compose-refs";
+export { Slot, Slottable, type AsChildProps } from "./slot";
+export { Separator } from "./separator";
+export { AvatarRoot, AvatarImage, AvatarFallback } from "./avatar";
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from "./dialog";

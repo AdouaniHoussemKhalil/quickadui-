@@ -6,5 +6,7 @@ export default defineConfig({
   dts: true,
   sourcemap: true,
   clean: true,
-  external: ["react", "react-dom"],
+  // @quickadui/tokens is a real workspace dependency — external so it's
+  // resolved via node_modules instead of duplicated into this bundle.
+  external: ["react", "react-dom", "@quickadui/tokens"],
 });

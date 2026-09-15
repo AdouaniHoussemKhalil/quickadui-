@@ -14,9 +14,25 @@ import type { ComponentProps } from "react";
  * behind Content) is the `@quickadui/overlays` package's job, not this
  * one's.
  */
-export const Dialog = DialogPrimitive.Root;
-export const DialogTrigger = DialogPrimitive.Trigger;
-export const DialogPortal = DialogPrimitive.Portal;
+// Wrapped in real function components (not `export const Dialog =
+// DialogPrimitive.Root`) on purpose: Radix's own component types aren't all
+// fully nameable outside their own package, which can make a plain value
+// re-export fail declaration-file generation (TS4023, "... but cannot be
+// named") — see slot.tsx for the same fix applied to Slot/Slottable, where
+// it was confirmed to actually happen. Root/Trigger/Portal manage state and
+// portaling rather than rendering their own styled DOM node, so — like
+// DialogPrimitive.Root et al. below — no `data-slot` here.
+export function Dialog(props: ComponentProps<typeof DialogPrimitive.Root>) {
+  return <DialogPrimitive.Root {...props} />;
+}
+
+export function DialogTrigger(props: ComponentProps<typeof DialogPrimitive.Trigger>) {
+  return <DialogPrimitive.Trigger {...props} />;
+}
+
+export function DialogPortal(props: ComponentProps<typeof DialogPrimitive.Portal>) {
+  return <DialogPrimitive.Portal {...props} />;
+}
 
 export function DialogOverlay(props: ComponentProps<typeof DialogPrimitive.Overlay>) {
   return <DialogPrimitive.Overlay data-slot="dialog-overlay" {...props} />;

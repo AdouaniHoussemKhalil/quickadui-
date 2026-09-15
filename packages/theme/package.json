@@ -12,14 +12,18 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./tailwind-theme.css": "./dist/tailwind-theme.css"
   },
   "files": [
     "dist"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && node scripts/build-css.mjs",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
@@ -31,9 +35,11 @@
     "tsup": "^8.3.0",
     "typescript": "catalog:",
     "vitest": "catalog:",
+    "jsdom": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "@types/react": "catalog:"
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:"
   },
   "publishConfig": {
     "access": "public"

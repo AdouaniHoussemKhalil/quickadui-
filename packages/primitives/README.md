@@ -33,10 +33,42 @@ job (and friends), built on top of these.
 - **`AvatarRoot` / `AvatarImage` / `AvatarFallback`** — the Avatar
   primitive's parts (all three render real, always-styled DOM nodes, so all
   three get a `data-slot`, unlike Dialog's mostly-behavioral Root/Trigger).
+- **`Popover` / `PopoverTrigger` / `PopoverAnchor` / `PopoverPortal` /
+  `PopoverContent` / `PopoverClose` / `PopoverArrow`** — same
+  Trigger-gets-no-slot reasoning as Dialog.
+- **`Tooltip` / `TooltipProvider` / `TooltipTrigger` / `TooltipPortal` /
+  `TooltipContent` / `TooltipArrow`** — `TooltipProvider` is required
+  exactly once, high in the tree, for the "skip the opening delay on a
+  second tooltip" behavior to work across an app's tooltips.
+- **`Tabs` / `TabsList` / `TabsTrigger` / `TabsContent`** — unlike an
+  overlay's Trigger, `TabsTrigger` *is* QuickadUI's own visible tab button,
+  not a generic opener a consumer composes their own `Button` into — so
+  every part here gets a `data-slot`, `Root` included.
+- **`Accordion` / `AccordionItem` / `AccordionHeader` / `AccordionTrigger` /
+  `AccordionContent`** — same "every part is QuickadUI's own visible
+  chrome" reasoning as Tabs. `AccordionHeader` exists only because Radix
+  requires it to wrap `AccordionTrigger` in the correct heading semantics.
+- **`DropdownMenu` / `DropdownMenuTrigger` / `DropdownMenuPortal` /
+  `DropdownMenuContent` / `DropdownMenuArrow` / `DropdownMenuItem` /
+  `DropdownMenuGroup` / `DropdownMenuLabel` / `DropdownMenuCheckboxItem` /
+  `DropdownMenuItemIndicator` / `DropdownMenuRadioGroup` /
+  `DropdownMenuRadioItem` / `DropdownMenuSeparator` / `DropdownMenuSub` /
+  `DropdownMenuSubTrigger` / `DropdownMenuSubContent`** — `SubTrigger`
+  differs from the top-level `Trigger`: it opens a submenu rather than the
+  whole menu, and is itself a menu item, styled like `Item` — so, unlike
+  `Trigger`, it gets a `data-slot`.
 
-More primitives (Popover, DropdownMenu, Tabs, Tooltip, ...) land here
-incrementally, following the same pattern, as the packages that need them
-are built.
+Every part above that isn't a raw pass-through wraps its Radix component in
+a real function component over `ComponentProps<typeof X>`
+(`export function Y(props: ...) { return <X {...props} />; }`) rather than
+`export const Y = X` — the latter fails `tsc --emitDeclarationOnly` with
+TS4023 ("... but cannot be named") whenever the Radix-internal type behind
+`X` isn't itself exported/nameable outside its own package. `slot.tsx` was
+the first place this actually broke a real build; every primitive added
+since follows the safe pattern from the start.
+
+More primitives land here incrementally, following the same pattern, as
+the packages that need them are built.
 
 ## Usage
 

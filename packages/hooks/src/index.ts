@@ -1,5 +1,9 @@
-// @quickadui/hooks
-//
-// Scaffold placeholder. Real implementation begins in Roadmap Phase 1
-// ("Foundation", v0.1 - v0.4) — see the QuickadUI Blueprint, §15.
-export const QUICKADUI_PACKAGE = "@quickadui/hooks";
+export { useIsomorphicLayoutEffect } from "./use-isomorphic-layout-effect";
+export { useMediaQuery, type UseMediaQueryOptions } from "./use-media-query";
+export { useDisclosure, type UseDisclosureOptions, type UseDisclosureReturn } from "./use-disclosure";
+export { useDebouncedValue } from "./use-debounced-value";
+export {
+  useControllableState,
+  type SetControllableState,
+  type UseControllableStateOptions,
+} from "./use-controllable-state";

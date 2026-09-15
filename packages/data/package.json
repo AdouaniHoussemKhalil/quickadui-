@@ -1,0 +1,48 @@
+{
+  "name": "@quickadui/data",
+  "version": "0.0.0",
+  "description": "Table, Data Grid, Pagination, Timeline, Tabs, Accordion, Tree View, Stepper.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check ."
+  },
+  "devDependencies": {
+    "@quickadui/config": "workspace:*",
+    "tsup": "^8.3.0",
+    "typescript": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "@types/react": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.0",
+    "@quickadui/primitives": "workspace:*",
+    "@quickadui/theme": "workspace:*",
+    "@quickadui/utils": "workspace:*"
+  }
+}

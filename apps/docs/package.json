@@ -1,0 +1,8 @@
+{
+  "name": "docs",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "echo 'apps/docs scaffold only \u2014 build begins in Roadmap Phase 1, see Blueprint \u00a710' && exit 0"
+  }
+}

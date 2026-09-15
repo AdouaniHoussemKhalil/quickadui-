@@ -1,0 +1,44 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "packages/tokens"
+    },
+    {
+      "path": "packages/primitives"
+    },
+    {
+      "path": "packages/theme"
+    },
+    {
+      "path": "packages/core"
+    },
+    {
+      "path": "packages/layout"
+    },
+    {
+      "path": "packages/forms"
+    },
+    {
+      "path": "packages/overlays"
+    },
+    {
+      "path": "packages/data"
+    },
+    {
+      "path": "packages/icons"
+    },
+    {
+      "path": "packages/hooks"
+    },
+    {
+      "path": "packages/utils"
+    },
+    {
+      "path": "packages/animation"
+    },
+    {
+      "path": "packages/cli"
+    }
+  ]
+}

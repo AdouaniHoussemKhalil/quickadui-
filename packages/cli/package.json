@@ -1,0 +1,29 @@
+{
+  "name": "create-quickadui",
+  "version": "0.0.0",
+  "description": "create-quickadui \u2014 the init and add scaffolding CLI (framework detection, Tailwind preset wiring, source-copy distribution). See Blueprint \u00a74 and \u00a79.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "quickadui": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check ."
+  },
+  "devDependencies": {
+    "@quickadui/config": "workspace:*",
+    "tsup": "^8.3.0",
+    "typescript": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

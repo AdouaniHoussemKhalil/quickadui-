@@ -1,5 +1,29 @@
-// @quickadui/icons
-//
-// Scaffold placeholder. Real implementation begins in Roadmap Phase 1
-// ("Foundation", v0.1 - v0.4) — see the QuickadUI Blueprint, §15.
-export const QUICKADUI_PACKAGE = "@quickadui/icons";
+export type { IconProps } from "./icon";
+export {
+  CalendarIcon,
+  CancelIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronUpIcon,
+  CircleIcon,
+  ClockIcon,
+  CloseIcon,
+  ErrorIcon,
+  EyeIcon,
+  EyeOffIcon,
+  InfoIcon,
+  LoaderIcon,
+  MenuIcon,
+  MinusIcon,
+  MoreHorizontalIcon,
+  MoreVerticalIcon,
+  PlusIcon,
+  SearchIcon,
+  SettingsIcon,
+  SuccessIcon,
+  TrashIcon,
+  UserIcon,
+  WarningIcon,
+} from "./icons";

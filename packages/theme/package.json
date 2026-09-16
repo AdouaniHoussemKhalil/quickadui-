@@ -23,7 +23,7 @@
     "*.css"
   ],
   "scripts": {
-    "build": "tsup && node scripts/build-css.mjs",
+    "build": "tsup && tsc --emitDeclarationOnly -p tsconfig.build.json && node scripts/build-css.mjs",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",

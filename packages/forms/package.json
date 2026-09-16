@@ -1,7 +1,7 @@
 {
   "name": "@quickadui/forms",
   "version": "0.0.0",
-  "description": "React Hook Form + Zod bindings and form field components \u2014 Input, Select, Checkbox, Switch, and friends.",
+  "description": "Form field components (Input, Textarea, Select, Checkbox, Switch, RadioGroup, Label) plus a React Hook Form + Zod bindings layer (Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage).",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -19,7 +19,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsc --emitDeclarationOnly -p tsconfig.build.json",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
@@ -40,13 +40,19 @@
   },
   "peerDependencies": {
     "react": ">=18",
-    "react-dom": ">=18"
+    "react-dom": ">=18",
+    "zod": "^3.25.0 || ^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "zod": {
+      "optional": true
+    }
   },
   "dependencies": {
-    "react-hook-form": "^7.53.0",
-    "zod": "^3.23.0",
-    "@hookform/resolvers": "^3.9.0",
+    "react-hook-form": "^7.88.0",
+    "@hookform/resolvers": "^5.9.1",
     "class-variance-authority": "^0.7.0",
+    "@quickadui/icons": "workspace:*",
     "@quickadui/primitives": "workspace:*",
     "@quickadui/theme": "workspace:*",
     "@quickadui/utils": "workspace:*"

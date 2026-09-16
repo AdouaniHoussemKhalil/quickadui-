@@ -1,7 +1,7 @@
 {
   "name": "@quickadui/overlays",
   "version": "0.0.0",
-  "description": "Modal, Drawer, Tooltip, Popover, Dropdown, Context Menu, Toast, Notification.",
+  "description": "Modal, Drawer — Context Menu and Toast/Notification land incrementally. Tooltip/Popover/Dropdown ship in @quickadui/core instead.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -19,7 +19,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsc --emitDeclarationOnly -p tsconfig.build.json",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
+    "@quickadui/icons": "workspace:*",
     "@quickadui/primitives": "workspace:*",
     "@quickadui/theme": "workspace:*",
     "@quickadui/utils": "workspace:*"

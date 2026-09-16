@@ -6,6 +6,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "dev:playground": "turbo run dev --filter=playground",
     "lint": "biome check .",
     "format": "biome format --write .",
     "test": "turbo run test",

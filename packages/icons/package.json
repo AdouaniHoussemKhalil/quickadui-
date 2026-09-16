@@ -1,7 +1,7 @@
 {
   "name": "@quickadui/icons",
   "version": "0.0.0",
-  "description": "Wrapped Lucide icons plus QuickadUI-original glyphs, behind one stable Icon contract.",
+  "description": "Wrapped Lucide icons behind one stable Icon contract; QuickadUI-original glyphs land incrementally.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -19,7 +19,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsc --emitDeclarationOnly -p tsconfig.build.json",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
@@ -43,6 +43,6 @@
     "react-dom": ">=18"
   },
   "dependencies": {
-    "lucide-react": "^0.460.0"
+    "lucide-react": "^1.46.0"
   }
 }

@@ -15,6 +15,17 @@ The first styled components — built on `@quickadui/primitives` (behavior),
 - **`Spinner`** — `size`: `sm`/`md`/`lg`. Accessible by construction: the SVG is `aria-hidden`, a `role="status"` wrapper plus a visually-hidden (`sr-only`) `label` (default `"Loading"`) is what's actually announced.
 - **`Skeleton`** — a single `animate-pulse` placeholder block; size it with `className`.
 - **`Typography`** — `variant`: `h1`–`h4` / `body` / `lead` / `small` / `muted`, each with a semantically-appropriate default tag (`h1`→`<h1>`, `body`→`<p>`, ...). Override the tag independently with `as` (e.g. `variant="h1" as="div"` for something that looks like a heading without claiming to be one in the outline), or compose via `asChild`.
+- **`Tooltip`**, **`TooltipTrigger`**, **`TooltipContent`** (+ **`TooltipProvider`**, required once high in the tree) — wraps `@quickadui/primitives`' Tooltip. `TooltipContent` bakes in the portal and the arrow; only `TooltipContent` carries QuickadUI styling, the rest are behavioral pass-throughs.
+- **`Popover`**, **`PopoverTrigger`**, **`PopoverAnchor`**, **`PopoverClose`**, **`PopoverContent`** — same shape as Tooltip: `PopoverContent` bakes in the portal and arrow and carries the styling, the rest pass through.
+- **`Tabs`**, **`TabsList`**, **`TabsTrigger`**, **`TabsContent`** — unlike Tooltip/Popover, every part here is QuickadUI's own visible chrome (not a generic opener), so every part carries styling. `TabsTrigger` uses `data-[state=active]` to style the selected tab.
+- **`Accordion`**, **`AccordionItem`**, **`AccordionTrigger`**, **`AccordionContent`** — same every-part-is-visible-chrome reasoning as Tabs. `AccordionTrigger` bakes in the `AccordionHeader` wrapping Radix requires and renders a chevron that rotates via `data-[state=open]`.
+- **`DropdownMenu`**, **`DropdownMenuTrigger`**, **`DropdownMenuContent`**, **`DropdownMenuItem`**, **`DropdownMenuGroup`**, **`DropdownMenuLabel`**, **`DropdownMenuSeparator`**, **`DropdownMenuCheckboxItem`**, **`DropdownMenuRadioGroup`**, **`DropdownMenuRadioItem`**, **`DropdownMenuSub`**, **`DropdownMenuSubTrigger`**, **`DropdownMenuSubContent`**, **`DropdownMenuShortcut`** — `DropdownMenuContent`/`DropdownMenuSubContent` bake in the portal. `DropdownMenuShortcut` is cosmetic only (a plain `<span>`, not a Radix part) for a right-aligned hint like a keyboard shortcut inside an `Item`.
+
+These five overlay/composite components are a deliberate exception to the
+last bullet below: their pass-through parts (`Tooltip`, `Popover`,
+`DropdownMenuTrigger`, ...) don't set their own `data-slot` — the
+`@quickadui/primitives` layer underneath already does, and re-setting it
+here would just duplicate the attribute for no benefit.
 
 ## A known simplification
 

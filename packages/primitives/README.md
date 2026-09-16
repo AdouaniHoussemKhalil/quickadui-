@@ -57,6 +57,42 @@ job (and friends), built on top of these.
   differs from the top-level `Trigger`: it opens a submenu rather than the
   whole menu, and is itself a menu item, styled like `Item` — so, unlike
   `Trigger`, it gets a `data-slot`.
+- **`ContextMenu` / `ContextMenuTrigger` / `ContextMenuPortal` /
+  `ContextMenuContent` / `ContextMenuItem` / `ContextMenuGroup` /
+  `ContextMenuLabel` / `ContextMenuCheckboxItem` /
+  `ContextMenuItemIndicator` / `ContextMenuRadioGroup` /
+  `ContextMenuRadioItem` / `ContextMenuSeparator` / `ContextMenuSub` /
+  `ContextMenuSubTrigger` / `ContextMenuSubContent`** — same part shape
+  and `data-slot` reasoning as `DropdownMenu`; Radix's ContextMenu and
+  DropdownMenu APIs are near-identical, differing mainly in how they
+  open (right-click vs. click/keyboard).
+- **`ToastProvider` / `Toast` / `ToastTitle` / `ToastDescription` /
+  `ToastAction` / `ToastClose` / `ToastViewport`** — unlike every other
+  overlay primitive here, Radix's `Toast` doesn't manage its own list of
+  open/closed instances: `Toast` (`Root`) is meant to be rendered once
+  per active toast by whatever code tracks "what's currently showing."
+  `@quickadui/overlays`' `Toaster` + `toast()` is that code — see its
+  README. `ToastProvider` is required exactly once, high in the tree,
+  same requirement as `TooltipProvider`.
+- **`CheckboxRoot` / `CheckboxIndicator`**, **`SwitchRoot` /
+  `SwitchThumb`**, **`RadioGroupRoot` / `RadioGroupItem` /
+  `RadioGroupIndicator`**, **`Label`** — the form-control primitives
+  `@quickadui/forms` styles. `Root`/`Item` here are real, always-visible
+  DOM (a `<button role="checkbox">`, `role="switch"`, `role="radio">`) —
+  unlike `Dialog`'s `Root`, which renders nothing — so, like
+  `Tabs`/`TabsTrigger`, they get a `data-slot`. `Label` is a single-part
+  primitive (no `Root` suffix needed), same as `Separator`.
+- **`Select` / `SelectTrigger` / `SelectValue` / `SelectIcon` /
+  `SelectPortal` / `SelectContent` / `SelectViewport` / `SelectItem` /
+  `SelectItemText` / `SelectItemIndicator` / `SelectScrollUpButton` /
+  `SelectScrollDownButton` / `SelectGroup` / `SelectLabel` /
+  `SelectSeparator` / `SelectArrow`** — the biggest single part set after
+  DropdownMenu/ContextMenu. `Select`/`SelectPortal` render no DOM of
+  their own (state management and portaling only, same reasoning as
+  `Dialog`), so they get no slot; `SelectTrigger` is different from
+  `DropdownMenuTrigger` — it isn't a generic thing a consumer composes
+  their own `Button` into via `asChild`, it *is* QuickadUI's own default
+  select button — so it, and every other part below it, gets one.
 
 Every part above that isn't a raw pass-through wraps its Radix component in
 a real function component over `ComponentProps<typeof X>`

@@ -14,6 +14,7 @@ import {
   Clock,
   Eye,
   EyeOff,
+  GripVertical,
   Info,
   LoaderCircle,
   Menu,
@@ -24,6 +25,8 @@ import {
   Search,
   Settings,
   Trash2,
+  TrendingDown,
+  TrendingUp,
   TriangleAlert,
   User,
   X,
@@ -153,4 +156,19 @@ export function PlusIcon(props: IconProps) {
 /** Pair with `animate-spin` (see `@quickadui/core`'s `Spinner`, which draws its own inline SVG instead — this is for a spot that just needs a loading glyph inline in text, not the full accessible `Spinner` component). */
 export function LoaderIcon(props: IconProps) {
   return <LoaderCircle {...props} />;
+}
+
+/** A vertical grip/handle glyph — `@quickadui/shell`'s `Widget` drag handle, or anywhere else a draggable-item affordance is needed. */
+export function GripVerticalIcon(props: IconProps) {
+  return <GripVertical {...props} />;
+}
+
+/** `@quickadui/charts`' `StatCard` positive-trend indicator. */
+export function TrendUpIcon(props: IconProps) {
+  return <TrendingUp {...props} />;
+}
+
+/** `@quickadui/charts`' `StatCard` negative-trend indicator. */
+export function TrendDownIcon(props: IconProps) {
+  return <TrendingDown {...props} />;
 }

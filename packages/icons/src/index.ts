@@ -13,6 +13,7 @@ export {
   ErrorIcon,
   EyeIcon,
   EyeOffIcon,
+  GripVerticalIcon,
   InfoIcon,
   LoaderIcon,
   MenuIcon,
@@ -24,6 +25,8 @@ export {
   SettingsIcon,
   SuccessIcon,
   TrashIcon,
+  TrendDownIcon,
+  TrendUpIcon,
   UserIcon,
   WarningIcon,
 } from "./icons";

@@ -22,6 +22,8 @@
     "@quickadui/forms": "workspace:*",
     "@quickadui/data": "workspace:*",
     "@quickadui/animation": "workspace:*",
+    "@quickadui/shell": "workspace:*",
+    "@quickadui/charts": "workspace:*",
     "zod": "^4.6.0"
   },
   "devDependencies": {

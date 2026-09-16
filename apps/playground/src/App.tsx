@@ -407,7 +407,7 @@ function TableDemo() {
               <TableCell className="font-medium">{invoice.id}</TableCell>
               <TableCell className="capitalize">{invoice.status}</TableCell>
               <TableCell>{invoice.method}</TableCell>
-              <TableCell  className="text-right">{invoice.amount}</TableCell>
+              <TableCell className="text-right">{invoice.amount}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -554,7 +554,12 @@ export function App() {
           <Stack gap="xl">
             <Flex as="header" wrap="wrap" align="center" justify="between" gap="md">
               <Typography variant="h1">QuickadUI</Typography>
-              <ThemeToggle />
+              <Flex align="center" gap="md">
+                <a href="#dashboard" className="text-sm text-neutral-11 hover:text-neutral-12">
+                  Dashboard shell demo (@quickadui/shell) &rarr;
+                </a>
+                <ThemeToggle />
+              </Flex>
             </Flex>
 
             <Typography variant="lead">

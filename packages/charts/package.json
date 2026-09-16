@@ -1,0 +1,52 @@
+{
+  "name": "@quickadui/charts",
+  "version": "0.0.0",
+  "description": "Ready-to-use dashboard stat/chart components — StatCard, Sparkline, BarChart, LineChart, DonutChart — hand-rolled SVG, zero chart-library dependency. Pairs with @quickadui/shell's Widget/WidgetGrid but doesn't depend on it.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./chart-tokens.css": "./dist/chart-tokens.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "build": "tsup && tsc --emitDeclarationOnly -p tsconfig.build.json && node scripts/copy-css.mjs",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@quickadui/config": "workspace:*",
+    "tsup": "^8.3.0",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "@types/react": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "dependencies": {
+    "@quickadui/icons": "workspace:*",
+    "@quickadui/utils": "workspace:*"
+  }
+}

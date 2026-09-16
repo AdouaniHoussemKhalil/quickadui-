@@ -1,0 +1,72 @@
+/*
+ * The categorical chart palette — 8 hues, fixed order, for multi-series
+ * bar/line/donut charts. This is a DIFFERENT concern from
+ * `@quickadui/theme`'s brand/semantic tokens (`--qa-color-accent-*`,
+ * `--qa-color-success-*`, etc.): those are hand-picked per-brand seed
+ * colors expanded into 12-step scales, validated for UI use (borders,
+ * backgrounds, text). A categorical *data* palette needs a different
+ * property entirely — every hue mutually distinguishable at a glance,
+ * including under color-vision deficiency — which is why it's its own
+ * fixed set rather than reusing `accent`/`success`/`warning`/`danger`
+ * together as 4 "series" colors: running that exact set through this
+ * library's own color-vision-deficiency validator (see the `dataviz`
+ * skill's `scripts/validate_palette.js`) FAILS — `danger` and `warning`
+ * sit only ΔE 4.4 apart under a deuteranopia simulation (both are warm,
+ * muted hues by design, which is fine for two independent status colors
+ * but not for two colors a reader has to tell apart *in the same chart*).
+ *
+ * These 8 hues and both their light/dark steps are the `dataviz` skill's
+ * own validated reference categorical palette, used as-is (not re-derived
+ * from QuickadUI's OKLCH seed/scale pipeline) — every adjacent pair in
+ * this exact order clears the skill's CVD-separation and normal-vision
+ * floors in both light and dark, which is the property that actually
+ * matters here, not visual kinship with the brand accent color. Charts
+ * needing only ONE series should use `--qa-color-accent-9` instead (see
+ * `Sparkline`'s and single-series `BarChart`/`LineChart`'s default) — the
+ * categorical set below is for when there's more than one thing on the
+ * same chart to tell apart.
+ *
+ * Series beyond the 8th repeat the last color rather than being silently
+ * "made up" — see `palette.ts`'s `getSeriesColor`. Pass your own
+ * `color`/`colors` prop for a 9th+ series (fold into "Other", facet into
+ * small multiples, or supply hues you've validated yourself).
+ *
+ * Same three-state light/dark pattern as `@quickadui/theme`'s
+ * `tokens-css.ts` (`:root`, `@media` guarded against an explicit
+ * `data-theme="light"`, and `[data-theme="dark"]` for the toggle) — see
+ * that file's own doc comment for why both forms are needed.
+ */
+:root {
+  --qa-chart-series-1: #2a78d6;
+  --qa-chart-series-2: #eb6834;
+  --qa-chart-series-3: #1baf7a;
+  --qa-chart-series-4: #eda100;
+  --qa-chart-series-5: #e87ba4;
+  --qa-chart-series-6: #008300;
+  --qa-chart-series-7: #4a3aa7;
+  --qa-chart-series-8: #e34948;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --qa-chart-series-1: #3987e5;
+    --qa-chart-series-2: #d95926;
+    --qa-chart-series-3: #199e70;
+    --qa-chart-series-4: #c98500;
+    --qa-chart-series-5: #d55181;
+    --qa-chart-series-6: #008300;
+    --qa-chart-series-7: #9085e9;
+    --qa-chart-series-8: #e66767;
+  }
+}
+
+:root[data-theme="dark"] {
+  --qa-chart-series-1: #3987e5;
+  --qa-chart-series-2: #d95926;
+  --qa-chart-series-3: #199e70;
+  --qa-chart-series-4: #c98500;
+  --qa-chart-series-5: #d55181;
+  --qa-chart-series-6: #008300;
+  --qa-chart-series-7: #9085e9;
+  --qa-chart-series-8: #e66767;
+}

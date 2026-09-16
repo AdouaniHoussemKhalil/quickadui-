@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "@quickadui/theme/tokens.css";
 @import "@quickadui/theme/tailwind-theme.css";
+@import "@quickadui/charts/chart-tokens.css";
 
 /*
  * Tailwind's automatic content detection always skips anything matched by
@@ -29,7 +30,15 @@
  * `data` needs one too (`Table`/`Pagination`/`Stepper`/`Timeline`
  * all hardcode classes). `animation` does NOT need one — `Reveal`'s own
  * className default is empty, it's styled entirely by its caller (see
- * its README) — nothing to add here unless that changes.
+ * its README) — nothing to add here unless that changes. `shell` needs
+ * one too — `Navbar`/`Sidebar`/`Footer`/`DashboardLayout` all hardcode
+ * classes, same situation as `core`/`layout`/`data`. `charts` needs one
+ * too (`StatCard`/`Sparkline`/`BarChart`/`LineChart`/`DonutChart` all
+ * hardcode `text-neutral-*`/`fill-neutral-*`/`stroke-neutral-*`/
+ * `text-success-11`/`text-danger-11` classes) — it also needs its own
+ * `chart-tokens.css` import below for the categorical chart palette,
+ * which is a separate concern from `@quickadui/theme`'s tokens (see that
+ * file's own doc comment for why).
  */
 @source "../../../packages/core/src";
 @source "../../../packages/primitives/src";
@@ -37,6 +46,8 @@
 @source "../../../packages/overlays/src";
 @source "../../../packages/forms/src";
 @source "../../../packages/data/src";
+@source "../../../packages/shell/src";
+@source "../../../packages/charts/src";
 
 body {
   @apply bg-neutral-1 text-neutral-12;

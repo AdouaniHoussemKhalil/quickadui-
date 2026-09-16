@@ -1,7 +1,7 @@
 {
   "name": "@quickadui/data",
   "version": "0.0.0",
-  "description": "Table, Data Grid, Pagination, Timeline, Tabs, Accordion, Tree View, Stepper.",
+  "description": "Table, Pagination, Timeline, Tree View, and Stepper — data-display and multi-step navigation components. Tabs/Accordion ship in @quickadui/core instead; a sortable/filterable Data Grid is out of scope for now (see README).",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -19,7 +19,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsc --emitDeclarationOnly -p tsconfig.build.json",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
-    "@quickadui/primitives": "workspace:*",
+    "@quickadui/icons": "workspace:*",
     "@quickadui/theme": "workspace:*",
     "@quickadui/utils": "workspace:*"
   }

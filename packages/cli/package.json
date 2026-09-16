@@ -1,7 +1,7 @@
 {
   "name": "create-quickadui",
   "version": "0.0.0",
-  "description": "create-quickadui \u2014 the init and add scaffolding CLI (framework detection, Tailwind preset wiring, source-copy distribution). See Blueprint \u00a74 and \u00a79.",
+  "description": "create-quickadui \u2014 scaffolds a Vite + React + Tailwind v4 project (`quickadui init`) and installs QuickadUI packages into it (`quickadui add`). Editing an existing project's CSS is left to the person (see README) \u2014 narrower than the original framework-detection scope in Blueprint \u00a74/\u00a79.",
   "license": "MIT",
   "type": "module",
   "bin": {
@@ -13,7 +13,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsc --emitDeclarationOnly -p tsconfig.build.json",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@quickadui/config": "workspace:*",
+    "@types/node": "^22.20.3",
     "tsup": "^8.3.0",
     "typescript": "catalog:",
     "vitest": "catalog:"

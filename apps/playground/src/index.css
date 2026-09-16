@@ -1,0 +1,43 @@
+@import "tailwindcss";
+@import "@quickadui/theme/tokens.css";
+@import "@quickadui/theme/tailwind-theme.css";
+
+/*
+ * Tailwind's automatic content detection always skips anything matched by
+ * .gitignore (this repo ignores `dist` and `node_modules` — see the root
+ * .gitignore) — which is exactly where `@quickadui/core`'s compiled output
+ * lives once pnpm symlinks it into node_modules. Its components use
+ * Tailwind classes (`bg-accent-9`, `rounded-md`, ...) that never appear as
+ * literal text anywhere in this app — App.tsx only ever writes
+ * `<Button variant="solid" />`, never the class names themselves — so
+ * without an explicit @source, Tailwind never generates CSS for them: the
+ * components render with the right `class="..."` attribute, just with no
+ * matching rule in the stylesheet to back it up. @source is always
+ * scanned regardless of .gitignore/node_modules, which is the fix. All
+ * @import statements have to stay contiguous at the very top of the file
+ * (plain CSS rule) — that's why @source comes after them, not straight
+ * after `@import "tailwindcss"` like Tailwind's own single-import docs
+ * examples show.
+ * `primitives` is included too, defensively, even though it's currently
+ * unstyled by design (see its README) — cheap insurance if that changes.
+ * `layout` and `overlays` need it for real, not defensively — their
+ * components hardcode Tailwind classes (`gap-4`, `grid-cols-3`,
+ * `max-w-6xl`, `bg-neutral-1`, ...) inside their own `src/`, same
+ * situation as `core`. `icons` doesn't need one — it has no hardcoded
+ * classes of its own, every icon just forwards whatever `className` its
+ * caller passes. `forms` needs one too, same reason as `layout`/`overlays`.
+ * `data` needs one too (`Table`/`Pagination`/`Stepper`/`Timeline`
+ * all hardcode classes). `animation` does NOT need one — `Reveal`'s own
+ * className default is empty, it's styled entirely by its caller (see
+ * its README) — nothing to add here unless that changes.
+ */
+@source "../../../packages/core/src";
+@source "../../../packages/primitives/src";
+@source "../../../packages/layout/src";
+@source "../../../packages/overlays/src";
+@source "../../../packages/forms/src";
+@source "../../../packages/data/src";
+
+body {
+  @apply bg-neutral-1 text-neutral-12;
+}

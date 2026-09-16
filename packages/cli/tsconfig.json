@@ -2,7 +2,9 @@
   "extends": "@quickadui/config/tsconfig/base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "types": ["node"],
+    "typeRoots": ["./node_modules/@types", "../../node_modules/@types"]
   },
   "include": [
     "src"

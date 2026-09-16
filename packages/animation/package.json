@@ -1,7 +1,7 @@
 {
   "name": "@quickadui/animation",
   "version": "0.0.0",
-  "description": "Motion (formerly Framer Motion) presets and reusable animation variants.",
+  "description": "Motion (formerly Framer Motion) presets, reusable animation variants, and a Reveal convenience component.",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -19,7 +19,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsc --emitDeclarationOnly -p tsconfig.build.json",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
@@ -43,6 +43,6 @@
     "react-dom": ">=18"
   },
   "dependencies": {
-    "motion": "^11.11.0"
+    "motion": "^13.4.0"
   }
 }

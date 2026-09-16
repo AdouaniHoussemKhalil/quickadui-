@@ -1,5 +1,15 @@
-// @quickadui/animation
-//
-// Scaffold placeholder. Real implementation begins in Roadmap Phase 1
-// ("Foundation", v0.1 - v0.4) — see the QuickadUI Blueprint, §15.
-export const QUICKADUI_PACKAGE = "@quickadui/animation";
+export {
+  easeTransition,
+  fadeVariants,
+  getPresetVariants,
+  quickTransition,
+  type RevealPreset,
+  scaleVariants,
+  slideDownVariants,
+  slideLeftVariants,
+  slideRightVariants,
+  slideUpVariants,
+  springTransition,
+} from "./presets";
+export { Reveal, type RevealProps } from "./reveal";
+export { AnimatePresence, motion, type HTMLMotionProps, type Transition, useReducedMotion, type Variants } from "motion/react";

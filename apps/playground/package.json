@@ -2,7 +2,36 @@
   "name": "playground",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "echo 'apps/playground scaffold only' && exit 0"
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "@quickadui/theme": "workspace:*",
+    "@quickadui/core": "workspace:*",
+    "@quickadui/hooks": "workspace:*",
+    "@quickadui/icons": "workspace:*",
+    "@quickadui/layout": "workspace:*",
+    "@quickadui/overlays": "workspace:*",
+    "@quickadui/forms": "workspace:*",
+    "@quickadui/data": "workspace:*",
+    "@quickadui/animation": "workspace:*",
+    "zod": "^4.6.0"
+  },
+  "devDependencies": {
+    "@quickadui/config": "workspace:*",
+    "typescript": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "vite": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "tailwindcss": "catalog:",
+    "@tailwindcss/vite": "catalog:"
   }
 }

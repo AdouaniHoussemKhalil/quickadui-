@@ -128,15 +128,16 @@ export function TreeViewItem({
   const expanded = expandedIds.has(nodeId);
   const isSelected = selectedId === nodeId;
 
-  // Only the row itself (not the nested expand/collapse button, which has
-  // its own click/keyboard handling and calls `stopPropagation`) should
-  // ever trigger `onSelect` — this guards against a keydown that bubbles
-  // up from that button before the browser turns it into a synthetic
-  // click.
-  const handleRowKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.target !== event.currentTarget) {
-      return;
-    }
+  // `tabIndex`/`onClick`/`onKeyDown` all live on this `<li>` (not the
+  // inner `div`): Biome's `a11y/noNoninteractiveTabindex` only allows
+  // `tabIndex` on an element with a recognized interactive role, and
+  // `role="treeitem"` qualifies while a bare `div` doesn't; its
+  // `a11y/useKeyWithClickEvents` in turn requires the click and keyboard
+  // handlers to sit on that same element. The nested expand/collapse
+  // `button` stops propagation on both its click and its keydown so
+  // toggling it (by mouse or by Enter/Space while it's focused) never
+  // also fires this row's `onSelect`.
+  const handleRowKeyDown = (event: KeyboardEvent<HTMLLIElement>) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       onSelect?.(nodeId);
@@ -150,6 +151,9 @@ export function TreeViewItem({
       aria-selected={isSelected}
       data-slot="tree-view-item"
       className={className}
+      tabIndex={0}
+      onClick={() => onSelect?.(nodeId)}
+      onKeyDown={handleRowKeyDown}
       {...props}
     >
       <div
@@ -157,9 +161,6 @@ export function TreeViewItem({
           "flex cursor-pointer items-center gap-1 rounded-sm px-2 py-1.5 hover:bg-neutral-3",
           isSelected && "bg-accent-3 text-accent-11",
         )}
-        tabIndex={0}
-        onClick={() => onSelect?.(nodeId)}
-        onKeyDown={handleRowKeyDown}
       >
         {hasChildren ? (
           <button
@@ -178,6 +179,9 @@ export function TreeViewItem({
               // that.
               event.stopPropagation();
               toggle(nodeId);
+            }}
+            onKeyDown={(event: { stopPropagation: () => void }) => {
+              event.stopPropagation();
             }}
           >
             <ChevronRightIcon

@@ -2,7 +2,14 @@
 
 import { ChevronRightIcon } from "@quickadui/icons";
 import { cn } from "@quickadui/utils";
-import { type ComponentProps, createContext, type ReactNode, useContext, useState } from "react";
+import {
+  type ComponentProps,
+  createContext,
+  type KeyboardEvent,
+  type ReactNode,
+  useContext,
+  useState,
+} from "react";
 
 /**
  * Pure — toggles one id in/out of a `Set` without mutating the original,
@@ -121,6 +128,21 @@ export function TreeViewItem({
   const expanded = expandedIds.has(nodeId);
   const isSelected = selectedId === nodeId;
 
+  // Only the row itself (not the nested expand/collapse button, which has
+  // its own click/keyboard handling and calls `stopPropagation`) should
+  // ever trigger `onSelect` — this guards against a keydown that bubbles
+  // up from that button before the browser turns it into a synthetic
+  // click.
+  const handleRowKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onSelect?.(nodeId);
+    }
+  };
+
   return (
     <li
       role="treeitem"
@@ -135,7 +157,9 @@ export function TreeViewItem({
           "flex cursor-pointer items-center gap-1 rounded-sm px-2 py-1.5 hover:bg-neutral-3",
           isSelected && "bg-accent-3 text-accent-11",
         )}
+        tabIndex={0}
         onClick={() => onSelect?.(nodeId)}
+        onKeyDown={handleRowKeyDown}
       >
         {hasChildren ? (
           <button

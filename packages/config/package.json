@@ -1,6 +1,6 @@
 {
   "name": "@quickadui/config",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Shared tsconfig and Tailwind preset consumed by every QuickadUI package. See Blueprint §14.",
   "license": "MIT",
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "@quickadui/utils",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "cn(), formatters, and shared type helpers used across every other package.",
   "license": "MIT",
   "repository": {

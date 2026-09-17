@@ -14,16 +14,15 @@
       "a11y": {
         "recommended": true,
         // This design system deliberately builds custom ARIA widgets
-        // (TreeView's role="tree"/role="group", and more to come) on plain
+        // (TreeView's role=tree / role=group, and more to come) on plain
         // elements, per the WAI-ARIA Authoring Practices Guide's own
-        // patterns. useSemanticElements' generic role→element mapping
+        // patterns. useSemanticElements' generic role-to-element mapping
         // table doesn't know those patterns and pushes toward the wrong
-        // element for them (e.g. <fieldset> — a form-grouping element —
-        // for role="group" on a tree node's children). An inline
-        // biome-ignore comment on a JSX element nested inside a
-        // conditional expression (`{cond && (<div role="group">...`)
-        // also proved unreliable to attach correctly (see git history on
-        // packages/data/src/tree-view.tsx), so this is turned off
+        // element for them, e.g. fieldset, a form-grouping element, for
+        // role=group on a tree node's children. An inline biome-ignore
+        // comment on a JSX element nested inside a conditional expression
+        // also proved unreliable to attach correctly; see git history on
+        // packages/data/src/tree-view.tsx. So this rule is turned off
         // repo-wide instead of chased file by file.
         "useSemanticElements": "off"
       }

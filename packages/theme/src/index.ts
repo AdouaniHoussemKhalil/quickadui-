@@ -11,6 +11,15 @@ export {
   type ThemeMode,
 } from "./dom";
 export {
+  applyColorOverrides,
+  clearAllColorOverrides,
+  COLOR_FAMILIES,
+  isHexColor,
+  readStoredColorOverrides,
+  storeColorOverrides,
+  type ColorOverrides,
+} from "./color-runtime";
+export {
   ThemeProvider,
   ThemeScript,
   useTheme,
@@ -18,3 +27,4 @@ export {
   type ThemeProviderProps,
   type ThemeScriptProps,
 } from "./theme-provider";
+export type { ColorFamily } from "@quickadui/tokens";

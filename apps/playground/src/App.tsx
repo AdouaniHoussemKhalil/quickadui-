@@ -125,6 +125,7 @@ import {
   Toaster,
 } from "@quickadui/overlays";
 import { useTheme, type ThemeMode } from "@quickadui/theme";
+import { SEED_COLORS } from "@quickadui/tokens";
 import { useState, type ComponentType, type ReactNode } from "react";
 import { z } from "zod";
 
@@ -320,6 +321,48 @@ function ThemeToggle() {
           {mode}
         </Button>
       ))}
+    </Flex>
+  );
+}
+
+/**
+ * Real `@quickadui/theme` runtime color configurability, demoed live: the
+ * native `<input type="color">` below is bound straight to `useTheme()`'s
+ * `colors.accent` (falling back to `@quickadui/tokens`' own build-time
+ * `SEED_COLORS.accent` when nothing's overridden yet), and every `accent-*`
+ * class on this entire page — `Button`'s `solid` variant, focus rings,
+ * links, all of it — updates the instant `setColor` runs. No rebuild, no
+ * reload: `setColor` regenerates the full 12-step light+dark scale from
+ * the picked seed with the exact same code `tokens.css` itself was built
+ * from, and writes it back as inline CSS custom properties on
+ * `<html>`, where they outrank the build-time stylesheet.
+ */
+function AccentPicker() {
+  const { colors, setColor, resetColor } = useTheme();
+  const isOverridden = colors.accent !== undefined;
+  const value = colors.accent ?? SEED_COLORS.accent;
+
+  return (
+    <Flex align="center" gap="sm">
+      <span className="text-sm text-neutral-11">Accent</span>
+      <input
+        type="color"
+        value={value}
+        // Structurally typed to `{ target: { value: string } }` rather than
+        // React's real `ChangeEvent<HTMLInputElement>` — same local
+        // react-stub limitation documented throughout this session
+        // (`ComponentProps<T>` falls back to `Record<string, any>` for any
+        // plain tag name): narrow and internal-only is correct here since
+        // `event.target.value` is read and never forwarded onward.
+        onChange={(event: { target: { value: string } }) => setColor("accent", event.target.value.toUpperCase())}
+        className="h-8 w-8 cursor-pointer rounded border border-neutral-6 bg-transparent p-0"
+        aria-label="Accent color"
+      />
+      {isOverridden && (
+        <Button size="sm" variant="ghost" onClick={() => resetColor("accent")}>
+          Reset
+        </Button>
+      )}
     </Flex>
   );
 }
@@ -558,6 +601,7 @@ export function App() {
                 <a href="#dashboard" className="text-sm text-neutral-11 hover:text-neutral-12">
                   Dashboard shell demo (@quickadui/shell) &rarr;
                 </a>
+                <AccentPicker />
                 <ThemeToggle />
               </Flex>
             </Flex>
@@ -575,8 +619,9 @@ export function App() {
               <Alert variant="success">
                 <AlertTitle>It&apos;s alive</AlertTitle>
                 <AlertDescription>
-                  The theme toggle above and this alert&apos;s open/close state are both driven by real hooks — <code>useTheme</code>{" "}
-                  from <code>@quickadui/theme</code> and <code>useDisclosure</code> from <code>@quickadui/hooks</code>.
+                  The theme toggle, accent color picker, and this alert&apos;s open/close state are all driven by real hooks —{" "}
+                  <code>useTheme</code> from <code>@quickadui/theme</code> (mode switching <em>and</em>, now, runtime accent-color
+                  overrides — no rebuild required) and <code>useDisclosure</code> from <code>@quickadui/hooks</code>.
                 </AlertDescription>
                 <div className="mt-3">
                   <Button size="sm" variant="outline" onClick={notice.close}>

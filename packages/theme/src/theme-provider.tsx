@@ -1,3 +1,4 @@
+import type { ColorFamily } from "@quickadui/tokens";
 import {
   createContext,
   useCallback,
@@ -7,6 +8,14 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import {
+  applyColorOverrides,
+  clearAllColorOverrides,
+  isHexColor,
+  readStoredColorOverrides,
+  storeColorOverrides,
+  type ColorOverrides,
+} from "./color-runtime";
 import {
   applyTheme,
   getThemeScript,
@@ -23,6 +32,17 @@ export interface ThemeProviderProps {
   defaultTheme?: ThemeMode;
   /** localStorage key. Must match whatever key is passed to `<ThemeScript>` / `getThemeScript()`. */
   storageKey?: string;
+  /**
+   * Seed-color overrides (e.g. `{ accent: "#2563EB" }`) used only on the
+   * very first visit, before anything is stored — same "first visit only"
+   * relationship `defaultTheme` has to the persisted mode. Pass this to
+   * ship a different brand color than `@quickadui/tokens`' own
+   * `SEED_COLORS` without forking or rebuilding the package; call
+   * `setColor` from `useTheme()` afterward to change it again at runtime.
+   */
+  defaultColors?: ColorOverrides;
+  /** localStorage key for `defaultColors`/`setColor` overrides. Default: "quickadui-colors". */
+  colorStorageKey?: string;
 }
 
 export interface ThemeContextValue {
@@ -31,24 +51,48 @@ export interface ThemeContextValue {
   /** What "system" currently resolves to — always "light" or "dark", never "system". */
   resolvedTheme: ResolvedTheme;
   setTheme: (theme: ThemeMode) => void;
+  /** The families currently overridden away from `@quickadui/tokens`' build-time `SEED_COLORS`, keyed by family, each a `#RRGGBB` seed. A family absent here is using its build-time color. */
+  colors: ColorOverrides;
+  /**
+   * Regenerates `family`'s full 12-step light+dark scale from `seedHex`
+   * (the same `generateColorToken` used to build `tokens.css` in the
+   * first place) and applies it to the document immediately — no rebuild,
+   * no page reload. Persists to `colorStorageKey` so it survives a
+   * reload too. Throws if `seedHex` isn't a valid `#RRGGBB` string.
+   */
+  setColor: (family: ColorFamily, seedHex: string) => void;
+  /** Reverts one family back to its build-time `tokens.css` color. */
+  resetColor: (family: ColorFamily) => void;
+  /** Reverts every overridden family back to its build-time `tokens.css` color. */
+  resetColors: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
+const DEFAULT_COLOR_STORAGE_KEY = "quickadui-colors";
+
 /**
- * Provides `theme` / `resolvedTheme` / `setTheme` to the subtree via
- * `useTheme()`, and keeps `document.documentElement`'s `data-theme`
- * attribute (and localStorage) in sync as the mode changes.
+ * Provides `theme` / `resolvedTheme` / `setTheme` (mode) and `colors` /
+ * `setColor` / `resetColor` / `resetColors` (brand color) to the subtree
+ * via `useTheme()`, and keeps `document.documentElement` (both its
+ * `data-theme` attribute and, for any overridden color family, its inline
+ * `--qa-color-*` custom properties) and `localStorage` in sync as either
+ * changes.
  *
- * This does *not* prevent the flash of the wrong theme on first paint by
- * itself — pair it with `<ThemeScript>` (or `getThemeScript()` inlined
- * manually) rendered as early as possible in `<head>`. See `dom.ts` for why
- * that has to be a plain script tag rather than an effect here.
+ * This does *not* prevent the flash of the wrong theme *mode* on first
+ * paint by itself — pair it with `<ThemeScript>` (or `getThemeScript()`
+ * inlined manually) rendered as early as possible in `<head>`. See
+ * `dom.ts` for why that has to be a plain script tag rather than an effect
+ * here. A stored *color* override is, for the same reason, not applied
+ * until this component mounts — see `color-runtime.ts`'s module doc for
+ * why that's a smaller, and so far unaddressed, gap.
  */
 export function ThemeProvider({
   children,
   defaultTheme = "system",
   storageKey = "quickadui-theme",
+  defaultColors,
+  colorStorageKey = DEFAULT_COLOR_STORAGE_KEY,
 }: ThemeProviderProps) {
   // Lazy initializer: reads localStorage synchronously during the first
   // render so this matches what the inline ThemeScript already painted,
@@ -57,6 +101,14 @@ export function ThemeProvider({
   // exactly like the script does.
   const [theme, setThemeState] = useState<ThemeMode>(() => readStoredTheme(storageKey) ?? defaultTheme);
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => resolveTheme(theme));
+
+  // Same "stored wins, otherwise the default prop" relationship as theme
+  // mode above — a returning visitor's own custom color always wins over
+  // whatever `defaultColors` this render happens to pass.
+  const [colors, setColors] = useState<ColorOverrides>(() => {
+    const stored = readStoredColorOverrides(colorStorageKey);
+    return Object.keys(stored).length > 0 ? stored : (defaultColors ?? {});
+  });
 
   const setTheme = useCallback(
     (next: ThemeMode) => {
@@ -84,12 +136,61 @@ export function ThemeProvider({
     return () => mql.removeEventListener("change", onChange);
   }, [theme]);
 
-  const value = useMemo<ThemeContextValue>(() => ({ theme, resolvedTheme, setTheme }), [theme, resolvedTheme, setTheme]);
+  // Re-apply every color override whenever the map changes *or* the
+  // resolved light/dark mode changes — each mode has its own generated
+  // scale, so toggling dark/light needs the other half of the same seed
+  // recomputed, not just whatever inline value happened to be sitting
+  // there. Clearing first (rather than only ever setting) is what makes
+  // `resetColor`/`resetColors` actually remove the inline override instead
+  // of leaving the last-applied value stuck in place.
+  useEffect(() => {
+    clearAllColorOverrides();
+    applyColorOverrides(colors, resolvedTheme);
+  }, [colors, resolvedTheme]);
+
+  const setColor = useCallback(
+    (family: ColorFamily, seedHex: string) => {
+      if (!isHexColor(seedHex)) {
+        throw new Error(`setColor("${family}", ...): "${seedHex}" is not a valid #RRGGBB hex color.`);
+      }
+      setColors((prev) => {
+        const next = { ...prev, [family]: seedHex };
+        storeColorOverrides(colorStorageKey, next);
+        return next;
+      });
+    },
+    [colorStorageKey],
+  );
+
+  const resetColor = useCallback(
+    (family: ColorFamily) => {
+      setColors((prev) => {
+        if (!(family in prev)) {
+          return prev;
+        }
+        const next = { ...prev };
+        delete next[family];
+        storeColorOverrides(colorStorageKey, next);
+        return next;
+      });
+    },
+    [colorStorageKey],
+  );
+
+  const resetColors = useCallback(() => {
+    setColors({});
+    storeColorOverrides(colorStorageKey, {});
+  }, [colorStorageKey]);
+
+  const value = useMemo<ThemeContextValue>(
+    () => ({ theme, resolvedTheme, setTheme, colors, setColor, resetColor, resetColors }),
+    [theme, resolvedTheme, setTheme, colors, setColor, resetColor, resetColors],
+  );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
-/** Reads the current theme mode/resolution and a setter. Throws outside a `<ThemeProvider>`. */
+/** Reads the current theme mode/resolution/colors and their setters. Throws outside a `<ThemeProvider>`. */
 export function useTheme(): ThemeContextValue {
   const ctx = useContext(ThemeContext);
   if (!ctx) {
@@ -110,6 +211,11 @@ export interface ThemeScriptProps {
  * `<head>`. The generated string is a fixed template with no user input
  * interpolated unescaped into it (the storage key is passed through
  * `JSON.stringify`), so inlining it is safe. See `dom.ts` for details.
+ *
+ * This only covers theme *mode* — it does not inline a stored color
+ * override, so a returning visitor with a custom accent color still sees
+ * one frame of the build-time brand color before `<ThemeProvider>` mounts
+ * and corrects it. See `color-runtime.ts`'s module doc.
  */
 export function ThemeScript({ storageKey = "quickadui-theme" }: ThemeScriptProps) {
   // biome-ignore lint/security/noDangerouslySetInnerHtml: this is the whole point — a script tag that must run before hydration, built from a fixed, non-user-controlled template in getThemeScript().

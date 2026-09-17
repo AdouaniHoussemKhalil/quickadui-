@@ -52,24 +52,36 @@ export function DropdownMenuLabel(props: ComponentProps<typeof DropdownMenuPrimi
   return <DropdownMenuPrimitive.Label data-slot="dropdown-menu-label" {...props} />;
 }
 
-export function DropdownMenuCheckboxItem(props: ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>) {
+export function DropdownMenuCheckboxItem(
+  props: ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>,
+) {
   return <DropdownMenuPrimitive.CheckboxItem data-slot="dropdown-menu-checkbox-item" {...props} />;
 }
 
 /** Renders inside `DropdownMenuCheckboxItem`/`DropdownMenuRadioItem` — visible only while checked (unless `forceMount`). */
-export function DropdownMenuItemIndicator(props: ComponentProps<typeof DropdownMenuPrimitive.ItemIndicator>) {
-  return <DropdownMenuPrimitive.ItemIndicator data-slot="dropdown-menu-item-indicator" {...props} />;
+export function DropdownMenuItemIndicator(
+  props: ComponentProps<typeof DropdownMenuPrimitive.ItemIndicator>,
+) {
+  return (
+    <DropdownMenuPrimitive.ItemIndicator data-slot="dropdown-menu-item-indicator" {...props} />
+  );
 }
 
-export function DropdownMenuRadioGroup(props: ComponentProps<typeof DropdownMenuPrimitive.RadioGroup>) {
+export function DropdownMenuRadioGroup(
+  props: ComponentProps<typeof DropdownMenuPrimitive.RadioGroup>,
+) {
   return <DropdownMenuPrimitive.RadioGroup data-slot="dropdown-menu-radio-group" {...props} />;
 }
 
-export function DropdownMenuRadioItem(props: ComponentProps<typeof DropdownMenuPrimitive.RadioItem>) {
+export function DropdownMenuRadioItem(
+  props: ComponentProps<typeof DropdownMenuPrimitive.RadioItem>,
+) {
   return <DropdownMenuPrimitive.RadioItem data-slot="dropdown-menu-radio-item" {...props} />;
 }
 
-export function DropdownMenuSeparator(props: ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
+export function DropdownMenuSeparator(
+  props: ComponentProps<typeof DropdownMenuPrimitive.Separator>,
+) {
   return <DropdownMenuPrimitive.Separator data-slot="dropdown-menu-separator" {...props} />;
 }
 
@@ -78,10 +90,14 @@ export function DropdownMenuSub(props: ComponentProps<typeof DropdownMenuPrimiti
   return <DropdownMenuPrimitive.Sub {...props} />;
 }
 
-export function DropdownMenuSubTrigger(props: ComponentProps<typeof DropdownMenuPrimitive.SubTrigger>) {
+export function DropdownMenuSubTrigger(
+  props: ComponentProps<typeof DropdownMenuPrimitive.SubTrigger>,
+) {
   return <DropdownMenuPrimitive.SubTrigger data-slot="dropdown-menu-sub-trigger" {...props} />;
 }
 
-export function DropdownMenuSubContent(props: ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
+export function DropdownMenuSubContent(
+  props: ComponentProps<typeof DropdownMenuPrimitive.SubContent>,
+) {
   return <DropdownMenuPrimitive.SubContent data-slot="dropdown-menu-sub-content" {...props} />;
 }

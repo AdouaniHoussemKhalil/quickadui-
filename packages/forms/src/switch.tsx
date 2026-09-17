@@ -1,6 +1,9 @@
 "use client";
 
-import { SwitchRoot as SwitchRootPrimitive, SwitchThumb as SwitchThumbPrimitive } from "@quickadui/primitives";
+import {
+  SwitchRoot as SwitchRootPrimitive,
+  SwitchThumb as SwitchThumbPrimitive,
+} from "@quickadui/primitives";
 import { cn } from "@quickadui/utils";
 import type { ComponentProps } from "react";
 

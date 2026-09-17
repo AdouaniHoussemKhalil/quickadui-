@@ -60,7 +60,16 @@ export interface FlexProps extends ComponentProps<"div">, VariantProps<typeof fl
   as?: ElementType;
 }
 
-export function Flex({ className, direction, align, justify, wrap, gap, as: Comp = "div", ...props }: FlexProps) {
+export function Flex({
+  className,
+  direction,
+  align,
+  justify,
+  wrap,
+  gap,
+  as: Comp = "div",
+  ...props
+}: FlexProps) {
   return (
     <Comp
       data-slot="flex"

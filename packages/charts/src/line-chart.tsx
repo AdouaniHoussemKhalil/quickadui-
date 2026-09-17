@@ -36,7 +36,16 @@ const PADDING = { top: 12, right: 12, bottom: 28, left: 40 } as const;
  * QuickadUI's brand accent; multi-series charts default to the validated
  * categorical palette in `palette.ts`.
  */
-export function LineChart({ data, categoryKey, series, area = false, height = 240, valueFormatter = String, className, ...props }: LineChartProps) {
+export function LineChart({
+  data,
+  categoryKey,
+  series,
+  area = false,
+  height = 240,
+  valueFormatter = String,
+  className,
+  ...props
+}: LineChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
@@ -87,9 +96,16 @@ export function LineChart({ data, categoryKey, series, area = false, height = 24
           y: PADDING.top,
           content: (
             <div className="flex flex-col gap-1">
-              <div className="font-medium text-neutral-12">{String(hoveredRow[categoryKey] ?? "")}</div>
+              <div className="font-medium text-neutral-12">
+                {String(hoveredRow[categoryKey] ?? "")}
+              </div>
               {seriesPoints.map(({ series: s }) => (
-                <TooltipRow key={s.key} color={s.color} label={s.label} value={valueFormatter(Number(hoveredRow[s.key] ?? 0))} />
+                <TooltipRow
+                  key={s.key}
+                  color={s.color}
+                  label={s.label}
+                  value={valueFormatter(Number(hoveredRow[s.key] ?? 0))}
+                />
               ))}
             </div>
           ),
@@ -98,14 +114,33 @@ export function LineChart({ data, categoryKey, series, area = false, height = 24
   return (
     <div data-slot="line-chart" className={cn("flex flex-col gap-3", className)} {...props}>
       <div ref={containerRef} className="relative">
-        <svg role="img" aria-label="Line chart" viewBox={`0 0 ${CHART_WIDTH} ${height}`} width="100%" height={height}>
+        <svg
+          role="img"
+          aria-label="Line chart"
+          viewBox={`0 0 ${CHART_WIDTH} ${height}`}
+          width="100%"
+          height={height}
+        >
           <g transform={`translate(${PADDING.left}, ${PADDING.top})`}>
             {ticks.map((tick) => {
               const y = yForValue(tick);
               return (
                 <g key={tick}>
-                  <line x1={0} x2={plotWidth} y1={y} y2={y} className="stroke-neutral-6" strokeWidth={1} />
-                  <text x={-8} y={y} textAnchor="end" dominantBaseline="middle" className="fill-neutral-9 text-[10px]">
+                  <line
+                    x1={0}
+                    x2={plotWidth}
+                    y1={y}
+                    y2={y}
+                    className="stroke-neutral-6"
+                    strokeWidth={1}
+                  />
+                  <text
+                    x={-8}
+                    y={y}
+                    textAnchor="end"
+                    dominantBaseline="middle"
+                    className="fill-neutral-9 text-[10px]"
+                  >
                     {valueFormatter(tick)}
                   </text>
                 </g>
@@ -114,8 +149,22 @@ export function LineChart({ data, categoryKey, series, area = false, height = 24
 
             {seriesPoints.map(({ series: s, points }) => (
               <g key={s.key}>
-                {area && <path d={buildAreaPath(points, plotHeight)} fill={s.color} fillOpacity={0.1} stroke="none" />}
-                <path d={buildLinePath(points)} fill="none" stroke={s.color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                {area && (
+                  <path
+                    d={buildAreaPath(points, plotHeight)}
+                    fill={s.color}
+                    fillOpacity={0.1}
+                    stroke="none"
+                  />
+                )}
+                <path
+                  d={buildLinePath(points)}
+                  fill="none"
+                  stroke={s.color}
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
                 {points.map((p, i) => (
                   <circle
                     // biome-ignore lint/suspicious/noArrayIndexKey: points are positional samples, not identity-bearing records
@@ -131,7 +180,16 @@ export function LineChart({ data, categoryKey, series, area = false, height = 24
               </g>
             ))}
 
-            {crosshairX !== null && <line x1={crosshairX} x2={crosshairX} y1={0} y2={plotHeight} className="stroke-neutral-7" strokeWidth={1} />}
+            {crosshairX !== null && (
+              <line
+                x1={crosshairX}
+                x2={crosshairX}
+                y1={0}
+                y2={plotHeight}
+                className="stroke-neutral-7"
+                strokeWidth={1}
+              />
+            )}
 
             {data.map((row, i) => (
               <text
@@ -159,7 +217,9 @@ export function LineChart({ data, categoryKey, series, area = false, height = 24
         </svg>
         <ChartTooltip tooltip={tooltip} />
       </div>
-      <ChartLegend items={resolvedSeries.map((s) => ({ key: s.key, label: s.label, color: s.color }))} />
+      <ChartLegend
+        items={resolvedSeries.map((s) => ({ key: s.key, label: s.label, color: s.color }))}
+      />
     </div>
   );
 }

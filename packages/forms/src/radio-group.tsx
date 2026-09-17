@@ -9,11 +9,17 @@ import {
 import { cn } from "@quickadui/utils";
 import type { ComponentProps } from "react";
 
-export function RadioGroup({ className, ...props }: ComponentProps<typeof RadioGroupRootPrimitive>) {
+export function RadioGroup({
+  className,
+  ...props
+}: ComponentProps<typeof RadioGroupRootPrimitive>) {
   return <RadioGroupRootPrimitive className={cn("grid gap-2", className)} {...props} />;
 }
 
-export function RadioGroupItem({ className, ...props }: ComponentProps<typeof RadioGroupItemPrimitive>) {
+export function RadioGroupItem({
+  className,
+  ...props
+}: ComponentProps<typeof RadioGroupItemPrimitive>) {
   return (
     <RadioGroupItemPrimitive
       className={cn(

@@ -34,7 +34,9 @@ export function runAdd(options: AddOptions): AddResult {
   const packageJsonPath = join(projectDir, "package.json");
 
   if (!existsSync(packageJsonPath)) {
-    throw new Error(`No package.json found at "${packageJsonPath}". Run \`quickadui init\` first, or pass --dir to point at an existing project.`);
+    throw new Error(
+      `No package.json found at "${packageJsonPath}". Run \`quickadui init\` first, or pass --dir to point at an existing project.`,
+    );
   }
 
   const rawPackageJson = readFileSync(packageJsonPath, "utf8");

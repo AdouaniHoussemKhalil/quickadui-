@@ -44,6 +44,19 @@ export interface StackProps extends ComponentProps<"div">, VariantProps<typeof s
   as?: ElementType;
 }
 
-export function Stack({ className, direction, align, gap, as: Comp = "div", ...props }: StackProps) {
-  return <Comp data-slot="stack" className={cn(stackVariants({ direction, align, gap }), className)} {...props} />;
+export function Stack({
+  className,
+  direction,
+  align,
+  gap,
+  as: Comp = "div",
+  ...props
+}: StackProps) {
+  return (
+    <Comp
+      data-slot="stack"
+      className={cn(stackVariants({ direction, align, gap }), className)}
+      {...props}
+    />
+  );
 }

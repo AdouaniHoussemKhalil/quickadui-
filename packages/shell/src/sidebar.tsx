@@ -38,20 +38,43 @@ export function Sidebar({ className, side = "left", ...props }: SidebarProps) {
 }
 
 export function SidebarHeader({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="sidebar-header" className={cn("flex h-14 shrink-0 items-center gap-2 border-b border-neutral-6 px-3", className)} {...props} />;
+  return (
+    <div
+      data-slot="sidebar-header"
+      className={cn(
+        "flex h-14 shrink-0 items-center gap-2 border-b border-neutral-6 px-3",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
 export function SidebarContent({ className, ...props }: ComponentProps<"nav">) {
-  return <nav data-slot="sidebar-content" className={cn("flex flex-1 flex-col gap-1 overflow-y-auto p-2", className)} {...props} />;
+  return (
+    <nav
+      data-slot="sidebar-content"
+      className={cn("flex flex-1 flex-col gap-1 overflow-y-auto p-2", className)}
+      {...props}
+    />
+  );
 }
 
 export function SidebarFooter({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="sidebar-footer" className={cn("shrink-0 border-t border-neutral-6 p-2", className)} {...props} />;
+  return (
+    <div
+      data-slot="sidebar-footer"
+      className={cn("shrink-0 border-t border-neutral-6 p-2", className)}
+      {...props}
+    />
+  );
 }
 
 /** A labeled cluster of `SidebarNavItem`s — the label hides itself while collapsed rather than truncating, since a single-letter label is worse than no label. */
 export function SidebarGroup({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="sidebar-group" className={cn("flex flex-col gap-0.5", className)} {...props} />;
+  return (
+    <div data-slot="sidebar-group" className={cn("flex flex-col gap-0.5", className)} {...props} />
+  );
 }
 
 export function SidebarGroupLabel({ className, ...props }: ComponentProps<"div">) {
@@ -62,7 +85,10 @@ export function SidebarGroupLabel({ className, ...props }: ComponentProps<"div">
   return (
     <div
       data-slot="sidebar-group-label"
-      className={cn("px-3 pb-1 pt-3 text-xs font-medium uppercase tracking-wide text-neutral-9", className)}
+      className={cn(
+        "px-3 pb-1 pt-3 text-xs font-medium uppercase tracking-wide text-neutral-9",
+        className,
+      )}
       {...props}
     />
   );
@@ -76,17 +102,20 @@ export function SidebarGroupLabel({ className, ...props }: ComponentProps<"div">
  * so `SidebarNavItem`'s public `active` prop is a hand-declared `boolean`
  * that converts to this variant internally instead.
  */
-export const sidebarNavItemVariants = cva("flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-neutral-3", {
-  variants: {
-    state: {
-      default: "text-neutral-11",
-      active: "bg-accent-3 text-accent-11 hover:bg-accent-3",
+export const sidebarNavItemVariants = cva(
+  "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-neutral-3",
+  {
+    variants: {
+      state: {
+        default: "text-neutral-11",
+        active: "bg-accent-3 text-accent-11 hover:bg-accent-3",
+      },
+    },
+    defaultVariants: {
+      state: "default",
     },
   },
-  defaultVariants: {
-    state: "default",
-  },
-});
+);
 
 export interface SidebarNavItemProps extends ComponentProps<"a"> {
   active?: boolean;
@@ -102,10 +131,20 @@ export interface SidebarNavItemProps extends ComponentProps<"a"> {
  * wrapping your own router's `Link` and forwarding `className`/`children`
  * is the workaround until that lands.
  */
-export function SidebarNavItem({ className, active, icon, children, ...props }: SidebarNavItemProps) {
+export function SidebarNavItem({
+  className,
+  active,
+  icon,
+  children,
+  ...props
+}: SidebarNavItemProps) {
   const { collapsed } = useSidebar();
   return (
-    <a data-slot="sidebar-nav-item" className={cn(sidebarNavItemVariants({ state: active ? "active" : "default" }), className)} {...props}>
+    <a
+      data-slot="sidebar-nav-item"
+      className={cn(sidebarNavItemVariants({ state: active ? "active" : "default" }), className)}
+      {...props}
+    >
       {icon}
       {!collapsed && <span className="truncate">{children}</span>}
     </a>

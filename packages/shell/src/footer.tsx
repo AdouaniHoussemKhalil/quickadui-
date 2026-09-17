@@ -8,7 +8,10 @@ export function Footer({ className, ...props }: ComponentProps<"footer">) {
   return (
     <footer
       data-slot="footer"
-      className={cn("flex h-12 shrink-0 items-center justify-between border-t border-neutral-6 px-4 text-xs text-neutral-11", className)}
+      className={cn(
+        "flex h-12 shrink-0 items-center justify-between border-t border-neutral-6 px-4 text-xs text-neutral-11",
+        className,
+      )}
       {...props}
     />
   );

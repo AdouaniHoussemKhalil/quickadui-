@@ -38,7 +38,9 @@ function parseCaretVersion(range: string): [number, number, number] | null {
  * packages disagree on the range for the same dependency name, the
  * higher `^x.y.z` range wins (see `pickHigherRange`).
  */
-export function mergeExternalDependencies(packages: readonly QuickaduiPackageDefinition[]): ExternalDependency[] {
+export function mergeExternalDependencies(
+  packages: readonly QuickaduiPackageDefinition[],
+): ExternalDependency[] {
   const order: string[] = [];
   const ranges = new Map<string, string>();
 

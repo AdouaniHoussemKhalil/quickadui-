@@ -2,8 +2,8 @@
 
 import { cn } from "@quickadui/utils";
 import { type ComponentProps, useRef, useState } from "react";
-import { buildDonutSegments, describeDonutSegment, polarToCartesian } from "./chart-math";
 import { ChartLegend } from "./chart-legend";
+import { buildDonutSegments, describeDonutSegment, polarToCartesian } from "./chart-math";
 import { ChartTooltip, TooltipRow, type TooltipState } from "./chart-tooltip";
 import { getSeriesColor } from "./palette";
 
@@ -62,7 +62,10 @@ export function DonutChart({
 
   // Internal-only (`clientX`/`clientY`, never forwarded onward) — see
   // `bar-chart.tsx`'s identical comment on this same stub-fidelity pattern.
-  function showTooltip(event: { clientX: number; clientY: number }, content: TooltipState["content"]) {
+  function showTooltip(
+    event: { clientX: number; clientY: number },
+    content: TooltipState["content"],
+  ) {
     const container = containerRef.current;
     if (!container) {
       return;
@@ -72,15 +75,32 @@ export function DonutChart({
   }
 
   return (
-    <div data-slot="donut-chart" className={cn("flex flex-col items-center gap-3", className)} {...props}>
+    <div
+      data-slot="donut-chart"
+      className={cn("flex flex-col items-center gap-3", className)}
+      {...props}
+    >
       <div ref={containerRef} className="relative">
-        <svg role="img" aria-label="Donut chart" viewBox={`0 0 ${size} ${size}`} width={size} height={size}>
+        <svg
+          role="img"
+          aria-label="Donut chart"
+          viewBox={`0 0 ${size} ${size}`}
+          width={size}
+          height={size}
+        >
           {resolved.map((segment, i) => {
             const angles = segments[i];
             if (!angles) {
               return null;
             }
-            const d = describeDonutSegment(cx, cy, innerRadius, outerRadius, angles.startAngle, angles.endAngle);
+            const d = describeDonutSegment(
+              cx,
+              cy,
+              innerRadius,
+              outerRadius,
+              angles.startAngle,
+              angles.endAngle,
+            );
             const midAngle = (angles.startAngle + angles.endAngle) / 2;
             // Labeled just outside the ring, not inside the colored fill —
             // picking a text color that's always safe against an arbitrary
@@ -104,14 +124,24 @@ export function DonutChart({
                     onPointerMove={(event: { clientX: number; clientY: number }) =>
                       showTooltip(
                         event,
-                        <TooltipRow color={segment.color} label={`${segment.label} · ${percent.toFixed(0)}%`} value={valueFormatter(segment.value)} />,
+                        <TooltipRow
+                          color={segment.color}
+                          label={`${segment.label} · ${percent.toFixed(0)}%`}
+                          value={valueFormatter(segment.value)}
+                        />,
                       )
                     }
                     onPointerLeave={() => setTooltip(null)}
                   />
                 )}
                 {showDirectLabels && angles.fraction >= MIN_LABEL_FRACTION && (
-                  <text x={labelPoint.x} y={labelPoint.y} textAnchor="middle" dominantBaseline="middle" className="fill-neutral-11 text-[10px] font-medium">
+                  <text
+                    x={labelPoint.x}
+                    y={labelPoint.y}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    className="fill-neutral-11 text-[10px] font-medium"
+                  >
                     {percent.toFixed(0)}%
                   </text>
                 )}
@@ -119,7 +149,13 @@ export function DonutChart({
             );
           })}
           {showTotal && innerRadiusRatio > 0 && (
-            <text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle" className="fill-neutral-12 text-sm font-semibold">
+            <text
+              x={cx}
+              y={cy}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              className="fill-neutral-12 text-sm font-semibold"
+            >
               {valueFormatter(total)}
             </text>
           )}

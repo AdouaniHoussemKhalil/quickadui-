@@ -1,5 +1,5 @@
 import { generateColorToken } from "@quickadui/tokens";
-import { Component, act, useState, type ReactElement, type ReactNode } from "react";
+import { act, Component, type ReactElement, type ReactNode, useState } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getThemeScript } from "./dom";
@@ -294,12 +294,16 @@ describe("ThemeProvider colors", () => {
         <Consumer />
       </ThemeProvider>,
     );
-    click(Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "set-accent"));
+    click(
+      Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "set-accent"),
+    );
     const expected = generateColorToken(ACCENT_SEED).light;
     expected.forEach((hex, i) => {
       expect(readVar("accent", i + 1)).toBe(hex);
     });
-    expect(container.querySelector('[data-testid="colors"]')?.textContent).toBe(JSON.stringify({ accent: ACCENT_SEED }));
+    expect(container.querySelector('[data-testid="colors"]')?.textContent).toBe(
+      JSON.stringify({ accent: ACCENT_SEED }),
+    );
   });
 
   it("persists the override to localStorage and restores it on the next mount", () => {
@@ -309,7 +313,9 @@ describe("ThemeProvider colors", () => {
         <Consumer />
       </ThemeProvider>,
     );
-    click(Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "set-accent"));
+    click(
+      Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "set-accent"),
+    );
     expect(readStoredOverride()).toEqual({ accent: ACCENT_SEED });
 
     // Simulate a fresh page load reading the same localStorage — mount a
@@ -329,7 +335,9 @@ describe("ThemeProvider colors", () => {
         </ThemeProvider>,
       );
     });
-    expect(secondContainer.querySelector('[data-testid="colors"]')?.textContent).toBe(JSON.stringify({ accent: ACCENT_SEED }));
+    expect(secondContainer.querySelector('[data-testid="colors"]')?.textContent).toBe(
+      JSON.stringify({ accent: ACCENT_SEED }),
+    );
     expect(readVar("accent", 9)).toBe(generateColorToken(ACCENT_SEED).light[8]);
     act(() => {
       secondRoot.unmount();
@@ -344,7 +352,9 @@ describe("ThemeProvider colors", () => {
         <Consumer />
       </ThemeProvider>,
     );
-    click(Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "set-accent"));
+    click(
+      Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "set-accent"),
+    );
     click(Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "dark"));
     const expectedDark = generateColorToken(ACCENT_SEED).dark;
     expectedDark.forEach((hex, i) => {
@@ -359,8 +369,14 @@ describe("ThemeProvider colors", () => {
         <Consumer />
       </ThemeProvider>,
     );
-    click(Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "set-accent-invalid"));
-    expect(container.querySelector('[data-testid="color-error"]')?.textContent).toMatch(/not a valid #RRGGBB/);
+    click(
+      Array.from(container.querySelectorAll("button")).find(
+        (b) => b.textContent === "set-accent-invalid",
+      ),
+    );
+    expect(container.querySelector('[data-testid="color-error"]')?.textContent).toMatch(
+      /not a valid #RRGGBB/,
+    );
     expect(container.querySelector('[data-testid="colors"]')?.textContent).toBe("{}");
   });
 
@@ -371,8 +387,14 @@ describe("ThemeProvider colors", () => {
         <Consumer />
       </ThemeProvider>,
     );
-    click(Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "set-accent"));
-    click(Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "reset-accent"));
+    click(
+      Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "set-accent"),
+    );
+    click(
+      Array.from(container.querySelectorAll("button")).find(
+        (b) => b.textContent === "reset-accent",
+      ),
+    );
     expect(readVar("accent", 9)).toBe("");
     expect(container.querySelector('[data-testid="colors"]')?.textContent).toBe("{}");
     expect(readStoredOverride()).toEqual({});
@@ -385,8 +407,14 @@ describe("ThemeProvider colors", () => {
         <Consumer />
       </ThemeProvider>,
     );
-    click(Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "set-accent"));
-    click(Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "reset-colors"));
+    click(
+      Array.from(container.querySelectorAll("button")).find((b) => b.textContent === "set-accent"),
+    );
+    click(
+      Array.from(container.querySelectorAll("button")).find(
+        (b) => b.textContent === "reset-colors",
+      ),
+    );
     expect(readVar("accent", 9)).toBe("");
     expect(container.querySelector('[data-testid="colors"]')?.textContent).toBe("{}");
     expect(localStorage.getItem(COLOR_STORAGE_KEY)).toBeNull();
@@ -399,7 +427,9 @@ describe("ThemeProvider colors", () => {
         <Consumer />
       </ThemeProvider>,
     );
-    expect(container.querySelector('[data-testid="colors"]')?.textContent).toBe(JSON.stringify({ accent: ACCENT_SEED }));
+    expect(container.querySelector('[data-testid="colors"]')?.textContent).toBe(
+      JSON.stringify({ accent: ACCENT_SEED }),
+    );
     expect(readVar("accent", 9)).toBe(generateColorToken(ACCENT_SEED).light[8]);
   });
 
@@ -412,7 +442,9 @@ describe("ThemeProvider colors", () => {
         <Consumer />
       </ThemeProvider>,
     );
-    expect(container.querySelector('[data-testid="colors"]')?.textContent).toBe(JSON.stringify({ accent: otherSeed }));
+    expect(container.querySelector('[data-testid="colors"]')?.textContent).toBe(
+      JSON.stringify({ accent: otherSeed }),
+    );
   });
 });
 

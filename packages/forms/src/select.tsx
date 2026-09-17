@@ -2,15 +2,15 @@
 
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "@quickadui/icons";
 import {
-  Select as SelectPrimitive,
   SelectContent as SelectContentPrimitive,
   SelectGroup as SelectGroupPrimitive,
   SelectIcon as SelectIconPrimitive,
-  SelectItem as SelectItemPrimitive,
   SelectItemIndicator as SelectItemIndicatorPrimitive,
+  SelectItem as SelectItemPrimitive,
   SelectItemText as SelectItemTextPrimitive,
   SelectLabel as SelectLabelPrimitive,
   SelectPortal as SelectPortalPrimitive,
+  Select as SelectPrimitive,
   SelectScrollDownButton as SelectScrollDownButtonPrimitive,
   SelectScrollUpButton as SelectScrollUpButtonPrimitive,
   SelectSeparator as SelectSeparatorPrimitive,
@@ -42,7 +42,11 @@ export function SelectValue(props: ComponentProps<typeof SelectValuePrimitive>) 
   return <SelectValuePrimitive {...props} />;
 }
 
-export function SelectTrigger({ className, children, ...props }: ComponentProps<typeof SelectTriggerPrimitive>) {
+export function SelectTrigger({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof SelectTriggerPrimitive>) {
   return (
     <SelectTriggerPrimitive
       className={cn(
@@ -100,10 +104,19 @@ export function SelectContent({
 }
 
 export function SelectLabel({ className, ...props }: ComponentProps<typeof SelectLabelPrimitive>) {
-  return <SelectLabelPrimitive className={cn("px-2 py-1.5 text-sm font-medium text-neutral-11", className)} {...props} />;
+  return (
+    <SelectLabelPrimitive
+      className={cn("px-2 py-1.5 text-sm font-medium text-neutral-11", className)}
+      {...props}
+    />
+  );
 }
 
-export function SelectItem({ className, children, ...props }: ComponentProps<typeof SelectItemPrimitive>) {
+export function SelectItem({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof SelectItemPrimitive>) {
   return (
     <SelectItemPrimitive
       className={cn(
@@ -122,6 +135,14 @@ export function SelectItem({ className, children, ...props }: ComponentProps<typ
   );
 }
 
-export function SelectSeparator({ className, ...props }: ComponentProps<typeof SelectSeparatorPrimitive>) {
-  return <SelectSeparatorPrimitive className={cn("-mx-1 my-1 h-px bg-neutral-6", className)} {...props} />;
+export function SelectSeparator({
+  className,
+  ...props
+}: ComponentProps<typeof SelectSeparatorPrimitive>) {
+  return (
+    <SelectSeparatorPrimitive
+      className={cn("-mx-1 my-1 h-px bg-neutral-6", className)}
+      {...props}
+    />
+  );
 }

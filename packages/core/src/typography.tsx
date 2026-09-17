@@ -37,7 +37,9 @@ const DEFAULT_TAG: Record<TypographyVariant, ElementType> = {
   muted: "p",
 };
 
-export interface TypographyProps extends ComponentProps<"p">, VariantProps<typeof typographyVariants> {
+export interface TypographyProps
+  extends ComponentProps<"p">,
+    VariantProps<typeof typographyVariants> {
   /** Merge these props onto the single child instead of rendering the default element for `variant`. */
   asChild?: boolean;
   /**
@@ -51,5 +53,11 @@ export interface TypographyProps extends ComponentProps<"p">, VariantProps<typeo
 export function Typography({ className, variant, asChild, as, ...props }: TypographyProps) {
   const resolvedVariant = variant ?? "body";
   const Comp = asChild ? Slot : (as ?? DEFAULT_TAG[resolvedVariant]);
-  return <Comp data-slot="typography" className={cn(typographyVariants({ variant }), className)} {...props} />;
+  return (
+    <Comp
+      data-slot="typography"
+      className={cn(typographyVariants({ variant }), className)}
+      {...props}
+    />
+  );
 }

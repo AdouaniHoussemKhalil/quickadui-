@@ -1,4 +1,4 @@
-import { generateColorToken, SEED_COLORS, type ColorFamily } from "@quickadui/tokens";
+import { type ColorFamily, generateColorToken, SEED_COLORS } from "@quickadui/tokens";
 import type { ResolvedTheme } from "./dom";
 
 /**
@@ -47,7 +47,12 @@ function stepProperty(family: ColorFamily, step: number): string {
  * stylesheet, fighting `!important`, or re-implementing the three-state
  * light/dark selector logic. See `tokens-css.ts`'s `generateTokensCss`.
  */
-function applyFamilyOverride(family: ColorFamily, seedHex: string, mode: ResolvedTheme, root: HTMLElement): void {
+function applyFamilyOverride(
+  family: ColorFamily,
+  seedHex: string,
+  mode: ResolvedTheme,
+  root: HTMLElement,
+): void {
   const scale = generateColorToken(seedHex)[mode];
   scale.forEach((hex, i) => {
     root.style.setProperty(stepProperty(family, i + 1), hex);

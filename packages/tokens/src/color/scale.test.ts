@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { hexToOklch } from "./oklch";
-import { generateColorToken } from "./scale";
 import { SEED_COLORS } from "./palette";
+import { generateColorToken } from "./scale";
 
 // Sub-perceptual noise (a difference no human would notice) comes from sRGB
 // gamut clipping when a step's target lightness isn't quite reachable at its

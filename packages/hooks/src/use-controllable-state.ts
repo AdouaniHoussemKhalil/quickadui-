@@ -31,7 +31,11 @@ export type SetControllableState<T> = (value: T | ((prev: T) => T)) => void;
  * tradeoff this pattern makes everywhere else it appears. Pass a real
  * `defaultValue` unless `T` itself includes `undefined`.
  */
-export function useControllableState<T>({ value: controlledValue, defaultValue, onChange }: UseControllableStateOptions<T>): [T, SetControllableState<T>] {
+export function useControllableState<T>({
+  value: controlledValue,
+  defaultValue,
+  onChange,
+}: UseControllableStateOptions<T>): [T, SetControllableState<T>] {
   const [uncontrolledValue, setUncontrolledValue] = useState<T | undefined>(defaultValue);
   const isControlled = controlledValue !== undefined;
   const value = (isControlled ? controlledValue : uncontrolledValue) as T;

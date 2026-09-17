@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { renderIndexCss, renderPackageJson, renderScaffoldFiles, renderTsconfigJson } from "./templates";
+import {
+  renderIndexCss,
+  renderPackageJson,
+  renderScaffoldFiles,
+  renderTsconfigJson,
+} from "./templates";
 
 describe("renderPackageJson", () => {
   it("produces valid JSON with the given project name", () => {

@@ -53,7 +53,15 @@ export function Widget({
   children,
   ...props
 }: WidgetProps) {
-  const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isDragging } = useSortable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
     id,
     disabled: disableDrag || dragOverlay,
   });
@@ -79,7 +87,10 @@ export function Widget({
       )}
       {...props}
     >
-      <div data-slot="widget-header" className="flex items-center gap-2 border-b border-neutral-6 px-4 py-3">
+      <div
+        data-slot="widget-header"
+        className="flex items-center gap-2 border-b border-neutral-6 px-4 py-3"
+      >
         {!disableDrag && (
           <button
             type="button"
@@ -97,7 +108,10 @@ export function Widget({
           </button>
         )}
         {title !== undefined && (
-          <div data-slot="widget-title" className="flex-1 truncate text-sm font-medium text-neutral-12">
+          <div
+            data-slot="widget-title"
+            className="flex-1 truncate text-sm font-medium text-neutral-12"
+          >
             {title}
           </div>
         )}

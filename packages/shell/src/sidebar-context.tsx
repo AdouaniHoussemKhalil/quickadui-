@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, type ReactNode, useContext, useState } from "react";
 
 export interface SidebarContextValue {
   collapsed: boolean;
@@ -40,7 +40,12 @@ export interface SidebarProviderProps {
  * Controlled/uncontrolled resolution follows the same pattern as
  * `@quickadui/data`'s `TreeView` (`expandedIds` vs `defaultExpandedIds`).
  */
-export function SidebarProvider({ children, defaultCollapsed = false, collapsed: collapsedProp, onCollapsedChange }: SidebarProviderProps) {
+export function SidebarProvider({
+  children,
+  defaultCollapsed = false,
+  collapsed: collapsedProp,
+  onCollapsedChange,
+}: SidebarProviderProps) {
   const [uncontrolledCollapsed, setUncontrolledCollapsed] = useState(defaultCollapsed);
   const isControlled = collapsedProp !== undefined;
   const collapsed = isControlled ? collapsedProp : uncontrolledCollapsed;
@@ -54,5 +59,9 @@ export function SidebarProvider({ children, defaultCollapsed = false, collapsed:
 
   const toggle = () => setCollapsed(!collapsed);
 
-  return <SidebarContext.Provider value={{ collapsed, setCollapsed, toggle }}>{children}</SidebarContext.Provider>;
+  return (
+    <SidebarContext.Provider value={{ collapsed, setCollapsed, toggle }}>
+      {children}
+    </SidebarContext.Provider>
+  );
 }

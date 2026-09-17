@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  Popover as PopoverPrimitive,
   PopoverAnchor as PopoverAnchorPrimitive,
   PopoverArrow as PopoverArrowPrimitive,
   PopoverClose as PopoverClosePrimitive,
   PopoverContent as PopoverContentPrimitive,
   PopoverPortal as PopoverPortalPrimitive,
+  Popover as PopoverPrimitive,
   PopoverTrigger as PopoverTriggerPrimitive,
 } from "@quickadui/primitives";
 import { cn } from "@quickadui/utils";
@@ -34,7 +34,13 @@ export function PopoverClose(props: ComponentProps<typeof PopoverClosePrimitive>
   return <PopoverClosePrimitive {...props} />;
 }
 
-export function PopoverContent({ className, align = "center", sideOffset = 4, children, ...props }: ComponentProps<typeof PopoverContentPrimitive>) {
+export function PopoverContent({
+  className,
+  align = "center",
+  sideOffset = 4,
+  children,
+  ...props
+}: ComponentProps<typeof PopoverContentPrimitive>) {
   return (
     <PopoverPortalPrimitive>
       <PopoverContentPrimitive

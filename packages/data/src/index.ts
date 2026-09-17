@@ -1,27 +1,19 @@
 export {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-  tableRowVariants,
-  type TableRowProps,
-} from "./table";
-export {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  paginationLinkVariants,
   type PaginationLinkProps,
   PaginationNext,
   PaginationPrevious,
+  paginationLinkVariants,
 } from "./pagination";
-export { getPaginationRange, PAGINATION_ELLIPSIS, type PaginationRangeItem } from "./pagination-range";
+export {
+  getPaginationRange,
+  PAGINATION_ELLIPSIS,
+  type PaginationRangeItem,
+} from "./pagination-range";
 export {
   getStepStatus,
   Stepper,
@@ -33,17 +25,35 @@ export {
   type StepperProps,
   StepperSeparator,
   type StepperSeparatorProps,
-  type StepStatus,
   StepperTitle,
+  type StepStatus,
 } from "./stepper";
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+  type TableRowProps,
+  tableRowVariants,
+} from "./table";
 export {
   Timeline,
   TimelineConnector,
   TimelineContent,
   TimelineDot,
-  timelineDotVariants,
   type TimelineDotProps,
   TimelineItem,
   TimelineSeparator,
+  timelineDotVariants,
 } from "./timeline";
-export { toggleExpanded, TreeView, TreeViewItem, type TreeViewItemProps, type TreeViewProps } from "./tree-view";
+export {
+  TreeView,
+  TreeViewItem,
+  type TreeViewItemProps,
+  type TreeViewProps,
+  toggleExpanded,
+} from "./tree-view";

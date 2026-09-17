@@ -43,5 +43,7 @@ export interface GridProps extends ComponentProps<"div">, VariantProps<typeof gr
 }
 
 export function Grid({ className, columns, gap, as: Comp = "div", ...props }: GridProps) {
-  return <Comp data-slot="grid" className={cn(gridVariants({ columns, gap }), className)} {...props} />;
+  return (
+    <Comp data-slot="grid" className={cn(gridVariants({ columns, gap }), className)} {...props} />
+  );
 }

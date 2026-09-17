@@ -1,28 +1,28 @@
 import type { ColorFamily } from "@quickadui/tokens";
 import {
   createContext,
+  type ReactNode,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
-  type ReactNode,
 } from "react";
 import {
   applyColorOverrides,
+  type ColorOverrides,
   clearAllColorOverrides,
   isHexColor,
   readStoredColorOverrides,
   storeColorOverrides,
-  type ColorOverrides,
 } from "./color-runtime";
 import {
   applyTheme,
   getThemeScript,
+  type ResolvedTheme,
   readStoredTheme,
   resolveTheme,
   storeTheme,
-  type ResolvedTheme,
   type ThemeMode,
 } from "./dom";
 
@@ -99,7 +99,9 @@ export function ThemeProvider({
   // instead of flashing back to `defaultTheme` for one frame. On the server
   // (SSR) `readStoredTheme` returns null and we fall back to `defaultTheme`,
   // exactly like the script does.
-  const [theme, setThemeState] = useState<ThemeMode>(() => readStoredTheme(storageKey) ?? defaultTheme);
+  const [theme, setThemeState] = useState<ThemeMode>(
+    () => readStoredTheme(storageKey) ?? defaultTheme,
+  );
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => resolveTheme(theme));
 
   // Same "stored wins, otherwise the default prop" relationship as theme
@@ -151,7 +153,9 @@ export function ThemeProvider({
   const setColor = useCallback(
     (family: ColorFamily, seedHex: string) => {
       if (!isHexColor(seedHex)) {
-        throw new Error(`setColor("${family}", ...): "${seedHex}" is not a valid #RRGGBB hex color.`);
+        throw new Error(
+          `setColor("${family}", ...): "${seedHex}" is not a valid #RRGGBB hex color.`,
+        );
       }
       setColors((prev) => {
         const next = { ...prev, [family]: seedHex };

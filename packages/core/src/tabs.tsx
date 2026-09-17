@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  Tabs as TabsPrimitive,
   TabsContent as TabsContentPrimitive,
   TabsList as TabsListPrimitive,
+  Tabs as TabsPrimitive,
   TabsTrigger as TabsTriggerPrimitive,
 } from "@quickadui/primitives";
 import { cn } from "@quickadui/utils";
@@ -23,7 +23,10 @@ export function Tabs(props: ComponentProps<typeof TabsPrimitive>) {
 export function TabsList({ className, ...props }: ComponentProps<typeof TabsListPrimitive>) {
   return (
     <TabsListPrimitive
-      className={cn("inline-flex h-10 items-center justify-center rounded-md bg-neutral-3 p-1 text-neutral-11", className)}
+      className={cn(
+        "inline-flex h-10 items-center justify-center rounded-md bg-neutral-3 p-1 text-neutral-11",
+        className,
+      )}
       {...props}
     />
   );
@@ -44,7 +47,10 @@ export function TabsTrigger({ className, ...props }: ComponentProps<typeof TabsT
 export function TabsContent({ className, ...props }: ComponentProps<typeof TabsContentPrimitive>) {
   return (
     <TabsContentPrimitive
-      className={cn("mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8 focus-visible:ring-offset-2", className)}
+      className={cn(
+        "mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-8 focus-visible:ring-offset-2",
+        className,
+      )}
       {...props}
     />
   );

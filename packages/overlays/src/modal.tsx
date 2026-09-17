@@ -2,12 +2,12 @@
 
 import { CloseIcon } from "@quickadui/icons";
 import {
-  Dialog as DialogPrimitive,
   DialogClose as DialogClosePrimitive,
   DialogContent as DialogContentPrimitive,
   DialogDescription as DialogDescriptionPrimitive,
   DialogOverlay as DialogOverlayPrimitive,
   DialogPortal as DialogPortalPrimitive,
+  Dialog as DialogPrimitive,
   DialogTitle as DialogTitlePrimitive,
   DialogTrigger as DialogTriggerPrimitive,
 } from "@quickadui/primitives";
@@ -39,11 +39,23 @@ export function ModalClose(props: ComponentProps<typeof DialogClosePrimitive>) {
   return <DialogClosePrimitive {...props} />;
 }
 
-export function ModalOverlay({ className, ...props }: ComponentProps<typeof DialogOverlayPrimitive>) {
-  return <DialogOverlayPrimitive className={cn("fixed inset-0 z-50 bg-black/50", className)} {...props} />;
+export function ModalOverlay({
+  className,
+  ...props
+}: ComponentProps<typeof DialogOverlayPrimitive>) {
+  return (
+    <DialogOverlayPrimitive
+      className={cn("fixed inset-0 z-50 bg-black/50", className)}
+      {...props}
+    />
+  );
 }
 
-export function ModalContent({ className, children, ...props }: ComponentProps<typeof DialogContentPrimitive>) {
+export function ModalContent({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof DialogContentPrimitive>) {
   return (
     <DialogPortalPrimitive>
       <ModalOverlay />
@@ -65,19 +77,39 @@ export function ModalContent({ className, children, ...props }: ComponentProps<t
 }
 
 export function ModalHeader({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="modal-header" className={cn("flex flex-col gap-1.5 text-center sm:text-left", className)} {...props} />;
+  return (
+    <div
+      data-slot="modal-header"
+      className={cn("flex flex-col gap-1.5 text-center sm:text-left", className)}
+      {...props}
+    />
+  );
 }
 
 export function ModalFooter({ className, ...props }: ComponentProps<"div">) {
   return (
-    <div data-slot="modal-footer" className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)} {...props} />
+    <div
+      data-slot="modal-footer"
+      className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)}
+      {...props}
+    />
   );
 }
 
 export function ModalTitle({ className, ...props }: ComponentProps<typeof DialogTitlePrimitive>) {
-  return <DialogTitlePrimitive className={cn("text-lg font-semibold text-neutral-12", className)} {...props} />;
+  return (
+    <DialogTitlePrimitive
+      className={cn("text-lg font-semibold text-neutral-12", className)}
+      {...props}
+    />
+  );
 }
 
-export function ModalDescription({ className, ...props }: ComponentProps<typeof DialogDescriptionPrimitive>) {
-  return <DialogDescriptionPrimitive className={cn("text-sm text-neutral-11", className)} {...props} />;
+export function ModalDescription({
+  className,
+  ...props
+}: ComponentProps<typeof DialogDescriptionPrimitive>) {
+  return (
+    <DialogDescriptionPrimitive className={cn("text-sm text-neutral-11", className)} {...props} />
+  );
 }

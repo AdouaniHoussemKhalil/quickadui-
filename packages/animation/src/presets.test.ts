@@ -22,7 +22,14 @@ describe("getPresetVariants", () => {
   });
 
   it("every preset defines both a hidden and a visible state", () => {
-    const presets = ["fade", "scale", "slide-up", "slide-down", "slide-left", "slide-right"] as const;
+    const presets = [
+      "fade",
+      "scale",
+      "slide-up",
+      "slide-down",
+      "slide-left",
+      "slide-right",
+    ] as const;
     for (const preset of presets) {
       const variants = getPresetVariants(preset);
       expect("hidden" in variants).toBe(true);

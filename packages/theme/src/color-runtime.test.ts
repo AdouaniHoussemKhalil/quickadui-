@@ -2,8 +2,8 @@ import { generateColorToken } from "@quickadui/tokens";
 import { beforeEach, describe, expect, it } from "vitest";
 import {
   applyColorOverrides,
-  clearAllColorOverrides,
   COLOR_FAMILIES,
+  clearAllColorOverrides,
   isHexColor,
   readStoredColorOverrides,
   storeColorOverrides,
@@ -39,7 +39,9 @@ describe("isHexColor", () => {
 
 describe("COLOR_FAMILIES", () => {
   it("lists every family @quickadui/tokens knows about", () => {
-    expect(COLOR_FAMILIES).toEqual(expect.arrayContaining(["accent", "neutral", "success", "warning", "danger"]));
+    expect(COLOR_FAMILIES).toEqual(
+      expect.arrayContaining(["accent", "neutral", "success", "warning", "danger"]),
+    );
     expect(COLOR_FAMILIES).toHaveLength(5);
   });
 });
@@ -99,7 +101,10 @@ describe("readStoredColorOverrides / storeColorOverrides", () => {
   });
 
   it("drops an unknown family key from a hand-edited stored value", () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ accent: ACCENT_SEED, notAFamily: "#000000" }));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ accent: ACCENT_SEED, notAFamily: "#000000" }),
+    );
     expect(readStoredColorOverrides(STORAGE_KEY)).toEqual({ accent: ACCENT_SEED });
   });
 

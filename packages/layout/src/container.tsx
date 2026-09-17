@@ -26,8 +26,16 @@ export const containerVariants = cva("mx-auto w-full px-4 sm:px-6 lg:px-8", {
   },
 });
 
-export interface ContainerProps extends ComponentProps<"div">, VariantProps<typeof containerVariants> {}
+export interface ContainerProps
+  extends ComponentProps<"div">,
+    VariantProps<typeof containerVariants> {}
 
 export function Container({ className, maxWidth, ...props }: ContainerProps) {
-  return <div data-slot="container" className={cn(containerVariants({ maxWidth }), className)} {...props} />;
+  return (
+    <div
+      data-slot="container"
+      className={cn(containerVariants({ maxWidth }), className)}
+      {...props}
+    />
+  );
 }

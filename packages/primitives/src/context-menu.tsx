@@ -46,16 +46,22 @@ export function ContextMenuLabel(props: ComponentProps<typeof ContextMenuPrimiti
   return <ContextMenuPrimitive.Label data-slot="context-menu-label" {...props} />;
 }
 
-export function ContextMenuCheckboxItem(props: ComponentProps<typeof ContextMenuPrimitive.CheckboxItem>) {
+export function ContextMenuCheckboxItem(
+  props: ComponentProps<typeof ContextMenuPrimitive.CheckboxItem>,
+) {
   return <ContextMenuPrimitive.CheckboxItem data-slot="context-menu-checkbox-item" {...props} />;
 }
 
 /** Renders inside `ContextMenuCheckboxItem`/`ContextMenuRadioItem` — visible only while checked (unless `forceMount`). */
-export function ContextMenuItemIndicator(props: ComponentProps<typeof ContextMenuPrimitive.ItemIndicator>) {
+export function ContextMenuItemIndicator(
+  props: ComponentProps<typeof ContextMenuPrimitive.ItemIndicator>,
+) {
   return <ContextMenuPrimitive.ItemIndicator data-slot="context-menu-item-indicator" {...props} />;
 }
 
-export function ContextMenuRadioGroup(props: ComponentProps<typeof ContextMenuPrimitive.RadioGroup>) {
+export function ContextMenuRadioGroup(
+  props: ComponentProps<typeof ContextMenuPrimitive.RadioGroup>,
+) {
   return <ContextMenuPrimitive.RadioGroup data-slot="context-menu-radio-group" {...props} />;
 }
 
@@ -72,10 +78,14 @@ export function ContextMenuSub(props: ComponentProps<typeof ContextMenuPrimitive
   return <ContextMenuPrimitive.Sub {...props} />;
 }
 
-export function ContextMenuSubTrigger(props: ComponentProps<typeof ContextMenuPrimitive.SubTrigger>) {
+export function ContextMenuSubTrigger(
+  props: ComponentProps<typeof ContextMenuPrimitive.SubTrigger>,
+) {
   return <ContextMenuPrimitive.SubTrigger data-slot="context-menu-sub-trigger" {...props} />;
 }
 
-export function ContextMenuSubContent(props: ComponentProps<typeof ContextMenuPrimitive.SubContent>) {
+export function ContextMenuSubContent(
+  props: ComponentProps<typeof ContextMenuPrimitive.SubContent>,
+) {
   return <ContextMenuPrimitive.SubContent data-slot="context-menu-sub-content" {...props} />;
 }

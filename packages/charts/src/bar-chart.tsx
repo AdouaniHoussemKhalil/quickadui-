@@ -36,7 +36,15 @@ const BAR_GAP = 2; // marks-and-anatomy.md's "surface gap" spacer
  * default to QuickadUI's brand accent; multi-series charts default to the
  * validated categorical palette in `palette.ts`, assigned in fixed order.
  */
-export function BarChart({ data, categoryKey, series, height = 240, valueFormatter = String, className, ...props }: BarChartProps) {
+export function BarChart({
+  data,
+  categoryKey,
+  series,
+  height = 240,
+  valueFormatter = String,
+  className,
+  ...props
+}: BarChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
 
@@ -56,9 +64,13 @@ export function BarChart({ data, categoryKey, series, height = 240, valueFormatt
   const groupWidth = data.length > 0 ? plotWidth / data.length : plotWidth;
   const barThickness = Math.max(
     1,
-    Math.min(MAX_BAR_THICKNESS, (groupWidth - BAR_GAP * (resolvedSeries.length + 1)) / Math.max(1, resolvedSeries.length)),
+    Math.min(
+      MAX_BAR_THICKNESS,
+      (groupWidth - BAR_GAP * (resolvedSeries.length + 1)) / Math.max(1, resolvedSeries.length),
+    ),
   );
-  const groupContentWidth = barThickness * resolvedSeries.length + BAR_GAP * (resolvedSeries.length - 1);
+  const groupContentWidth =
+    barThickness * resolvedSeries.length + BAR_GAP * (resolvedSeries.length - 1);
   const groupStartOffset = (groupWidth - groupContentWidth) / 2;
 
   // Consumed only internally (`clientX`/`clientY`, never forwarded to
@@ -66,7 +78,10 @@ export function BarChart({ data, categoryKey, series, height = 240, valueFormatt
   // is correct and safe here, same reasoning as `@quickadui/data`'s
   // `tree-view.tsx` and `@quickadui/shell`'s `DashboardDemo.tsx` usage,
   // NOT `SidebarTrigger`'s `any` case (which forwards its event onward).
-  function showTooltip(event: { clientX: number; clientY: number }, content: TooltipState["content"]) {
+  function showTooltip(
+    event: { clientX: number; clientY: number },
+    content: TooltipState["content"],
+  ) {
     const container = containerRef.current;
     if (!container) {
       return;
@@ -78,14 +93,33 @@ export function BarChart({ data, categoryKey, series, height = 240, valueFormatt
   return (
     <div data-slot="bar-chart" className={cn("flex flex-col gap-3", className)} {...props}>
       <div ref={containerRef} className="relative">
-        <svg role="img" aria-label="Bar chart" viewBox={`0 0 ${CHART_WIDTH} ${height}`} width="100%" height={height}>
+        <svg
+          role="img"
+          aria-label="Bar chart"
+          viewBox={`0 0 ${CHART_WIDTH} ${height}`}
+          width="100%"
+          height={height}
+        >
           <g transform={`translate(${PADDING.left}, ${PADDING.top})`}>
             {ticks.map((tick) => {
               const y = linearScale(tick, 0, domainMax, plotHeight, 0);
               return (
                 <g key={tick}>
-                  <line x1={0} x2={plotWidth} y1={y} y2={y} className="stroke-neutral-6" strokeWidth={1} />
-                  <text x={-8} y={y} textAnchor="end" dominantBaseline="middle" className="fill-neutral-9 text-[10px]">
+                  <line
+                    x1={0}
+                    x2={plotWidth}
+                    y1={y}
+                    y2={y}
+                    className="stroke-neutral-6"
+                    strokeWidth={1}
+                  />
+                  <text
+                    x={-8}
+                    y={y}
+                    textAnchor="end"
+                    dominantBaseline="middle"
+                    className="fill-neutral-9 text-[10px]"
+                  >
                     {valueFormatter(tick)}
                   </text>
                 </g>
@@ -98,7 +132,10 @@ export function BarChart({ data, categoryKey, series, height = 240, valueFormatt
                 <g key={category || groupIndex}>
                   {resolvedSeries.map((s, seriesIndex) => {
                     const rawValue = Number(row[s.key] ?? 0);
-                    const barHeight = Math.max(0, linearScale(rawValue, 0, domainMax, 0, plotHeight));
+                    const barHeight = Math.max(
+                      0,
+                      linearScale(rawValue, 0, domainMax, 0, plotHeight),
+                    );
                     const x = groupX + seriesIndex * (barThickness + BAR_GAP);
                     const y = plotHeight - barHeight;
                     return (
@@ -112,13 +149,25 @@ export function BarChart({ data, categoryKey, series, height = 240, valueFormatt
                         fill={s.color}
                         className="transition-opacity hover:opacity-80"
                         onPointerMove={(event: { clientX: number; clientY: number }) =>
-                          showTooltip(event, <TooltipRow color={s.color} label={`${category} · ${s.label}`} value={valueFormatter(rawValue)} />)
+                          showTooltip(
+                            event,
+                            <TooltipRow
+                              color={s.color}
+                              label={`${category} · ${s.label}`}
+                              value={valueFormatter(rawValue)}
+                            />,
+                          )
                         }
                         onPointerLeave={() => setTooltip(null)}
                       />
                     );
                   })}
-                  <text x={groupX + groupContentWidth / 2} y={plotHeight + 16} textAnchor="middle" className="fill-neutral-9 text-[10px]">
+                  <text
+                    x={groupX + groupContentWidth / 2}
+                    y={plotHeight + 16}
+                    textAnchor="middle"
+                    className="fill-neutral-9 text-[10px]"
+                  >
                     {category}
                   </text>
                 </g>
@@ -128,7 +177,9 @@ export function BarChart({ data, categoryKey, series, height = 240, valueFormatt
         </svg>
         <ChartTooltip tooltip={tooltip} />
       </div>
-      <ChartLegend items={resolvedSeries.map((s) => ({ key: s.key, label: s.label, color: s.color }))} />
+      <ChartLegend
+        items={resolvedSeries.map((s) => ({ key: s.key, label: s.label, color: s.color }))}
+      />
     </div>
   );
 }

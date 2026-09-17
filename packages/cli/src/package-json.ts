@@ -16,7 +16,11 @@ export interface PackageJsonLike {
  * `add` (or adding several packages one at a time) produces a clean,
  * deterministic diff instead of appending to the end each time.
  */
-export function addDependency(pkgJson: PackageJsonLike, name: string, range: string): PackageJsonLike {
+export function addDependency(
+  pkgJson: PackageJsonLike,
+  name: string,
+  range: string,
+): PackageJsonLike {
   const nextDependencies: Record<string, string> = {
     ...pkgJson.dependencies,
     [name]: range,
@@ -38,6 +42,9 @@ export function addDependency(pkgJson: PackageJsonLike, name: string, range: str
  * entries win if the same name appears twice (matching `addDependency`'s
  * own overwrite behavior).
  */
-export function addDependencies(pkgJson: PackageJsonLike, deps: ReadonlyArray<{ name: string; range: string }>): PackageJsonLike {
+export function addDependencies(
+  pkgJson: PackageJsonLike,
+  deps: ReadonlyArray<{ name: string; range: string }>,
+): PackageJsonLike {
   return deps.reduce((acc, dep) => addDependency(acc, dep.name, dep.range), pkgJson);
 }

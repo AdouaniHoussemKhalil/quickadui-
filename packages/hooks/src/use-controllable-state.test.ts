@@ -31,7 +31,9 @@ describe("useControllableState", () => {
 
     it("calls onChange with the resolved value", () => {
       const onChange = vi.fn();
-      const { result } = renderHook(() => useControllableState<number>({ defaultValue: 1, onChange }));
+      const { result } = renderHook(() =>
+        useControllableState<number>({ defaultValue: 1, onChange }),
+      );
 
       act(() => {
         result.current[1]((prev) => prev + 1);
@@ -43,15 +45,20 @@ describe("useControllableState", () => {
 
   describe("controlled mode", () => {
     it("reflects the caller's value, ignoring defaultValue", () => {
-      const { result } = renderHook(() => useControllableState<string>({ value: "controlled", defaultValue: "uncontrolled" }));
+      const { result } = renderHook(() =>
+        useControllableState<string>({ value: "controlled", defaultValue: "uncontrolled" }),
+      );
       expect(result.current[0]).toBe("controlled");
     });
 
     it("does not change its own return value on setValue — it only calls onChange", () => {
       const onChange = vi.fn();
-      const { result, rerender } = renderHook(({ value }: { value: string }) => useControllableState<string>({ value, onChange }), {
-        initialProps: { value: "controlled" },
-      });
+      const { result, rerender } = renderHook(
+        ({ value }: { value: string }) => useControllableState<string>({ value, onChange }),
+        {
+          initialProps: { value: "controlled" },
+        },
+      );
 
       act(() => {
         result.current[1]("attempted-change");
@@ -81,7 +88,9 @@ describe("useControllableState", () => {
 
   it("returns a referentially stable setValue when isControlled/onChange/value are unchanged", () => {
     const onChange = vi.fn();
-    const { result, rerender } = renderHook(() => useControllableState<number>({ defaultValue: 1, onChange }));
+    const { result, rerender } = renderHook(() =>
+      useControllableState<number>({ defaultValue: 1, onChange }),
+    );
 
     const firstSetValue = result.current[1];
 

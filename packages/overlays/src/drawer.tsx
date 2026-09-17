@@ -2,12 +2,12 @@
 
 import { CloseIcon } from "@quickadui/icons";
 import {
-  Dialog as DialogPrimitive,
   DialogClose as DialogClosePrimitive,
   DialogContent as DialogContentPrimitive,
   DialogDescription as DialogDescriptionPrimitive,
   DialogOverlay as DialogOverlayPrimitive,
   DialogPortal as DialogPortalPrimitive,
+  Dialog as DialogPrimitive,
   DialogTitle as DialogTitlePrimitive,
   DialogTrigger as DialogTriggerPrimitive,
 } from "@quickadui/primitives";
@@ -33,8 +33,16 @@ export function DrawerClose(props: ComponentProps<typeof DialogClosePrimitive>) 
   return <DialogClosePrimitive {...props} />;
 }
 
-export function DrawerOverlay({ className, ...props }: ComponentProps<typeof DialogOverlayPrimitive>) {
-  return <DialogOverlayPrimitive className={cn("fixed inset-0 z-50 bg-black/50", className)} {...props} />;
+export function DrawerOverlay({
+  className,
+  ...props
+}: ComponentProps<typeof DialogOverlayPrimitive>) {
+  return (
+    <DialogOverlayPrimitive
+      className={cn("fixed inset-0 z-50 bg-black/50", className)}
+      {...props}
+    />
+  );
 }
 
 export const drawerContentVariants = cva(
@@ -54,7 +62,9 @@ export const drawerContentVariants = cva(
   },
 );
 
-export interface DrawerContentProps extends ComponentProps<typeof DialogContentPrimitive>, VariantProps<typeof drawerContentVariants> {}
+export interface DrawerContentProps
+  extends ComponentProps<typeof DialogContentPrimitive>,
+    VariantProps<typeof drawerContentVariants> {}
 
 export function DrawerContent({ className, side, children, ...props }: DrawerContentProps) {
   return (
@@ -72,19 +82,39 @@ export function DrawerContent({ className, side, children, ...props }: DrawerCon
 }
 
 export function DrawerHeader({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="drawer-header" className={cn("flex flex-col gap-1.5 text-center sm:text-left", className)} {...props} />;
+  return (
+    <div
+      data-slot="drawer-header"
+      className={cn("flex flex-col gap-1.5 text-center sm:text-left", className)}
+      {...props}
+    />
+  );
 }
 
 export function DrawerFooter({ className, ...props }: ComponentProps<"div">) {
   return (
-    <div data-slot="drawer-footer" className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)} {...props} />
+    <div
+      data-slot="drawer-footer"
+      className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)}
+      {...props}
+    />
   );
 }
 
 export function DrawerTitle({ className, ...props }: ComponentProps<typeof DialogTitlePrimitive>) {
-  return <DialogTitlePrimitive className={cn("text-lg font-semibold text-neutral-12", className)} {...props} />;
+  return (
+    <DialogTitlePrimitive
+      className={cn("text-lg font-semibold text-neutral-12", className)}
+      {...props}
+    />
+  );
 }
 
-export function DrawerDescription({ className, ...props }: ComponentProps<typeof DialogDescriptionPrimitive>) {
-  return <DialogDescriptionPrimitive className={cn("text-sm text-neutral-11", className)} {...props} />;
+export function DrawerDescription({
+  className,
+  ...props
+}: ComponentProps<typeof DialogDescriptionPrimitive>) {
+  return (
+    <DialogDescriptionPrimitive className={cn("text-sm text-neutral-11", className)} {...props} />
+  );
 }

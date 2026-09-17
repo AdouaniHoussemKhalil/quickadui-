@@ -46,8 +46,16 @@ export function DashboardLayout({
   ...props
 }: DashboardLayoutProps) {
   return (
-    <SidebarProvider defaultCollapsed={defaultSidebarCollapsed} collapsed={sidebarCollapsed} onCollapsedChange={onSidebarCollapsedChange}>
-      <div data-slot="dashboard-layout" className={cn("flex h-screen flex-col overflow-hidden", className)} {...props}>
+    <SidebarProvider
+      defaultCollapsed={defaultSidebarCollapsed}
+      collapsed={sidebarCollapsed}
+      onCollapsedChange={onSidebarCollapsedChange}
+    >
+      <div
+        data-slot="dashboard-layout"
+        className={cn("flex h-screen flex-col overflow-hidden", className)}
+        {...props}
+      >
         {navbar}
         <div className="flex flex-1 overflow-hidden">
           {sidebar}

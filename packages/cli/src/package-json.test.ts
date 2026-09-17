@@ -5,7 +5,11 @@ describe("addDependency", () => {
   it("adds a new dependency without touching other fields", () => {
     const pkg: PackageJsonLike = { name: "my-app", version: "1.0.0" };
     const result = addDependency(pkg, "react", "^19.0.0");
-    expect(result).toEqual({ name: "my-app", version: "1.0.0", dependencies: { react: "^19.0.0" } });
+    expect(result).toEqual({
+      name: "my-app",
+      version: "1.0.0",
+      dependencies: { react: "^19.0.0" },
+    });
   });
 
   it("does not mutate the input object", () => {

@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  Tooltip as TooltipPrimitive,
   TooltipArrow as TooltipArrowPrimitive,
   TooltipContent as TooltipContentPrimitive,
   TooltipPortal as TooltipPortalPrimitive,
+  Tooltip as TooltipPrimitive,
   TooltipProvider as TooltipProviderPrimitive,
   TooltipTrigger as TooltipTriggerPrimitive,
 } from "@quickadui/primitives";
@@ -32,7 +32,12 @@ export function TooltipTrigger(props: ComponentProps<typeof TooltipTriggerPrimit
   return <TooltipTriggerPrimitive {...props} />;
 }
 
-export function TooltipContent({ className, sideOffset = 4, children, ...props }: ComponentProps<typeof TooltipContentPrimitive>) {
+export function TooltipContent({
+  className,
+  sideOffset = 4,
+  children,
+  ...props
+}: ComponentProps<typeof TooltipContentPrimitive>) {
   return (
     <TooltipPortalPrimitive>
       <TooltipContentPrimitive

@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { buildAreaPath, buildDonutSegments, buildLinePath, describeDonutSegment, linearScale, niceTicks, polarToCartesian } from "./chart-math";
+import {
+  buildAreaPath,
+  buildDonutSegments,
+  buildLinePath,
+  describeDonutSegment,
+  linearScale,
+  niceTicks,
+  polarToCartesian,
+} from "./chart-math";
 
 describe("linearScale", () => {
   it("maps a value proportionally into the target range", () => {

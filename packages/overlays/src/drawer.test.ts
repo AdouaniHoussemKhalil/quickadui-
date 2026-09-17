@@ -27,7 +27,10 @@ describe("drawerContentVariants", () => {
     ["right", "border-l"],
     ["top", "border-b"],
     ["bottom", "border-t"],
-  ] as const)("side=%s puts the border on the edge opposite the anchor (%s)", (side, expectedClass) => {
-    expect(drawerContentVariants({ side })).toContain(expectedClass);
-  });
+  ] as const)(
+    "side=%s puts the border on the edge opposite the anchor (%s)",
+    (side, expectedClass) => {
+      expect(drawerContentVariants({ side })).toContain(expectedClass);
+    },
+  );
 });

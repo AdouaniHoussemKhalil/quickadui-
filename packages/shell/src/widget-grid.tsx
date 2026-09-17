@@ -1,11 +1,24 @@
 "use client";
 
-import { closestCenter, DndContext, DragOverlay, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import type { DragCancelEvent, DragEndEvent, DragStartEvent } from "@dnd-kit/core";
-import { arrayMove, rectSortingStrategy, SortableContext, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  rectSortingStrategy,
+  SortableContext,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
 import { cn } from "@quickadui/utils";
-import { Children, cloneElement, isValidElement, useState } from "react";
 import type { ComponentProps, ReactElement, ReactNode } from "react";
+import { Children, cloneElement, isValidElement, useState } from "react";
 import type { WidgetProps } from "./widget";
 
 export interface WidgetGridProps extends ComponentProps<"div"> {
@@ -48,7 +61,14 @@ const COLUMNS_CLASS = {
  * free dragging, which looks noticeably worse on a 2D grid vs. a single
  * list).
  */
-export function WidgetGrid({ items, onReorder, columns = 3, className, children, ...props }: WidgetGridProps) {
+export function WidgetGrid({
+  items,
+  onReorder,
+  columns = 3,
+  className,
+  children,
+  ...props
+}: WidgetGridProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
@@ -56,7 +76,11 @@ export function WidgetGrid({ items, onReorder, columns = 3, className, children,
   );
 
   const grid = (
-    <div data-slot="widget-grid" className={cn("grid grid-cols-1 gap-4", COLUMNS_CLASS[columns], className)} {...props}>
+    <div
+      data-slot="widget-grid"
+      className={cn("grid grid-cols-1 gap-4", COLUMNS_CLASS[columns], className)}
+      {...props}
+    >
       {children}
     </div>
   );
@@ -106,7 +130,9 @@ export function WidgetGrid({ items, onReorder, columns = 3, className, children,
       <SortableContext items={items} strategy={rectSortingStrategy}>
         {grid}
       </SortableContext>
-      <DragOverlay>{activeChild ? cloneElement(activeChild, { dragOverlay: true }) : null}</DragOverlay>
+      <DragOverlay>
+        {activeChild ? cloneElement(activeChild, { dragOverlay: true }) : null}
+      </DragOverlay>
     </DndContext>
   );
 }

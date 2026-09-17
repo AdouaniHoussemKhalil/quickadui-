@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  Accordion as AccordionPrimitive,
   AccordionContent as AccordionContentPrimitive,
   AccordionHeader as AccordionHeaderPrimitive,
   AccordionItem as AccordionItemPrimitive,
+  Accordion as AccordionPrimitive,
   AccordionTrigger as AccordionTriggerPrimitive,
 } from "@quickadui/primitives";
 import { cn } from "@quickadui/utils";
@@ -22,11 +22,20 @@ export function Accordion(props: ComponentProps<typeof AccordionPrimitive>) {
   return <AccordionPrimitive {...props} />;
 }
 
-export function AccordionItem({ className, ...props }: ComponentProps<typeof AccordionItemPrimitive>) {
-  return <AccordionItemPrimitive className={cn("border-b border-neutral-6", className)} {...props} />;
+export function AccordionItem({
+  className,
+  ...props
+}: ComponentProps<typeof AccordionItemPrimitive>) {
+  return (
+    <AccordionItemPrimitive className={cn("border-b border-neutral-6", className)} {...props} />
+  );
 }
 
-export function AccordionTrigger({ className, children, ...props }: ComponentProps<typeof AccordionTriggerPrimitive>) {
+export function AccordionTrigger({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof AccordionTriggerPrimitive>) {
   return (
     <AccordionHeaderPrimitive className="flex">
       <AccordionTriggerPrimitive
@@ -43,7 +52,11 @@ export function AccordionTrigger({ className, children, ...props }: ComponentPro
   );
 }
 
-export function AccordionContent({ className, children, ...props }: ComponentProps<typeof AccordionContentPrimitive>) {
+export function AccordionContent({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof AccordionContentPrimitive>) {
   return (
     <AccordionContentPrimitive className="overflow-hidden text-sm" {...props}>
       <div className={cn("pb-4 pt-0", className)}>{children}</div>

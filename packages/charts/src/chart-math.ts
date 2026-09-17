@@ -8,7 +8,13 @@
  */
 
 /** Maps `value` from `[domainMin, domainMax]` to `[rangeMin, rangeMax]`, clamping the domain's degenerate (zero-width) case to the range's midpoint instead of dividing by zero. */
-export function linearScale(value: number, domainMin: number, domainMax: number, rangeMin: number, rangeMax: number): number {
+export function linearScale(
+  value: number,
+  domainMin: number,
+  domainMax: number,
+  rangeMin: number,
+  rangeMax: number,
+): number {
   if (domainMax === domainMin) {
     return (rangeMin + rangeMax) / 2;
   }
@@ -112,13 +118,25 @@ export function buildDonutSegments(values: readonly number[], gapDegrees = 2): D
 }
 
 /** A point on a circle of `radius` centered at `(cx, cy)`, at `angleDegrees` measured clockwise from 12 o'clock (SVG's `y` grows downward, hence the `sin`/`cos` swap vs. the usual trig convention). */
-export function polarToCartesian(cx: number, cy: number, radius: number, angleDegrees: number): Point {
+export function polarToCartesian(
+  cx: number,
+  cy: number,
+  radius: number,
+  angleDegrees: number,
+): Point {
   const rad = ((angleDegrees - 90) * Math.PI) / 180;
   return { x: cx + radius * Math.cos(rad), y: cy + radius * Math.sin(rad) };
 }
 
 /** Builds the SVG `<path>` `d` for one donut/pie ring segment between `innerRadius` (0 for a pie) and `outerRadius`, from `startAngle` to `endAngle` (degrees, 12 o'clock = 0, clockwise). Returns `""` for a zero-or-negative span (nothing to draw). */
-export function describeDonutSegment(cx: number, cy: number, innerRadius: number, outerRadius: number, startAngle: number, endAngle: number): string {
+export function describeDonutSegment(
+  cx: number,
+  cy: number,
+  innerRadius: number,
+  outerRadius: number,
+  startAngle: number,
+  endAngle: number,
+): string {
   if (endAngle <= startAngle) {
     return "";
   }

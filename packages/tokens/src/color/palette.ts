@@ -1,5 +1,5 @@
-import { generateColorToken } from "./scale";
 import type { ColorToken } from "./scale";
+import { generateColorToken } from "./scale";
 
 /**
  * Brand and semantic seed colors. Each seed generates a full 12-step

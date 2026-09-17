@@ -2,7 +2,16 @@ import { describe, expect, it } from "vitest";
 import { hexToOklch, oklchToHex } from "./oklch";
 
 describe("hexToOklch / oklchToHex", () => {
-  const cases = ["#C85A1B", "#0E7C7B", "#171A21", "#1A7F5A", "#9A6B0C", "#B23A2B", "#FFFFFF", "#000000"];
+  const cases = [
+    "#C85A1B",
+    "#0E7C7B",
+    "#171A21",
+    "#1A7F5A",
+    "#9A6B0C",
+    "#B23A2B",
+    "#FFFFFF",
+    "#000000",
+  ];
 
   it.each(cases)("round-trips %s exactly", (hex) => {
     expect(oklchToHex(hexToOklch(hex))).toBe(hex);

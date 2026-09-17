@@ -2,7 +2,7 @@
 
 import { ChevronRightIcon } from "@quickadui/icons";
 import { cn } from "@quickadui/utils";
-import { createContext, useContext, useState, type ComponentProps, type ReactNode } from "react";
+import { type ComponentProps, createContext, type ReactNode, useContext, useState } from "react";
 
 /**
  * Pure — toggles one id in/out of a `Set` without mutating the original,
@@ -75,7 +75,9 @@ export function TreeView({
   onSelect,
   ...props
 }: TreeViewProps) {
-  const [uncontrolledExpandedIds, setUncontrolledExpandedIds] = useState<ReadonlySet<string>>(() => new Set(defaultExpandedIds ?? []));
+  const [uncontrolledExpandedIds, setUncontrolledExpandedIds] = useState<ReadonlySet<string>>(
+    () => new Set(defaultExpandedIds ?? []),
+  );
   const isControlled = expandedIdsProp !== undefined;
   const expandedIds = isControlled ? expandedIdsProp : uncontrolledExpandedIds;
 
@@ -89,7 +91,12 @@ export function TreeView({
 
   return (
     <TreeViewContext.Provider value={{ expandedIds, toggle, selectedId, onSelect }}>
-      <ul role="tree" data-slot="tree-view" className={cn("flex flex-col gap-0.5 text-sm", className)} {...props} />
+      <ul
+        role="tree"
+        data-slot="tree-view"
+        className={cn("flex flex-col gap-0.5 text-sm", className)}
+        {...props}
+      />
     </TreeViewContext.Provider>
   );
 }
@@ -101,16 +108,33 @@ export interface TreeViewItemProps extends Omit<ComponentProps<"li">, "children"
   children?: ReactNode;
 }
 
-export function TreeViewItem({ className, nodeId, label, icon, children, ...props }: TreeViewItemProps) {
+export function TreeViewItem({
+  className,
+  nodeId,
+  label,
+  icon,
+  children,
+  ...props
+}: TreeViewItemProps) {
   const { expandedIds, toggle, selectedId, onSelect } = useTreeViewContext();
   const hasChildren = children !== undefined && children !== null;
   const expanded = expandedIds.has(nodeId);
   const isSelected = selectedId === nodeId;
 
   return (
-    <li role="treeitem" aria-expanded={hasChildren ? expanded : undefined} aria-selected={isSelected} data-slot="tree-view-item" className={className} {...props}>
+    <li
+      role="treeitem"
+      aria-expanded={hasChildren ? expanded : undefined}
+      aria-selected={isSelected}
+      data-slot="tree-view-item"
+      className={className}
+      {...props}
+    >
       <div
-        className={cn("flex cursor-pointer items-center gap-1 rounded-sm px-2 py-1.5 hover:bg-neutral-3", isSelected && "bg-accent-3 text-accent-11")}
+        className={cn(
+          "flex cursor-pointer items-center gap-1 rounded-sm px-2 py-1.5 hover:bg-neutral-3",
+          isSelected && "bg-accent-3 text-accent-11",
+        )}
         onClick={() => onSelect?.(nodeId)}
       >
         {hasChildren ? (
@@ -132,7 +156,10 @@ export function TreeViewItem({ className, nodeId, label, icon, children, ...prop
               toggle(nodeId);
             }}
           >
-            <ChevronRightIcon size={14} className={cn("transition-transform", expanded && "rotate-90")} />
+            <ChevronRightIcon
+              size={14}
+              className={cn("transition-transform", expanded && "rotate-90")}
+            />
           </button>
         ) : (
           <span className="size-4 shrink-0" />

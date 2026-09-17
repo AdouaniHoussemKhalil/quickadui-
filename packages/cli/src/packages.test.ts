@@ -46,7 +46,12 @@ describe("resolveDependencyClosure", () => {
   it("includes transitive dependencies before the requested package", () => {
     const result = resolveDependencyClosure(["layout"]);
     const names = result.map((pkg) => pkg.name);
-    expect(names).toEqual(["@quickadui/tokens", "@quickadui/theme", "@quickadui/utils", "@quickadui/layout"]);
+    expect(names).toEqual([
+      "@quickadui/tokens",
+      "@quickadui/theme",
+      "@quickadui/utils",
+      "@quickadui/layout",
+    ]);
   });
 
   it("de-duplicates shared dependencies across multiple requested packages", () => {

@@ -6,19 +6,46 @@ import type { ComponentProps } from "react";
 // new `variant` enum value to maintain forever.
 
 export function Card({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="card" className={cn("rounded-lg border border-neutral-6 bg-neutral-1 text-neutral-12 shadow-sm", className)} {...props} />;
+  return (
+    <div
+      data-slot="card"
+      className={cn(
+        "rounded-lg border border-neutral-6 bg-neutral-1 text-neutral-12 shadow-sm",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
 export function CardHeader({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="card-header" className={cn("flex flex-col gap-1.5 p-6", className)} {...props} />;
+  return (
+    <div
+      data-slot="card-header"
+      className={cn("flex flex-col gap-1.5 p-6", className)}
+      {...props}
+    />
+  );
 }
 
 export function CardTitle({ className, ...props }: ComponentProps<"h3">) {
-  return <h3 data-slot="card-title" className={cn("text-lg font-semibold leading-none tracking-tight", className)} {...props} />;
+  return (
+    <h3
+      data-slot="card-title"
+      className={cn("text-lg font-semibold leading-none tracking-tight", className)}
+      {...props}
+    />
+  );
 }
 
 export function CardDescription({ className, ...props }: ComponentProps<"p">) {
-  return <p data-slot="card-description" className={cn("text-sm text-neutral-11", className)} {...props} />;
+  return (
+    <p
+      data-slot="card-description"
+      className={cn("text-sm text-neutral-11", className)}
+      {...props}
+    />
+  );
 }
 
 export function CardContent({ className, ...props }: ComponentProps<"div">) {
@@ -26,5 +53,11 @@ export function CardContent({ className, ...props }: ComponentProps<"div">) {
 }
 
 export function CardFooter({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="card-footer" className={cn("flex items-center p-6 pt-0", className)} {...props} />;
+  return (
+    <div
+      data-slot="card-footer"
+      className={cn("flex items-center p-6 pt-0", className)}
+      {...props}
+    />
+  );
 }

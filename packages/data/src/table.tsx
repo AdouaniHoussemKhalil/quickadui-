@@ -14,24 +14,43 @@ import type { ComponentProps } from "react";
 export function Table({ className, ...props }: ComponentProps<"table">) {
   return (
     <div className="relative w-full overflow-x-auto">
-      <table data-slot="table" className={cn("w-full caption-bottom text-sm", className)} {...props} />
+      <table
+        data-slot="table"
+        className={cn("w-full caption-bottom text-sm", className)}
+        {...props}
+      />
     </div>
   );
 }
 
 export function TableHeader({ className, ...props }: ComponentProps<"thead">) {
-  return <thead data-slot="table-header" className={cn("[&_tr]:border-b [&_tr]:border-neutral-6", className)} {...props} />;
+  return (
+    <thead
+      data-slot="table-header"
+      className={cn("[&_tr]:border-b [&_tr]:border-neutral-6", className)}
+      {...props}
+    />
+  );
 }
 
 export function TableBody({ className, ...props }: ComponentProps<"tbody">) {
-  return <tbody data-slot="table-body" className={cn("[&_tr:last-child]:border-0", className)} {...props} />;
+  return (
+    <tbody
+      data-slot="table-body"
+      className={cn("[&_tr:last-child]:border-0", className)}
+      {...props}
+    />
+  );
 }
 
 export function TableFooter({ className, ...props }: ComponentProps<"tfoot">) {
   return (
     <tfoot
       data-slot="table-footer"
-      className={cn("border-t border-neutral-6 bg-neutral-2 font-medium [&>tr]:last:border-b-0", className)}
+      className={cn(
+        "border-t border-neutral-6 bg-neutral-2 font-medium [&>tr]:last:border-b-0",
+        className,
+      )}
       {...props}
     />
   );
@@ -48,24 +67,33 @@ export function TableFooter({ className, ...props }: ComponentProps<"tfoot">) {
  * `state` is the actual cva variant (still fully tested below); the
  * public API converts to/from it internally.
  */
-export const tableRowVariants = cva("border-b border-neutral-6 transition-colors hover:bg-neutral-2", {
-  variants: {
-    state: {
-      default: "",
-      selected: "bg-accent-3 hover:bg-accent-3",
+export const tableRowVariants = cva(
+  "border-b border-neutral-6 transition-colors hover:bg-neutral-2",
+  {
+    variants: {
+      state: {
+        default: "",
+        selected: "bg-accent-3 hover:bg-accent-3",
+      },
+    },
+    defaultVariants: {
+      state: "default",
     },
   },
-  defaultVariants: {
-    state: "default",
-  },
-});
+);
 
 export interface TableRowProps extends ComponentProps<"tr"> {
   selected?: boolean;
 }
 
 export function TableRow({ className, selected, ...props }: TableRowProps) {
-  return <tr data-slot="table-row" className={cn(tableRowVariants({ state: selected ? "selected" : "default" }), className)} {...props} />;
+  return (
+    <tr
+      data-slot="table-row"
+      className={cn(tableRowVariants({ state: selected ? "selected" : "default" }), className)}
+      {...props}
+    />
+  );
 }
 
 export function TableHead({ className, ...props }: ComponentProps<"th">) {
@@ -83,10 +111,20 @@ export function TableHead({ className, ...props }: ComponentProps<"th">) {
 
 export function TableCell({ className, ...props }: ComponentProps<"td">) {
   return (
-    <td data-slot="table-cell" className={cn("whitespace-nowrap p-2 align-middle [&:has([role=checkbox])]:pr-0", className)} {...props} />
+    <td
+      data-slot="table-cell"
+      className={cn("whitespace-nowrap p-2 align-middle [&:has([role=checkbox])]:pr-0", className)}
+      {...props}
+    />
   );
 }
 
 export function TableCaption({ className, ...props }: ComponentProps<"caption">) {
-  return <caption data-slot="table-caption" className={cn("mt-4 text-sm text-neutral-11", className)} {...props} />;
+  return (
+    <caption
+      data-slot="table-caption"
+      className={cn("mt-4 text-sm text-neutral-11", className)}
+      {...props}
+    />
+  );
 }

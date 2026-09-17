@@ -5,7 +5,8 @@ import type { ComponentProps } from "react";
 import { buildAreaPath, buildLinePath, linearScale } from "./chart-math";
 import { CHART_ACCENT_VAR } from "./palette";
 
-export interface SparklineProps extends Omit<ComponentProps<"svg">, "width" | "height" | "children"> {
+export interface SparklineProps
+  extends Omit<ComponentProps<"svg">, "width" | "height" | "children"> {
   data: readonly number[];
   /** Defaults to QuickadUI's brand accent — a sparkline is always a single series, so it never needs the categorical palette (see `palette.ts`). */
   color?: string;
@@ -58,7 +59,16 @@ export function Sparkline({
       {...props}
     >
       {area && areaPath && <path d={areaPath} fill={color} fillOpacity={0.1} stroke="none" />}
-      {linePath && <path d={linePath} fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />}
+      {linePath && (
+        <path
+          d={linePath}
+          fill="none"
+          stroke={color}
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      )}
     </svg>
   );
 }

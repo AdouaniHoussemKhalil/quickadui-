@@ -2,10 +2,10 @@
 
 import { CloseIcon } from "@quickadui/icons";
 import {
-  Toast as ToastPrimitive,
   ToastAction as ToastActionPrimitive,
   ToastClose as ToastClosePrimitive,
   ToastDescription as ToastDescriptionPrimitive,
+  Toast as ToastPrimitive,
   ToastProvider as ToastProviderPrimitive,
   ToastTitle as ToastTitlePrimitive,
   ToastViewport as ToastViewportPrimitive,
@@ -32,7 +32,15 @@ export const toastVariants = cva(
   },
 );
 
-function ToastItem({ id, title, description, variant, duration, actionLabel, onAction }: ToastData) {
+function ToastItem({
+  id,
+  title,
+  description,
+  variant,
+  duration,
+  actionLabel,
+  onAction,
+}: ToastData) {
   return (
     <ToastPrimitive
       className={cn(toastVariants({ variant }))}
@@ -47,8 +55,14 @@ function ToastItem({ id, title, description, variant, duration, actionLabel, onA
       {...(duration !== undefined ? { duration } : {})}
     >
       <div className="flex-1">
-        {title && <ToastTitlePrimitive className="text-sm font-semibold">{title}</ToastTitlePrimitive>}
-        {description && <ToastDescriptionPrimitive className="text-sm opacity-90">{description}</ToastDescriptionPrimitive>}
+        {title && (
+          <ToastTitlePrimitive className="text-sm font-semibold">{title}</ToastTitlePrimitive>
+        )}
+        {description && (
+          <ToastDescriptionPrimitive className="text-sm opacity-90">
+            {description}
+          </ToastDescriptionPrimitive>
+        )}
       </div>
       {actionLabel && (
         <ToastActionPrimitive

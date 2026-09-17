@@ -31,5 +31,7 @@ export interface BadgeProps extends ComponentProps<"span">, VariantProps<typeof 
 
 export function Badge({ className, variant, asChild, ...props }: BadgeProps) {
   const Comp = asChild ? Slot : "span";
-  return <Comp data-slot="badge" className={cn(badgeVariants({ variant }), className)} {...props} />;
+  return (
+    <Comp data-slot="badge" className={cn(badgeVariants({ variant }), className)} {...props} />
+  );
 }

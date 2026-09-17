@@ -46,7 +46,10 @@ function rgbToHex({ r, g, b }: Rgb): string {
   // requested (L, C, H) triples fall outside what sRGB can represent, and
   // clipping degrades gracefully to the nearest displayable color instead
   // of producing NaN or a crash.
-  const toByte = (v: number) => Math.round(Math.min(1, Math.max(0, v)) * 255).toString(16).padStart(2, "0");
+  const toByte = (v: number) =>
+    Math.round(Math.min(1, Math.max(0, v)) * 255)
+      .toString(16)
+      .padStart(2, "0");
   return `#${toByte(r)}${toByte(g)}${toByte(b)}`.toUpperCase();
 }
 

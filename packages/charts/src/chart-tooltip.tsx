@@ -47,7 +47,11 @@ export interface TooltipRowProps {
 export function TooltipRow({ color, label, value }: TooltipRowProps) {
   return (
     <div className="flex items-center gap-1.5">
-      <span aria-hidden className="inline-block h-0.5 w-3 shrink-0 rounded-full" style={{ backgroundColor: color }} />
+      <span
+        aria-hidden
+        className="inline-block h-0.5 w-3 shrink-0 rounded-full"
+        style={{ backgroundColor: color }}
+      />
       <span className="font-medium text-neutral-12">{value}</span>
       <span className="text-neutral-10">{label}</span>
     </div>

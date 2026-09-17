@@ -1,4 +1,12 @@
 export {
+  AnimatePresence,
+  type HTMLMotionProps,
+  motion,
+  type Transition,
+  useReducedMotion,
+  type Variants,
+} from "motion/react";
+export {
   easeTransition,
   fadeVariants,
   getPresetVariants,
@@ -12,4 +20,3 @@ export {
   springTransition,
 } from "./presets";
 export { Reveal, type RevealProps } from "./reveal";
-export { AnimatePresence, motion, type HTMLMotionProps, type Transition, useReducedMotion, type Variants } from "motion/react";

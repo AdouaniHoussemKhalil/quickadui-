@@ -1,9 +1,10 @@
 "use client";
 
-import { motion, useReducedMotion, type HTMLMotionProps } from "motion/react";
+import { type HTMLMotionProps, motion, useReducedMotion } from "motion/react";
 import { easeTransition, getPresetVariants, type RevealPreset } from "./presets";
 
-export interface RevealProps extends Omit<HTMLMotionProps<"div">, "variants" | "initial" | "animate" | "exit"> {
+export interface RevealProps
+  extends Omit<HTMLMotionProps<"div">, "variants" | "initial" | "animate" | "exit"> {
   /** Which of `presets.ts`' variant pairs to animate between. Defaults to `"fade"`. */
   preset?: RevealPreset;
   /**
@@ -30,7 +31,12 @@ export interface RevealProps extends Omit<HTMLMotionProps<"div">, "variants" | "
  * in `AnimatePresence` (also re-exported below) — without it, Motion has
  * no chance to run the exit animation before the DOM node is gone.
  */
-export function Reveal({ preset = "fade", respectReducedMotion = true, transition = easeTransition, ...props }: RevealProps) {
+export function Reveal({
+  preset = "fade",
+  respectReducedMotion = true,
+  transition = easeTransition,
+  ...props
+}: RevealProps) {
   const prefersReducedMotion = useReducedMotion();
   const skipAnimation = respectReducedMotion && !!prefersReducedMotion;
   const variants = getPresetVariants(preset);

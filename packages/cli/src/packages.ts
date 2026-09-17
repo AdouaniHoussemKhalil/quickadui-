@@ -71,7 +71,8 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   {
     name: "@quickadui/hooks",
     version: "^0.0.0",
-    description: "Framework-agnostic utility hooks (useDisclosure, useMediaQuery, useDebounce, and friends).",
+    description:
+      "Framework-agnostic utility hooks (useDisclosure, useMediaQuery, useDebounce, and friends).",
     quickaduiDependencies: [],
     externalDependencies: [],
     needsSourceDirective: false,
@@ -87,7 +88,8 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   {
     name: "@quickadui/icons",
     version: "^0.0.0",
-    description: "Wrapped Lucide icons behind one stable Icon contract; QuickadUI-original glyphs land incrementally.",
+    description:
+      "Wrapped Lucide icons behind one stable Icon contract; QuickadUI-original glyphs land incrementally.",
     quickaduiDependencies: [],
     externalDependencies: [{ name: "lucide-react", range: "^1.46.0" }],
     needsSourceDirective: false,
@@ -103,7 +105,8 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   {
     name: "@quickadui/core",
     version: "^0.0.0",
-    description: "Core components — Button, IconButton, Card, Badge, Avatar, Alert, Spinner, Skeleton, Typography.",
+    description:
+      "Core components — Button, IconButton, Card, Badge, Avatar, Alert, Spinner, Skeleton, Typography.",
     quickaduiDependencies: ["@quickadui/primitives", "@quickadui/utils"],
     externalDependencies: [{ name: "class-variance-authority", range: "^0.7.0" }],
     needsSourceDirective: true,
@@ -124,7 +127,12 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
     name: "@quickadui/overlays",
     version: "^0.0.0",
     description: "Modal, Drawer — Context Menu and Toast/Notification land incrementally.",
-    quickaduiDependencies: ["@quickadui/icons", "@quickadui/primitives", "@quickadui/theme", "@quickadui/utils"],
+    quickaduiDependencies: [
+      "@quickadui/icons",
+      "@quickadui/primitives",
+      "@quickadui/theme",
+      "@quickadui/utils",
+    ],
     externalDependencies: [{ name: "class-variance-authority", range: "^0.7.0" }],
     needsSourceDirective: true,
   },
@@ -140,7 +148,12 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
     name: "@quickadui/forms",
     version: "^0.0.0",
     description: "Form field components plus a React Hook Form + Zod bindings layer.",
-    quickaduiDependencies: ["@quickadui/icons", "@quickadui/primitives", "@quickadui/theme", "@quickadui/utils"],
+    quickaduiDependencies: [
+      "@quickadui/icons",
+      "@quickadui/primitives",
+      "@quickadui/theme",
+      "@quickadui/utils",
+    ],
     externalDependencies: [
       { name: "react-hook-form", range: "^7.88.0" },
       { name: "@hookform/resolvers", range: "^5.9.1" },

@@ -1,35 +1,3 @@
-export { composeRefs, type PossibleRef, type RefCallback, type RefObject } from "./lib/compose-refs";
-export { Slot, Slottable, type AsChildProps } from "./slot";
-export { Separator } from "./separator";
-export { AvatarRoot, AvatarImage, AvatarFallback } from "./avatar";
-export {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogOverlay,
-  DialogPortal,
-  DialogTitle,
-  DialogTrigger,
-} from "./dialog";
-export {
-  Popover,
-  PopoverAnchor,
-  PopoverArrow,
-  PopoverClose,
-  PopoverContent,
-  PopoverPortal,
-  PopoverTrigger,
-} from "./popover";
-export {
-  Tooltip,
-  TooltipArrow,
-  TooltipContent,
-  TooltipPortal,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./tooltip";
-export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 export {
   Accordion,
   AccordionContent,
@@ -37,24 +5,8 @@ export {
   AccordionItem,
   AccordionTrigger,
 } from "./accordion";
-export {
-  DropdownMenu,
-  DropdownMenuArrow,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuItemIndicator,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "./dropdown-menu";
+export { AvatarFallback, AvatarImage, AvatarRoot } from "./avatar";
+export { CheckboxIndicator, CheckboxRoot } from "./checkbox";
 export {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -73,18 +25,50 @@ export {
   ContextMenuTrigger,
 } from "./context-menu";
 export {
-  Toast,
-  ToastAction,
-  ToastClose,
-  ToastDescription,
-  ToastProvider,
-  ToastTitle,
-  ToastViewport,
-} from "./toast";
-export { CheckboxIndicator, CheckboxRoot } from "./checkbox";
-export { SwitchRoot, SwitchThumb } from "./switch";
-export { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from "./radio-group";
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from "./dialog";
+export {
+  DropdownMenu,
+  DropdownMenuArrow,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuItemIndicator,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "./dropdown-menu";
 export { Label } from "./label";
+export {
+  composeRefs,
+  type PossibleRef,
+  type RefCallback,
+  type RefObject,
+} from "./lib/compose-refs";
+export {
+  Popover,
+  PopoverAnchor,
+  PopoverArrow,
+  PopoverClose,
+  PopoverContent,
+  PopoverPortal,
+  PopoverTrigger,
+} from "./popover";
+export { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from "./radio-group";
 export {
   Select,
   SelectArrow,
@@ -103,3 +87,24 @@ export {
   SelectValue,
   SelectViewport,
 } from "./select";
+export { Separator } from "./separator";
+export { type AsChildProps, Slot, Slottable } from "./slot";
+export { SwitchRoot, SwitchThumb } from "./switch";
+export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+export {
+  Toast,
+  ToastAction,
+  ToastClose,
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+} from "./toast";
+export {
+  Tooltip,
+  TooltipArrow,
+  TooltipContent,
+  TooltipPortal,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./tooltip";

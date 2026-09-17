@@ -7,7 +7,9 @@ describe("generateTokensCss", () => {
 
   it("declares a :root block, a prefers-color-scheme block, and a [data-theme=dark] block", () => {
     expect(css).toContain(":root {");
-    expect(css).toContain('@media (prefers-color-scheme: dark) {\n  :root:not([data-theme="light"]) {');
+    expect(css).toContain(
+      '@media (prefers-color-scheme: dark) {\n  :root:not([data-theme="light"]) {',
+    );
     expect(css).toContain(':root[data-theme="dark"] {');
   });
 

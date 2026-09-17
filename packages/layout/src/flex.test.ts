@@ -4,7 +4,13 @@ import { flexVariants } from "./flex";
 describe("flexVariants", () => {
   it("defaults to row/stretch/start/nowrap/no gap", () => {
     const withDefaults = flexVariants();
-    const explicit = flexVariants({ direction: "row", align: "stretch", justify: "start", wrap: "nowrap", gap: "none" });
+    const explicit = flexVariants({
+      direction: "row",
+      align: "stretch",
+      justify: "start",
+      wrap: "nowrap",
+      gap: "none",
+    });
     expect(withDefaults).toBe(explicit);
   });
 

@@ -1,5 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { _resetToastStoreForTests, dismissToast, getSnapshot, subscribe, toast } from "./toast-store";
+import {
+  _resetToastStoreForTests,
+  dismissToast,
+  getSnapshot,
+  subscribe,
+  toast,
+} from "./toast-store";
 
 afterEach(() => {
   _resetToastStoreForTests();

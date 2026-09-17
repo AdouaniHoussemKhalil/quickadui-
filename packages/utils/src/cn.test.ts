@@ -39,8 +39,8 @@ describe("cn", () => {
   it("handles a real component-style call: defaults + conditional + override", () => {
     const isDisabled = true;
     const className = "px-8";
-    expect(cn("px-2 py-1 rounded-md", isDisabled && "opacity-50 pointer-events-none", className)).toBe(
-      "py-1 rounded-md opacity-50 pointer-events-none px-8",
-    );
+    expect(
+      cn("px-2 py-1 rounded-md", isDisabled && "opacity-50 pointer-events-none", className),
+    ).toBe("py-1 rounded-md opacity-50 pointer-events-none px-8");
   });
 });

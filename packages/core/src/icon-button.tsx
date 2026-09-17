@@ -41,5 +41,11 @@ export interface IconButtonProps
 
 export function IconButton({ className, variant, size, asChild, ...props }: IconButtonProps) {
   const Comp = asChild ? Slot : "button";
-  return <Comp data-slot="icon-button" className={cn(iconButtonVariants({ variant, size }), className)} {...props} />;
+  return (
+    <Comp
+      data-slot="icon-button"
+      className={cn(iconButtonVariants({ variant, size }), className)}
+      {...props}
+    />
+  );
 }

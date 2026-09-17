@@ -58,7 +58,9 @@ export function SelectScrollUpButton(props: ComponentProps<typeof SelectPrimitiv
   return <SelectPrimitive.ScrollUpButton data-slot="select-scroll-up-button" {...props} />;
 }
 
-export function SelectScrollDownButton(props: ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
+export function SelectScrollDownButton(
+  props: ComponentProps<typeof SelectPrimitive.ScrollDownButton>,
+) {
   return <SelectPrimitive.ScrollDownButton data-slot="select-scroll-down-button" {...props} />;
 }
 

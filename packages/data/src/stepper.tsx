@@ -2,7 +2,7 @@
 
 import { CheckIcon } from "@quickadui/icons";
 import { cn } from "@quickadui/utils";
-import { createContext, useContext, type ComponentProps, type ReactNode } from "react";
+import { type ComponentProps, createContext, type ReactNode, useContext } from "react";
 
 export type StepStatus = "complete" | "active" | "upcoming";
 
@@ -47,14 +47,24 @@ export interface StepperProps extends ComponentProps<"ol"> {
  * directly and derives its own status from its own `step` prop via
  * `getStepStatus`.
  */
-export function Stepper({ className, value, orientation = "horizontal", children, ...props }: StepperProps) {
+export function Stepper({
+  className,
+  value,
+  orientation = "horizontal",
+  children,
+  ...props
+}: StepperProps) {
   return (
     <StepperContext.Provider value={{ orientation }}>
       <StepperValueContext.Provider value={value}>
         <ol
           data-slot="stepper"
           data-orientation={orientation}
-          className={cn("flex", orientation === "horizontal" ? "flex-row items-start" : "flex-col", className)}
+          className={cn(
+            "flex",
+            orientation === "horizontal" ? "flex-row items-start" : "flex-col",
+            className,
+          )}
           {...props}
         >
           {children}
@@ -88,10 +98,16 @@ export function StepperItem({ className, step, children, ...props }: StepperItem
     <li
       data-slot="stepper-item"
       data-status={status}
-      className={cn("group/step relative flex flex-1", orientation === "horizontal" ? "flex-col items-center gap-2" : "flex-row gap-3", className)}
+      className={cn(
+        "group/step relative flex flex-1",
+        orientation === "horizontal" ? "flex-col items-center gap-2" : "flex-row gap-3",
+        className,
+      )}
       {...props}
     >
-      <StepperItemStatusContext.Provider value={status}>{children}</StepperItemStatusContext.Provider>
+      <StepperItemStatusContext.Provider value={status}>
+        {children}
+      </StepperItemStatusContext.Provider>
     </li>
   );
 }
@@ -118,11 +134,23 @@ export function StepperIndicator({ className, children, ...props }: StepperIndic
 }
 
 export function StepperTitle({ className, ...props }: ComponentProps<"p">) {
-  return <p data-slot="stepper-title" className={cn("text-sm font-medium text-neutral-12", className)} {...props} />;
+  return (
+    <p
+      data-slot="stepper-title"
+      className={cn("text-sm font-medium text-neutral-12", className)}
+      {...props}
+    />
+  );
 }
 
 export function StepperDescription({ className, ...props }: ComponentProps<"p">) {
-  return <p data-slot="stepper-description" className={cn("text-xs text-neutral-11", className)} {...props} />;
+  return (
+    <p
+      data-slot="stepper-description"
+      className={cn("text-xs text-neutral-11", className)}
+      {...props}
+    />
+  );
 }
 
 export interface StepperSeparatorProps extends ComponentProps<"div"> {
@@ -151,7 +179,11 @@ export function StepperSeparator({ className, step, ...props }: StepperSeparator
     <div
       data-slot="stepper-separator"
       data-status={isComplete ? "complete" : "upcoming"}
-      className={cn("mx-2 mt-4 h-px flex-1 bg-neutral-6 sm:mx-4", isComplete && "bg-accent-9", className)}
+      className={cn(
+        "mx-2 mt-4 h-px flex-1 bg-neutral-6 sm:mx-4",
+        isComplete && "bg-accent-9",
+        className,
+      )}
       {...props}
     />
   );

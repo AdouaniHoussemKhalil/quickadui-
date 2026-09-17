@@ -7,4 +7,5 @@ import { useEffect, useLayoutEffect } from "react";
  * the right one at module-eval time without giving up synchronous
  * pre-paint DOM measurement on the client.
  */
-export const useIsomorphicLayoutEffect: typeof useEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
+export const useIsomorphicLayoutEffect: typeof useEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;

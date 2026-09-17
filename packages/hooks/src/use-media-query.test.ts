@@ -74,7 +74,9 @@ describe("useMediaQuery", () => {
   it("honors a custom defaultValue when matchMedia is unavailable", () => {
     vi.stubGlobal("matchMedia", undefined);
 
-    const { result } = renderHook(() => useMediaQuery("(min-width: 768px)", { defaultValue: true }));
+    const { result } = renderHook(() =>
+      useMediaQuery("(min-width: 768px)", { defaultValue: true }),
+    );
 
     expect(result.current).toBe(true);
   });

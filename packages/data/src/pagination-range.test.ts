@@ -20,7 +20,15 @@ describe("getPaginationRange", () => {
   });
 
   it("shows both ellipses when the current page is in the middle", () => {
-    expect(getPaginationRange(5, 10)).toEqual([1, PAGINATION_ELLIPSIS, 4, 5, 6, PAGINATION_ELLIPSIS, 10]);
+    expect(getPaginationRange(5, 10)).toEqual([
+      1,
+      PAGINATION_ELLIPSIS,
+      4,
+      5,
+      6,
+      PAGINATION_ELLIPSIS,
+      10,
+    ]);
   });
 
   it("always includes the current page and its siblings even mid-range", () => {
@@ -31,7 +39,17 @@ describe("getPaginationRange", () => {
   });
 
   it("respects a larger siblingCount", () => {
-    expect(getPaginationRange(5, 10, 2)).toEqual([1, PAGINATION_ELLIPSIS, 3, 4, 5, 6, 7, PAGINATION_ELLIPSIS, 10]);
+    expect(getPaginationRange(5, 10, 2)).toEqual([
+      1,
+      PAGINATION_ELLIPSIS,
+      3,
+      4,
+      5,
+      6,
+      7,
+      PAGINATION_ELLIPSIS,
+      10,
+    ]);
   });
 
   it("always includes the first and last page once ellipses are in play", () => {

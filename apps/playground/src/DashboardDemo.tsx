@@ -1,6 +1,17 @@
 import { BarChart, DonutChart, LineChart, Sparkline, StatCard } from "@quickadui/charts";
-import { Alert, AlertDescription, AlertTitle, Badge, Card, CardContent, CardDescription, CardHeader, CardTitle, Typography } from "@quickadui/core";
-import { ClockIcon, CircleIcon, SettingsIcon, UserIcon } from "@quickadui/icons";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  Badge,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Typography,
+} from "@quickadui/core";
+import { CircleIcon, ClockIcon, SettingsIcon, UserIcon } from "@quickadui/icons";
 import {
   DashboardLayout,
   Footer,
@@ -18,7 +29,7 @@ import {
   Widget,
   WidgetGrid,
 } from "@quickadui/shell";
-import { useState, type ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 
 const NAV_ITEMS = [
   { id: "overview", label: "Overview", icon: <CircleIcon size={18} /> },
@@ -112,7 +123,9 @@ const PLACEHOLDER_STATS = [
   spark: readonly number[];
 }[];
 
-const STATS_BY_ID: Map<string, (typeof PLACEHOLDER_STATS)[number]> = new Map(PLACEHOLDER_STATS.map((stat) => [stat.id, stat]));
+const STATS_BY_ID: Map<string, (typeof PLACEHOLDER_STATS)[number]> = new Map(
+  PLACEHOLDER_STATS.map((stat) => [stat.id, stat]),
+);
 
 const REVENUE_TREND = [
   { month: "Jan", revenue: 4200 },
@@ -152,7 +165,9 @@ const TICKET_STATUS = [
 const CHART_WIDGET_IDS = ["revenue-trend", "signups-by-plan", "ticket-status"] as const;
 
 export function DashboardDemo() {
-  const [statOrder, setStatOrder] = useState<string[]>(() => PLACEHOLDER_STATS.map((stat) => stat.id));
+  const [statOrder, setStatOrder] = useState<string[]>(() =>
+    PLACEHOLDER_STATS.map((stat) => stat.id),
+  );
   const [chartOrder, setChartOrder] = useState<string[]>(() => [...CHART_WIDGET_IDS]);
 
   return (
@@ -179,12 +194,14 @@ export function DashboardDemo() {
       <Alert variant="success" className="mb-6">
         <AlertTitle>Real dashboard widgets, real charts, real drag-and-drop</AlertTitle>
         <AlertDescription>
-          This page is built entirely from two real, published packages: <code>@quickadui/shell</code>'s
-          <code>DashboardLayout</code>/<code>Navbar</code>/<code>Sidebar</code>/<code>Footer</code>/<code>WidgetGrid</code>/
-          <code>Widget</code> (drag-and-drop via <code>@dnd-kit</code>), and <code>@quickadui/charts</code>'
-          <code>StatCard</code>/<code>Sparkline</code>/<code>LineChart</code>/<code>BarChart</code>/<code>DonutChart</code> —
-          hand-rolled SVG, no charting-library dependency. Every number below is fake, every pixel rendering it is real. Grab a
-          widget by its handle to reorder it, or hover/tab into a chart for its tooltip.
+          This page is built entirely from two real, published packages:{" "}
+          <code>@quickadui/shell</code>'s
+          <code>DashboardLayout</code>/<code>Navbar</code>/<code>Sidebar</code>/<code>Footer</code>/
+          <code>WidgetGrid</code>/<code>Widget</code> (drag-and-drop via <code>@dnd-kit</code>), and{" "}
+          <code>@quickadui/charts</code>'<code>StatCard</code>/<code>Sparkline</code>/
+          <code>LineChart</code>/<code>BarChart</code>/<code>DonutChart</code> — hand-rolled SVG, no
+          charting-library dependency. Every number below is fake, every pixel rendering it is real.
+          Grab a widget by its handle to reorder it, or hover/tab into a chart for its tooltip.
         </AlertDescription>
       </Alert>
 
@@ -248,12 +265,14 @@ export function DashboardDemo() {
         <CardHeader>
           <CardTitle>Try the sidebar too</CardTitle>
           <CardDescription>
-            Click the menu icon in the navbar (top-left) to collapse the sidebar to icons only, or click a nav item below it to
-            see the active state change.
+            Click the menu icon in the navbar (top-left) to collapse the sidebar to icons only, or
+            click a nav item below it to see the active state change.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Badge variant="soft">Real SidebarProvider state — try resizing the window too, nothing here is faked</Badge>
+          <Badge variant="soft">
+            Real SidebarProvider state — try resizing the window too, nothing here is faked
+          </Badge>
         </CardContent>
       </Card>
     </DashboardLayout>

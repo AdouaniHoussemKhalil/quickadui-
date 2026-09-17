@@ -24,8 +24,16 @@ export const sectionVariants = cva("w-full", {
   },
 });
 
-export interface SectionProps extends ComponentProps<"section">, VariantProps<typeof sectionVariants> {}
+export interface SectionProps
+  extends ComponentProps<"section">,
+    VariantProps<typeof sectionVariants> {}
 
 export function Section({ className, spacing, ...props }: SectionProps) {
-  return <section data-slot="section" className={cn(sectionVariants({ spacing }), className)} {...props} />;
+  return (
+    <section
+      data-slot="section"
+      className={cn(sectionVariants({ spacing }), className)}
+      {...props}
+    />
+  );
 }

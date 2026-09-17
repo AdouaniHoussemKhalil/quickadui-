@@ -149,7 +149,14 @@ export function FormControl(props: ComponentProps<typeof Slot>) {
 
 export function FormDescription({ className, ...props }: ComponentProps<"p">) {
   const { formDescriptionId } = useFormField();
-  return <p data-slot="form-description" id={formDescriptionId} className={cn("text-sm text-neutral-11", className)} {...props} />;
+  return (
+    <p
+      data-slot="form-description"
+      id={formDescriptionId}
+      className={cn("text-sm text-neutral-11", className)}
+      {...props}
+    />
+  );
 }
 
 export function FormMessage({ className, children, ...props }: ComponentProps<"p">) {
@@ -159,7 +166,12 @@ export function FormMessage({ className, children, ...props }: ComponentProps<"p
     return null;
   }
   return (
-    <p data-slot="form-message" id={formMessageId} className={cn("text-sm font-medium text-danger-11", className)} {...props}>
+    <p
+      data-slot="form-message"
+      id={formMessageId}
+      className={cn("text-sm font-medium text-danger-11", className)}
+      {...props}
+    >
       {body}
     </p>
   );

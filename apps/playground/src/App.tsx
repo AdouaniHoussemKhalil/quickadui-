@@ -121,17 +121,32 @@ import {
   ModalFooter,
   ModalTitle,
   ModalTrigger,
-  toast,
   Toaster,
+  toast,
 } from "@quickadui/overlays";
-import { useTheme, type ThemeMode } from "@quickadui/theme";
+import { type ThemeMode, useTheme } from "@quickadui/theme";
 import { SEED_COLORS } from "@quickadui/tokens";
-import { useState, type ComponentType, type ReactNode } from "react";
+import { type ComponentType, type ReactNode, useState } from "react";
 import { z } from "zod";
 
-const BUTTON_VARIANTS = ["solid", "soft", "outline", "ghost", "destructive"] as const satisfies readonly NonNullable<ButtonProps["variant"]>[];
-const BUTTON_SIZES = ["sm", "md", "lg"] as const satisfies readonly NonNullable<ButtonProps["size"]>[];
-const BADGE_VARIANTS = ["solid", "soft", "outline", "success", "warning", "danger"] as const satisfies readonly NonNullable<BadgeProps["variant"]>[];
+const BUTTON_VARIANTS = [
+  "solid",
+  "soft",
+  "outline",
+  "ghost",
+  "destructive",
+] as const satisfies readonly NonNullable<ButtonProps["variant"]>[];
+const BUTTON_SIZES = ["sm", "md", "lg"] as const satisfies readonly NonNullable<
+  ButtonProps["size"]
+>[];
+const BADGE_VARIANTS = [
+  "solid",
+  "soft",
+  "outline",
+  "success",
+  "warning",
+  "danger",
+] as const satisfies readonly NonNullable<BadgeProps["variant"]>[];
 const THEME_MODES = ["light", "dark", "system"] as const satisfies readonly ThemeMode[];
 const ICONS = [
   { name: "SearchIcon", Icon: SearchIcon },
@@ -139,10 +154,15 @@ const ICONS = [
   { name: "SettingsIcon", Icon: SettingsIcon },
   { name: "CalendarIcon", Icon: CalendarIcon },
   { name: "TrashIcon", Icon: TrashIcon },
-] as const satisfies readonly { name: string; Icon: ComponentType<{ size?: number; className?: string }> }[];
+] as const satisfies readonly {
+  name: string;
+  Icon: ComponentType<{ size?: number; className?: string }>;
+}[];
 
 /** IconButton has no "destructive" variant — Button's extra fifth variant falls back to "ghost" here. */
-function toIconButtonVariant(variant: NonNullable<ButtonProps["variant"]>): NonNullable<IconButtonProps["variant"]> {
+function toIconButtonVariant(
+  variant: NonNullable<ButtonProps["variant"]>,
+): NonNullable<IconButtonProps["variant"]> {
   return variant === "destructive" ? "ghost" : variant;
 }
 
@@ -153,7 +173,9 @@ const signupSchema = z.object({
   plan: z.enum(["free", "pro"]),
   bio: z.string().optional(),
   newsletter: z.boolean(),
-  terms: z.boolean().refine((accepted) => accepted === true, "You must accept the terms to continue."),
+  terms: z
+    .boolean()
+    .refine((accepted) => accepted === true, "You must accept the terms to continue."),
 });
 
 /**
@@ -173,7 +195,15 @@ type SignupFormValues = z.infer<typeof signupSchema>;
 function SignupForm() {
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
-    defaultValues: { name: "", email: "", role: "member", plan: "free", bio: "", newsletter: true, terms: false },
+    defaultValues: {
+      name: "",
+      email: "",
+      role: "member",
+      plan: "free",
+      bio: "",
+      newsletter: true,
+      terms: false,
+    },
   });
 
   return (
@@ -181,7 +211,11 @@ function SignupForm() {
       <form
         className="max-w-md"
         onSubmit={form.handleSubmit((values) => {
-          toast({ title: "Account created", description: `Welcome, ${values.name}.`, variant: "success" });
+          toast({
+            title: "Account created",
+            description: `Welcome, ${values.name}.`,
+            variant: "success",
+          });
           form.reset();
         })}
       >
@@ -193,7 +227,11 @@ function SignupForm() {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Ada Lovelace" state={fieldState.error ? "error" : "default"} {...field} />
+                  <Input
+                    placeholder="Ada Lovelace"
+                    state={fieldState.error ? "error" : "default"}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -207,7 +245,12 @@ function SignupForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" placeholder="ada@example.com" state={fieldState.error ? "error" : "default"} {...field} />
+                  <Input
+                    type="email"
+                    placeholder="ada@example.com"
+                    state={fieldState.error ? "error" : "default"}
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>We&apos;ll never share your email.</FormDescription>
                 <FormMessage />
@@ -243,7 +286,11 @@ function SignupForm() {
               <FormItem>
                 <FormLabel>Plan</FormLabel>
                 <FormControl>
-                  <RadioGroup value={field.value} onValueChange={field.onChange} className="flex gap-4">
+                  <RadioGroup
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    className="flex gap-4"
+                  >
                     <Flex align="center" gap="xs">
                       <RadioGroupItem value="free" id="plan-free" />
                       <Label htmlFor="plan-free">Free</Label>
@@ -317,7 +364,12 @@ function ThemeToggle() {
         {theme} &rarr; {resolvedTheme}
       </span>
       {THEME_MODES.map((mode) => (
-        <Button key={mode} size="sm" variant={theme === mode ? "solid" : "outline"} onClick={() => setTheme(mode)}>
+        <Button
+          key={mode}
+          size="sm"
+          variant={theme === mode ? "solid" : "outline"}
+          onClick={() => setTheme(mode)}
+        >
           {mode}
         </Button>
       ))}
@@ -354,7 +406,9 @@ function AccentPicker() {
         // (`ComponentProps<T>` falls back to `Record<string, any>` for any
         // plain tag name): narrow and internal-only is correct here since
         // `event.target.value` is read and never forwarded onward.
-        onChange={(event: { target: { value: string } }) => setColor("accent", event.target.value.toUpperCase())}
+        onChange={(event: { target: { value: string } }) =>
+          setColor("accent", event.target.value.toUpperCase())
+        }
         className="h-8 w-8 cursor-pointer rounded border border-neutral-6 bg-transparent p-0"
         aria-label="Accent color"
       />
@@ -400,7 +454,10 @@ function PaginationDemo() {
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))} />
+          <PaginationPrevious
+            disabled={page <= 1}
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+          />
         </PaginationItem>
         {getPaginationRange(page, totalPages).map((item, index) =>
           item === PAGINATION_ELLIPSIS ? (
@@ -416,7 +473,10 @@ function PaginationDemo() {
           ),
         )}
         <PaginationItem>
-          <PaginationNext disabled={page >= totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))} />
+          <PaginationNext
+            disabled={page >= totalPages}
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>
@@ -483,14 +543,25 @@ function StepperDemo() {
               <StepperTitle>{label}</StepperTitle>
             </StepperItem>
           );
-          return index === lastStep ? [item] : [item, <StepperSeparator key={`${label}-separator`} step={index} />];
+          return index === lastStep
+            ? [item]
+            : [item, <StepperSeparator key={`${label}-separator`} step={index} />];
         })}
       </Stepper>
       <Flex gap="sm">
-        <Button variant="outline" size="sm" disabled={value === 0} onClick={() => setValue((v) => Math.max(0, v - 1))}>
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={value === 0}
+          onClick={() => setValue((v) => Math.max(0, v - 1))}
+        >
           Back
         </Button>
-        <Button size="sm" disabled={value === lastStep} onClick={() => setValue((v) => Math.min(lastStep, v + 1))}>
+        <Button
+          size="sm"
+          disabled={value === lastStep}
+          onClick={() => setValue((v) => Math.min(lastStep, v + 1))}
+        >
           Next
         </Button>
       </Flex>
@@ -499,11 +570,31 @@ function StepperDemo() {
 }
 
 const ACTIVITIES = [
-  { id: "1", title: "Order placed", description: "Your order has been placed.", variant: "success" },
-  { id: "2", title: "Payment received", description: "We've received your payment.", variant: "success" },
+  {
+    id: "1",
+    title: "Order placed",
+    description: "Your order has been placed.",
+    variant: "success",
+  },
+  {
+    id: "2",
+    title: "Payment received",
+    description: "We've received your payment.",
+    variant: "success",
+  },
   { id: "3", title: "Processing", description: "Your order is being prepared.", variant: "accent" },
-  { id: "4", title: "Delivery delayed", description: "Running a bit behind schedule.", variant: "warning" },
-] as const satisfies readonly { id: string; title: string; description: string; variant: NonNullable<TimelineDotProps["variant"]> }[];
+  {
+    id: "4",
+    title: "Delivery delayed",
+    description: "Running a bit behind schedule.",
+    variant: "warning",
+  },
+] as const satisfies readonly {
+  id: string;
+  title: string;
+  description: string;
+  variant: NonNullable<TimelineDotProps["variant"]>;
+}[];
 
 function TimelineDemo() {
   return (
@@ -531,7 +622,11 @@ function TreeViewDemo() {
   const [selectedId, setSelectedId] = useState<string | undefined>("src/App.tsx");
 
   return (
-    <TreeView defaultExpandedIds={["src", "src/components"]} selectedId={selectedId} onSelect={setSelectedId}>
+    <TreeView
+      defaultExpandedIds={["src", "src/components"]}
+      selectedId={selectedId}
+      onSelect={setSelectedId}
+    >
       <TreeViewItem nodeId="src" label="src">
         <TreeViewItem nodeId="src/components" label="components">
           <TreeViewItem nodeId="src/components/Button.tsx" label="Button.tsx" />
@@ -564,7 +659,12 @@ function RevealDemo() {
     <Stack gap="md">
       <Flex wrap="wrap" gap="sm">
         {REVEAL_PRESETS.map((p) => (
-          <Button key={p} size="sm" variant={preset === p ? "solid" : "outline"} onClick={() => setPreset(p)}>
+          <Button
+            key={p}
+            size="sm"
+            variant={preset === p ? "solid" : "outline"}
+            onClick={() => setPreset(p)}
+          >
             {p}
           </Button>
         ))}
@@ -575,7 +675,11 @@ function RevealDemo() {
       <div className="flex h-24 items-center rounded-md border border-dashed border-neutral-7 p-4">
         <AnimatePresence mode="wait">
           {visible && (
-            <Reveal key={preset} preset={preset} className="rounded-md bg-accent-9 px-4 py-3 text-sm font-medium text-white">
+            <Reveal
+              key={preset}
+              preset={preset}
+              className="rounded-md bg-accent-9 px-4 py-3 text-sm font-medium text-white"
+            >
               Animated with the &quot;{preset}&quot; preset
             </Reveal>
           )}
@@ -607,21 +711,26 @@ export function App() {
             </Flex>
 
             <Typography variant="lead">
-              Everything below is imported from the real, built packages — <code>@quickadui/core</code>, <code>@quickadui/theme</code>,{" "}
-              <code>@quickadui/hooks</code>, <code>@quickadui/icons</code>, <code>@quickadui/layout</code>,{" "}
-              <code>@quickadui/overlays</code>, <code>@quickadui/forms</code>, <code>@quickadui/data</code>, and{" "}
-              <code>@quickadui/animation</code> — nothing on this page is mocked, including this page's own outer structure: the
-              vertical rhythm around every section below is a real{" "}
-              <code>@quickadui/layout</code> <code>Section</code>/<code>Container</code>/<code>Stack</code>, not hand-rolled classes.
+              Everything below is imported from the real, built packages —{" "}
+              <code>@quickadui/core</code>, <code>@quickadui/theme</code>,{" "}
+              <code>@quickadui/hooks</code>, <code>@quickadui/icons</code>,{" "}
+              <code>@quickadui/layout</code>, <code>@quickadui/overlays</code>,{" "}
+              <code>@quickadui/forms</code>, <code>@quickadui/data</code>, and{" "}
+              <code>@quickadui/animation</code> — nothing on this page is mocked, including this
+              page's own outer structure: the vertical rhythm around every section below is a real{" "}
+              <code>@quickadui/layout</code> <code>Section</code>/<code>Container</code>/
+              <code>Stack</code>, not hand-rolled classes.
             </Typography>
 
             {notice.isOpen && (
               <Alert variant="success">
                 <AlertTitle>It&apos;s alive</AlertTitle>
                 <AlertDescription>
-                  The theme toggle, accent color picker, and this alert&apos;s open/close state are all driven by real hooks —{" "}
-                  <code>useTheme</code> from <code>@quickadui/theme</code> (mode switching <em>and</em>, now, runtime accent-color
-                  overrides — no rebuild required) and <code>useDisclosure</code> from <code>@quickadui/hooks</code>.
+                  The theme toggle, accent color picker, and this alert&apos;s open/close state are
+                  all driven by real hooks — <code>useTheme</code> from{" "}
+                  <code>@quickadui/theme</code> (mode switching <em>and</em>, now, runtime
+                  accent-color overrides — no rebuild required) and <code>useDisclosure</code> from{" "}
+                  <code>@quickadui/hooks</code>.
                 </AlertDescription>
                 <div className="mt-3">
                   <Button size="sm" variant="outline" onClick={notice.close}>
@@ -670,7 +779,9 @@ export function App() {
                   <TooltipTrigger asChild>
                     <Button variant="outline">Hover me</Button>
                   </TooltipTrigger>
-                  <TooltipContent>A tooltip, positioned by Radix, styled by @quickadui/core.</TooltipContent>
+                  <TooltipContent>
+                    A tooltip, positioned by Radix, styled by @quickadui/core.
+                  </TooltipContent>
                 </Tooltip>
 
                 <Popover>
@@ -680,7 +791,9 @@ export function App() {
                   <PopoverContent>
                     <Stack gap="xs">
                       <Typography variant="small">Popover content</Typography>
-                      <Typography variant="muted">Closes on outside click or Escape — real Radix focus/dismiss behavior.</Typography>
+                      <Typography variant="muted">
+                        Closes on outside click or Escape — real Radix focus/dismiss behavior.
+                      </Typography>
                     </Stack>
                   </PopoverContent>
                 </Popover>
@@ -719,7 +832,10 @@ export function App() {
                   </ModalTrigger>
                   <ModalContent>
                     <ModalTitle>Delete this item?</ModalTitle>
-                    <ModalDescription>This is @quickadui/overlays' Modal — built on the same primitives Dialog as everything else, just centered with a backdrop.</ModalDescription>
+                    <ModalDescription>
+                      This is @quickadui/overlays' Modal — built on the same primitives Dialog as
+                      everything else, just centered with a backdrop.
+                    </ModalDescription>
                     <ModalFooter>
                       <Button variant="destructive">Delete</Button>
                     </ModalFooter>
@@ -732,7 +848,10 @@ export function App() {
                   </DrawerTrigger>
                   <DrawerContent side="right">
                     <DrawerTitle>Settings</DrawerTitle>
-                    <DrawerDescription>Same Dialog primitive as Modal, anchored to a screen edge via the `side` prop instead of centered.</DrawerDescription>
+                    <DrawerDescription>
+                      Same Dialog primitive as Modal, anchored to a screen edge via the `side` prop
+                      instead of centered.
+                    </DrawerDescription>
                     <DrawerFooter>
                       <Button variant="outline">Close</Button>
                     </DrawerFooter>
@@ -759,7 +878,11 @@ export function App() {
                   <Button
                     variant="outline"
                     onClick={() =>
-                      toast({ title: "Saved", description: "Your changes were saved.", variant: "success" })
+                      toast({
+                        title: "Saved",
+                        description: "Your changes were saved.",
+                        variant: "success",
+                      })
                     }
                   >
                     Show a toast
@@ -783,11 +906,13 @@ export function App() {
 
             <DemoSection title="Forms (@quickadui/forms)">
               <Typography variant="muted">
-                A real form: <code>useForm</code> + <code>zodResolver</code> (react-hook-form + Zod) validating on submit, wired to{" "}
-                <code>Input</code>, <code>Textarea</code>, <code>Select</code>, <code>RadioGroup</code>, <code>Switch</code>, and{" "}
-                <code>Checkbox</code> through <code>Form</code>/<code>FormField</code>/<code>FormItem</code>/<code>FormControl</code>/
-                <code>FormMessage</code>. Try submitting without a name or with an invalid email to see validation errors, or leaving
-                the checkbox unchecked.
+                A real form: <code>useForm</code> + <code>zodResolver</code> (react-hook-form + Zod)
+                validating on submit, wired to <code>Input</code>, <code>Textarea</code>,{" "}
+                <code>Select</code>, <code>RadioGroup</code>, <code>Switch</code>, and{" "}
+                <code>Checkbox</code> through <code>Form</code>/<code>FormField</code>/
+                <code>FormItem</code>/<code>FormControl</code>/<code>FormMessage</code>. Try
+                submitting without a name or with an invalid email to see validation errors, or
+                leaving the checkbox unchecked.
               </Typography>
               <SignupForm />
             </DemoSection>
@@ -810,11 +935,16 @@ export function App() {
                 <Accordion type="single" collapsible defaultValue="item-1">
                   <AccordionItem value="item-1">
                     <AccordionTrigger>Is this real?</AccordionTrigger>
-                    <AccordionContent>Yes — this is the real @quickadui/core Accordion, built on @quickadui/primitives.</AccordionContent>
+                    <AccordionContent>
+                      Yes — this is the real @quickadui/core Accordion, built on
+                      @quickadui/primitives.
+                    </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="item-2">
                     <AccordionTrigger>Does the chevron rotate?</AccordionTrigger>
-                    <AccordionContent>It does, via the data-state attribute Radix sets on the trigger.</AccordionContent>
+                    <AccordionContent>
+                      It does, via the data-state attribute Radix sets on the trigger.
+                    </AccordionContent>
                   </AccordionItem>
                 </Accordion>
               </Grid>
@@ -836,15 +966,18 @@ export function App() {
                 <CardHeader>
                   <CardTitle>Team members</CardTitle>
                   <CardDescription>
-                    The first avatar below points at a broken image URL on purpose — its fallback ("AL") only appears once radix-ui's
-                    real image-load timing decides the image has failed, which is exactly the behavior{" "}
-                    <code>@quickadui/primitives</code> wraps.
+                    The first avatar below points at a broken image URL on purpose — its fallback
+                    ("AL") only appears once radix-ui's real image-load timing decides the image has
+                    failed, which is exactly the behavior <code>@quickadui/primitives</code> wraps.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Flex align="center" gap="sm">
                     <Avatar>
-                      <AvatarImage src="https://broken-image.invalid/nobody.png" alt="Ada Lovelace" />
+                      <AvatarImage
+                        src="https://broken-image.invalid/nobody.png"
+                        alt="Ada Lovelace"
+                      />
                       <AvatarFallback>AL</AvatarFallback>
                     </Avatar>
                     <Avatar size="lg">
@@ -877,8 +1010,9 @@ export function App() {
 
             <DemoSection title="Animation — Reveal (@quickadui/animation)">
               <Typography variant="muted">
-                <code>Reveal</code>, wrapped in <code>AnimatePresence</code> so its exit animation actually plays — pick a preset, then
-                toggle it to see both the enter and exit transitions.
+                <code>Reveal</code>, wrapped in <code>AnimatePresence</code> so its exit animation
+                actually plays — pick a preset, then toggle it to see both the enter and exit
+                transitions.
               </Typography>
               <RevealDemo />
             </DemoSection>
@@ -890,7 +1024,9 @@ export function App() {
                 <Typography variant="h3">Heading 3</Typography>
                 <Typography variant="h4">Heading 4</Typography>
                 <Typography variant="body">Body text — the default paragraph style.</Typography>
-                <Typography variant="lead">Lead text — a slightly larger, muted intro paragraph.</Typography>
+                <Typography variant="lead">
+                  Lead text — a slightly larger, muted intro paragraph.
+                </Typography>
                 <Typography variant="small">Small text.</Typography>
                 <Typography variant="muted">Muted text, for secondary information.</Typography>
               </Stack>

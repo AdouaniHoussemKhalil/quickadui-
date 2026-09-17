@@ -6,24 +6,20 @@
 // build script in tooling/, once it exists) are what turn this into CSS
 // custom properties and a Tailwind v4 `@theme` block.
 
-export { colors, SEED_COLORS } from "./color/palette";
-export type { ColorFamily } from "./color/palette";
-export { generateColorToken } from "./color/scale";
-export type { ColorScale, ColorToken } from "./color/scale";
-export { hexToOklch, oklchToHex } from "./color/oklch";
 export type { Oklch } from "./color/oklch";
-
-export { spacing } from "./spacing";
-export type { SpacingKey } from "./spacing";
-
-export { radius } from "./radius";
-export type { RadiusKey } from "./radius";
-
-export { fontFamily, fontSize, fontWeight } from "./typography";
-export type { FontSizeKey, FontWeightKey } from "./typography";
-
-export { duration, easing } from "./motion";
+export { hexToOklch, oklchToHex } from "./color/oklch";
+export type { ColorFamily } from "./color/palette";
+export { colors, SEED_COLORS } from "./color/palette";
+export type { ColorScale, ColorToken } from "./color/scale";
+export { generateColorToken } from "./color/scale";
 export type { DurationKey, EasingKey } from "./motion";
+export { duration, easing } from "./motion";
+export type { RadiusKey } from "./radius";
+export { radius } from "./radius";
+export type { SpacingKey } from "./spacing";
+export { spacing } from "./spacing";
+export type { FontSizeKey, FontWeightKey } from "./typography";
+export { fontFamily, fontSize, fontWeight } from "./typography";
 
 import { colors } from "./color/palette";
 import { duration, easing } from "./motion";

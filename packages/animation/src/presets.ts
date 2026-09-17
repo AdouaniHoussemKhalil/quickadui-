@@ -30,7 +30,13 @@ export const slideRightVariants: Variants = {
   visible: { opacity: 1, x: 0 },
 };
 
-export type RevealPreset = "fade" | "scale" | "slide-up" | "slide-down" | "slide-left" | "slide-right";
+export type RevealPreset =
+  | "fade"
+  | "scale"
+  | "slide-up"
+  | "slide-down"
+  | "slide-left"
+  | "slide-right";
 
 const PRESET_VARIANTS: Record<RevealPreset, Variants> = {
   fade: fadeVariants,

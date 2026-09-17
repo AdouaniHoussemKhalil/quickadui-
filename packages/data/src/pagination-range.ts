@@ -12,7 +12,11 @@ export type PaginationRangeItem = number | typeof PAGINATION_ELLIPSIS;
  * React-free on purpose, so it's unit-tested directly (see
  * `pagination-range.test.ts`) rather than through rendered output.
  */
-export function getPaginationRange(currentPage: number, totalPages: number, siblingCount = 1): PaginationRangeItem[] {
+export function getPaginationRange(
+  currentPage: number,
+  totalPages: number,
+  siblingCount = 1,
+): PaginationRangeItem[] {
   if (totalPages <= 0) {
     return [];
   }
@@ -39,7 +43,13 @@ export function getPaginationRange(currentPage: number, totalPages: number, sibl
     return [1, PAGINATION_ELLIPSIS, ...range(totalPages - rightItemCount + 1, totalPages)];
   }
 
-  return [1, PAGINATION_ELLIPSIS, ...range(leftSiblingIndex, rightSiblingIndex), PAGINATION_ELLIPSIS, totalPages];
+  return [
+    1,
+    PAGINATION_ELLIPSIS,
+    ...range(leftSiblingIndex, rightSiblingIndex),
+    PAGINATION_ELLIPSIS,
+    totalPages,
+  ];
 }
 
 function range(start: number, end: number): number[] {

@@ -1,7 +1,10 @@
 "use client";
 
 import { CheckIcon, MinusIcon } from "@quickadui/icons";
-import { CheckboxIndicator as CheckboxIndicatorPrimitive, CheckboxRoot as CheckboxRootPrimitive } from "@quickadui/primitives";
+import {
+  CheckboxIndicator as CheckboxIndicatorPrimitive,
+  CheckboxRoot as CheckboxRootPrimitive,
+} from "@quickadui/primitives";
 import { cn } from "@quickadui/utils";
 import type { ComponentProps } from "react";
 

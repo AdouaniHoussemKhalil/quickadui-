@@ -24,10 +24,20 @@ export function ChartLegend({ items, className, ...props }: ChartLegendProps) {
     return null;
   }
   return (
-    <div className={cn("flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-neutral-11", className)} {...props}>
+    <div
+      className={cn(
+        "flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-neutral-11",
+        className,
+      )}
+      {...props}
+    >
       {items.map((item) => (
         <div key={item.key} className="flex items-center gap-1.5">
-          <span aria-hidden className="inline-block h-0.5 w-3 shrink-0 rounded-full" style={{ backgroundColor: item.color }} />
+          <span
+            aria-hidden
+            className="inline-block h-0.5 w-3 shrink-0 rounded-full"
+            style={{ backgroundColor: item.color }}
+          />
           <span>{item.label}</span>
         </div>
       ))}

@@ -1,4 +1,4 @@
-import { type Oklch, hexToOklch, oklchToHex } from "./oklch";
+import { hexToOklch, type Oklch, oklchToHex } from "./oklch";
 
 /**
  * A 12-step color scale, one hex value per step. The step numbering follows
@@ -15,8 +15,18 @@ import { type Oklch, hexToOklch, oklchToHex } from "./oklch";
  * for.
  */
 export type ColorScale = readonly [
-  string, string, string, string, string, string,
-  string, string, string, string, string, string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
 ];
 
 export interface ColorToken {

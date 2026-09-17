@@ -20,8 +20,10 @@ export const inputVariants = cva(
         lg: "h-12 text-base",
       },
       state: {
-        default: "border-neutral-7 focus-visible:border-accent-8 focus-visible:ring-2 focus-visible:ring-accent-8/30",
-        error: "border-danger-7 focus-visible:border-danger-8 focus-visible:ring-2 focus-visible:ring-danger-8/30",
+        default:
+          "border-neutral-7 focus-visible:border-accent-8 focus-visible:ring-2 focus-visible:ring-accent-8/30",
+        error:
+          "border-danger-7 focus-visible:border-danger-8 focus-visible:ring-2 focus-visible:ring-danger-8/30",
       },
     },
     defaultVariants: {
@@ -34,5 +36,11 @@ export const inputVariants = cva(
 export interface InputProps extends ComponentProps<"input">, VariantProps<typeof inputVariants> {}
 
 export function Input({ className, inputSize, state, ...props }: InputProps) {
-  return <input data-slot="input" className={cn(inputVariants({ inputSize, state }), className)} {...props} />;
+  return (
+    <input
+      data-slot="input"
+      className={cn(inputVariants({ inputSize, state }), className)}
+      {...props}
+    />
+  );
 }

@@ -29,6 +29,6 @@ describe("renderAddNextSteps", () => {
     const packages = resolveDependencyClosure(["tokens"]);
     const text = renderAddNextSteps(packages, "npm");
     expect(text).toContain("No `@source` lines needed");
-    expect(text).not.toContain("@source \"./node_modules/");
+    expect(text).not.toContain('@source "./node_modules/');
   });
 });

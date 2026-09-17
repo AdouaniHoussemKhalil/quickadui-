@@ -10,10 +10,15 @@ export {
   SidebarHeader,
   SidebarNavItem,
   type SidebarNavItemProps,
-  sidebarNavItemVariants,
   type SidebarProps,
   SidebarTrigger,
+  sidebarNavItemVariants,
 } from "./sidebar";
-export { SidebarProvider, type SidebarProviderProps, useSidebar, type SidebarContextValue } from "./sidebar-context";
+export {
+  type SidebarContextValue,
+  SidebarProvider,
+  type SidebarProviderProps,
+  useSidebar,
+} from "./sidebar-context";
 export { Widget, type WidgetProps } from "./widget";
 export { WidgetGrid, type WidgetGridProps } from "./widget-grid";

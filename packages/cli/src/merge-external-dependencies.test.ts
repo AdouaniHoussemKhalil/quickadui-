@@ -25,14 +25,18 @@ describe("pickHigherRange", () => {
 
 describe("mergeExternalDependencies", () => {
   it("de-duplicates a dependency shared by several packages", () => {
-    const packages = [findPackage("layout"), findPackage("overlays")].filter((pkg) => pkg !== undefined);
+    const packages = [findPackage("layout"), findPackage("overlays")].filter(
+      (pkg) => pkg !== undefined,
+    );
     const merged = mergeExternalDependencies(packages);
     const reactEntries = merged.filter((dep) => dep.name === "react");
     expect(reactEntries).toHaveLength(1);
   });
 
   it("resolves the real tailwind-merge conflict between utils (^3.6.0) and layout (^2.5.0) to the higher range", () => {
-    const packages = [findPackage("utils"), findPackage("layout")].filter((pkg) => pkg !== undefined);
+    const packages = [findPackage("utils"), findPackage("layout")].filter(
+      (pkg) => pkg !== undefined,
+    );
     const merged = mergeExternalDependencies(packages);
     const tailwindMerge = merged.find((dep) => dep.name === "tailwind-merge");
     expect(tailwindMerge?.range).toBe("^3.6.0");

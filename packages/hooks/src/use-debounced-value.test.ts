@@ -17,9 +17,12 @@ describe("useDebouncedValue", () => {
   });
 
   it("does not update before delayMs has elapsed", () => {
-    const { result, rerender } = renderHook(({ value }: { value: string }) => useDebouncedValue(value, 200), {
-      initialProps: { value: "a" },
-    });
+    const { result, rerender } = renderHook(
+      ({ value }: { value: string }) => useDebouncedValue(value, 200),
+      {
+        initialProps: { value: "a" },
+      },
+    );
 
     rerender({ value: "b" });
     vi.advanceTimersByTime(199);
@@ -28,9 +31,12 @@ describe("useDebouncedValue", () => {
   });
 
   it("updates to the latest value once delayMs has elapsed", () => {
-    const { result, rerender } = renderHook(({ value }: { value: string }) => useDebouncedValue(value, 200), {
-      initialProps: { value: "a" },
-    });
+    const { result, rerender } = renderHook(
+      ({ value }: { value: string }) => useDebouncedValue(value, 200),
+      {
+        initialProps: { value: "a" },
+      },
+    );
 
     rerender({ value: "b" });
     vi.advanceTimersByTime(200);
@@ -39,9 +45,12 @@ describe("useDebouncedValue", () => {
   });
 
   it("resets the timer on every intermediate change, only committing the final value", () => {
-    const { result, rerender } = renderHook(({ value }: { value: string }) => useDebouncedValue(value, 200), {
-      initialProps: { value: "a" },
-    });
+    const { result, rerender } = renderHook(
+      ({ value }: { value: string }) => useDebouncedValue(value, 200),
+      {
+        initialProps: { value: "a" },
+      },
+    );
 
     rerender({ value: "b" });
     vi.advanceTimersByTime(100);
@@ -59,9 +68,12 @@ describe("useDebouncedValue", () => {
   });
 
   it("clears the pending timer on unmount without throwing", () => {
-    const { rerender, unmount } = renderHook(({ value }: { value: string }) => useDebouncedValue(value, 200), {
-      initialProps: { value: "a" },
-    });
+    const { rerender, unmount } = renderHook(
+      ({ value }: { value: string }) => useDebouncedValue(value, 200),
+      {
+        initialProps: { value: "a" },
+      },
+    );
 
     rerender({ value: "b" });
     expect(() => unmount()).not.toThrow();

@@ -1,23 +1,23 @@
 "use client";
 
+import { CheckIcon, ChevronRightIcon, CircleIcon } from "@quickadui/icons";
 import {
-  ContextMenu as ContextMenuPrimitive,
   ContextMenuCheckboxItem as ContextMenuCheckboxItemPrimitive,
   ContextMenuContent as ContextMenuContentPrimitive,
   ContextMenuGroup as ContextMenuGroupPrimitive,
-  ContextMenuItem as ContextMenuItemPrimitive,
   ContextMenuItemIndicator as ContextMenuItemIndicatorPrimitive,
+  ContextMenuItem as ContextMenuItemPrimitive,
   ContextMenuLabel as ContextMenuLabelPrimitive,
   ContextMenuPortal as ContextMenuPortalPrimitive,
+  ContextMenu as ContextMenuPrimitive,
   ContextMenuRadioGroup as ContextMenuRadioGroupPrimitive,
   ContextMenuRadioItem as ContextMenuRadioItemPrimitive,
   ContextMenuSeparator as ContextMenuSeparatorPrimitive,
-  ContextMenuSub as ContextMenuSubPrimitive,
   ContextMenuSubContent as ContextMenuSubContentPrimitive,
+  ContextMenuSub as ContextMenuSubPrimitive,
   ContextMenuSubTrigger as ContextMenuSubTriggerPrimitive,
   ContextMenuTrigger as ContextMenuTriggerPrimitive,
 } from "@quickadui/primitives";
-import { CheckIcon, ChevronRightIcon, CircleIcon } from "@quickadui/icons";
 import { cn } from "@quickadui/utils";
 import type { ComponentProps } from "react";
 
@@ -46,11 +46,16 @@ export function ContextMenuSub(props: ComponentProps<typeof ContextMenuSubPrimit
   return <ContextMenuSubPrimitive {...props} />;
 }
 
-export function ContextMenuRadioGroup(props: ComponentProps<typeof ContextMenuRadioGroupPrimitive>) {
+export function ContextMenuRadioGroup(
+  props: ComponentProps<typeof ContextMenuRadioGroupPrimitive>,
+) {
   return <ContextMenuRadioGroupPrimitive {...props} />;
 }
 
-export function ContextMenuContent({ className, ...props }: ComponentProps<typeof ContextMenuContentPrimitive>) {
+export function ContextMenuContent({
+  className,
+  ...props
+}: ComponentProps<typeof ContextMenuContentPrimitive>) {
   return (
     <ContextMenuPortalPrimitive>
       <ContextMenuContentPrimitive
@@ -67,14 +72,27 @@ export function ContextMenuContent({ className, ...props }: ComponentProps<typeo
 const contextMenuItemClassName =
   "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent-3 focus:text-accent-11 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0";
 
-export function ContextMenuItem({ className, ...props }: ComponentProps<typeof ContextMenuItemPrimitive>) {
-  return <ContextMenuItemPrimitive className={cn(contextMenuItemClassName, className)} {...props} />;
+export function ContextMenuItem({
+  className,
+  ...props
+}: ComponentProps<typeof ContextMenuItemPrimitive>) {
+  return (
+    <ContextMenuItemPrimitive className={cn(contextMenuItemClassName, className)} {...props} />
+  );
 }
 
-export function ContextMenuSubTrigger({ className, children, ...props }: ComponentProps<typeof ContextMenuSubTriggerPrimitive>) {
+export function ContextMenuSubTrigger({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof ContextMenuSubTriggerPrimitive>) {
   return (
     <ContextMenuSubTriggerPrimitive
-      className={cn(contextMenuItemClassName, "data-[state=open]:bg-accent-3 data-[state=open]:text-accent-11", className)}
+      className={cn(
+        contextMenuItemClassName,
+        "data-[state=open]:bg-accent-3 data-[state=open]:text-accent-11",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -83,7 +101,10 @@ export function ContextMenuSubTrigger({ className, children, ...props }: Compone
   );
 }
 
-export function ContextMenuSubContent({ className, ...props }: ComponentProps<typeof ContextMenuSubContentPrimitive>) {
+export function ContextMenuSubContent({
+  className,
+  ...props
+}: ComponentProps<typeof ContextMenuSubContentPrimitive>) {
   return (
     <ContextMenuPortalPrimitive>
       <ContextMenuSubContentPrimitive
@@ -97,9 +118,16 @@ export function ContextMenuSubContent({ className, ...props }: ComponentProps<ty
   );
 }
 
-export function ContextMenuCheckboxItem({ className, children, ...props }: ComponentProps<typeof ContextMenuCheckboxItemPrimitive>) {
+export function ContextMenuCheckboxItem({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof ContextMenuCheckboxItemPrimitive>) {
   return (
-    <ContextMenuCheckboxItemPrimitive className={cn(contextMenuItemClassName, "pl-8", className)} {...props}>
+    <ContextMenuCheckboxItemPrimitive
+      className={cn(contextMenuItemClassName, "pl-8", className)}
+      {...props}
+    >
       <span className="absolute left-2 flex size-4 items-center justify-center">
         <ContextMenuItemIndicatorPrimitive>
           <CheckIcon className="size-4" />
@@ -110,9 +138,16 @@ export function ContextMenuCheckboxItem({ className, children, ...props }: Compo
   );
 }
 
-export function ContextMenuRadioItem({ className, children, ...props }: ComponentProps<typeof ContextMenuRadioItemPrimitive>) {
+export function ContextMenuRadioItem({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof ContextMenuRadioItemPrimitive>) {
   return (
-    <ContextMenuRadioItemPrimitive className={cn(contextMenuItemClassName, "pl-8", className)} {...props}>
+    <ContextMenuRadioItemPrimitive
+      className={cn(contextMenuItemClassName, "pl-8", className)}
+      {...props}
+    >
       <span className="absolute left-2 flex size-4 items-center justify-center">
         <ContextMenuItemIndicatorPrimitive>
           <CircleIcon className="size-2" />
@@ -123,15 +158,33 @@ export function ContextMenuRadioItem({ className, children, ...props }: Componen
   );
 }
 
-export function ContextMenuLabel({ className, ...props }: ComponentProps<typeof ContextMenuLabelPrimitive>) {
-  return <ContextMenuLabelPrimitive className={cn("px-2 py-1.5 text-sm font-medium text-neutral-11", className)} {...props} />;
+export function ContextMenuLabel({
+  className,
+  ...props
+}: ComponentProps<typeof ContextMenuLabelPrimitive>) {
+  return (
+    <ContextMenuLabelPrimitive
+      className={cn("px-2 py-1.5 text-sm font-medium text-neutral-11", className)}
+      {...props}
+    />
+  );
 }
 
-export function ContextMenuSeparator({ className, ...props }: ComponentProps<typeof ContextMenuSeparatorPrimitive>) {
-  return <ContextMenuSeparatorPrimitive className={cn("-mx-1 my-1 h-px bg-neutral-6", className)} {...props} />;
+export function ContextMenuSeparator({
+  className,
+  ...props
+}: ComponentProps<typeof ContextMenuSeparatorPrimitive>) {
+  return (
+    <ContextMenuSeparatorPrimitive
+      className={cn("-mx-1 my-1 h-px bg-neutral-6", className)}
+      {...props}
+    />
+  );
 }
 
 /** Cosmetic only — not derived from any Radix part, a right-aligned hint (e.g. a keyboard shortcut) inside a `ContextMenuItem`. Same as `@quickadui/core`'s `DropdownMenuShortcut`. */
 export function ContextMenuShortcut({ className, ...props }: ComponentProps<"span">) {
-  return <span className={cn("ml-auto text-xs tracking-widest text-neutral-11", className)} {...props} />;
+  return (
+    <span className={cn("ml-auto text-xs tracking-widest text-neutral-11", className)} {...props} />
+  );
 }

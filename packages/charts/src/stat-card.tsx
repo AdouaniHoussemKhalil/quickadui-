@@ -37,7 +37,15 @@ export interface StatCardProps extends Omit<ComponentProps<"div">, "title"> {
  * `Sparkline`). Meant to be dropped inside a `@quickadui/shell` `Widget`
  * as its body, or used standalone anywhere a metric card is needed.
  */
-export function StatCard({ label, value, icon, trend, className, children, ...props }: StatCardProps) {
+export function StatCard({
+  label,
+  value,
+  icon,
+  trend,
+  className,
+  children,
+  ...props
+}: StatCardProps) {
   return (
     <div data-slot="stat-card" className={cn("flex flex-col gap-3", className)} {...props}>
       <div className="flex items-center justify-between gap-2">
@@ -53,7 +61,11 @@ export function StatCard({ label, value, icon, trend, className, children, ...pr
               trend.direction === "up" ? "text-success-11" : "text-danger-11",
             )}
           >
-            {trend.direction === "up" ? <TrendUpIcon size={14} aria-hidden /> : <TrendDownIcon size={14} aria-hidden />}
+            {trend.direction === "up" ? (
+              <TrendUpIcon size={14} aria-hidden />
+            ) : (
+              <TrendDownIcon size={14} aria-hidden />
+            )}
             {trend.label}
           </span>
         )}

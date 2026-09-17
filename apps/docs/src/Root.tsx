@@ -8,8 +8,8 @@ import { DEFAULT_SLUG, nav } from "./nav";
  * file's own comment for the full reasoning): reads `location.hash`,
  * re-renders on `hashchange`. Adding `react-router-dom` would be one more
  * dependency this sandbox can't validate against real types with no npm
- * registry access — the docs MVP has six known pages, so a hash lookup is
- * the smallest thing that works.
+ * registry access — this docs app has a small, known page list, so a hash
+ * lookup is the smallest thing that works.
  */
 function useHashSlug(): string {
   const [slug, setSlug] = useState(() => window.location.hash.slice(1) || DEFAULT_SLUG);
@@ -26,10 +26,17 @@ function useHashSlug(): string {
 const PAGES = {
   introduction: lazy(() => import("./pages/introduction.mdx")),
   tokens: lazy(() => import("./pages/tokens.mdx")),
+  theme: lazy(() => import("./pages/theme.mdx")),
   primitives: lazy(() => import("./pages/primitives.mdx")),
   core: lazy(() => import("./pages/core.mdx")),
+  layout: lazy(() => import("./pages/layout.mdx")),
   forms: lazy(() => import("./pages/forms.mdx")),
   data: lazy(() => import("./pages/data.mdx")),
+  overlays: lazy(() => import("./pages/overlays.mdx")),
+  shell: lazy(() => import("./pages/shell.mdx")),
+  charts: lazy(() => import("./pages/charts.mdx")),
+  animation: lazy(() => import("./pages/animation.mdx")),
+  icons: lazy(() => import("./pages/icons.mdx")),
 } as const;
 
 type Slug = keyof typeof PAGES;

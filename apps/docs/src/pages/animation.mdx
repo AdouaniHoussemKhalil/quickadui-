@@ -1,0 +1,49 @@
+import { Card, CardContent } from "@quickadui/core";
+import { Reveal } from "@quickadui/animation";
+import { Example } from "../components/Example";
+import { PropsTable } from "../components/PropsTable";
+
+# Animation
+
+`@quickadui/animation` wraps [Motion](https://motion.dev) (`motion/react`)
+for React — `motion`, `AnimatePresence`, and `useReducedMotion` are
+re-exported as-is, plus a ready-to-use `Reveal` component pre-wired with
+one of a fixed set of variant pairs.
+
+## Reveal
+
+A wrapper around `motion.div`, pre-wired with `initial="hidden" animate="visible" exit="hidden"`
+and one of six presets. Mounts animated-in below — reload the page (or
+navigate back to this one) to see it play again:
+
+<Example
+  code={`<Reveal preset="slide-up">
+  <Card>...</Card>
+</Reveal>`}
+>
+  <Reveal preset="slide-up">
+    <Card className="max-w-xs">
+      <CardContent className="p-4 text-sm">Animates in on mount.</CardContent>
+    </Card>
+  </Reveal>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "preset", type: '"fade" | "scale" | "slide-up" | "slide-down" | "slide-left" | "slide-right"', default: '"fade"', description: "Which variant pair to animate between." },
+    { name: "respectReducedMotion", type: "boolean", default: "true", description: "When the visitor's OS/browser has \"reduce motion\" on, renders with a zero-duration transition instead of animating." },
+    { name: "transition", type: "Transition", default: "easeTransition", description: "Motion transition config — springTransition and quickTransition are also exported for other cases." },
+  ]}
+/>
+
+## Beyond Reveal
+
+For anything `Reveal`'s fixed prop set doesn't cover — a different `motion`
+element, `whileHover`, drag — use `motion.div` (or `motion.<tag>`) directly
+with the same preset variants (`fadeVariants`, `scaleVariants`,
+`slideUpVariants`, `slideDownVariants`, `slideLeftVariants`,
+`slideRightVariants`) and transitions (`easeTransition`,
+`springTransition`, `quickTransition`) this package exports. Wrap a
+`Reveal`'s unmount in `AnimatePresence` to actually play its exit
+animation — without it, Motion never gets the chance to run one before the
+DOM node disappears.

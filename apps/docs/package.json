@@ -19,6 +19,12 @@
     "@quickadui/core": "workspace:*",
     "@quickadui/forms": "workspace:*",
     "@quickadui/data": "workspace:*",
+    "@quickadui/layout": "workspace:*",
+    "@quickadui/overlays": "workspace:*",
+    "@quickadui/animation": "workspace:*",
+    "@quickadui/icons": "workspace:*",
+    "@quickadui/shell": "workspace:*",
+    "@quickadui/charts": "workspace:*",
     "@quickadui/utils": "workspace:*"
   },
   "devDependencies": {

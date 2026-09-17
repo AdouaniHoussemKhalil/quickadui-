@@ -1,0 +1,125 @@
+import { Badge } from "@quickadui/core";
+import { StatCard } from "@quickadui/charts";
+import {
+  DashboardLayout,
+  Footer,
+  Navbar,
+  NavbarActions,
+  NavbarBrand,
+  NavbarContent,
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarNavItem,
+  SidebarTrigger,
+  Widget,
+  WidgetGrid,
+} from "@quickadui/shell";
+import { useState } from "react";
+import { Example } from "../components/Example";
+import { PropsTable } from "../components/PropsTable";
+
+export function WidgetGridDemo() {
+  const [items, setItems] = useState(["a", "b", "c"]);
+  return (
+    <WidgetGrid items={items} onReorder={setItems} columns={3}>
+      <Widget id="a" title="Revenue">
+        <StatCard label="Revenue" value="$18.2K" trend={{ direction: "up", label: "+8%" }} />
+      </Widget>
+      <Widget id="b" title="Signups">
+        <StatCard label="Signups" value="341" trend={{ direction: "down", label: "-3%" }} />
+      </Widget>
+      <Widget id="c" title="Churn">
+        <StatCard label="Churn" value="1.2%" />
+      </Widget>
+    </WidgetGrid>
+  );
+}
+
+# Shell
+
+`@quickadui/shell` is the full admin/dashboard app frame: `DashboardLayout`
+composes a `Navbar`, a collapsible `Sidebar`, a scrollable content column,
+and an optional `Footer`; `Widget`/`WidgetGrid` lay out draggable dashboard
+cards inside that content column.
+
+## DashboardLayout
+
+`DashboardLayout` sets `h-screen` on its own root — it's meant to be the
+outermost layout element on a real page. The embedded demo below overrides
+that with a fixed height so it fits on this page instead; a real
+integration renders it unconstrained, at the top of the app tree.
+
+<Example>
+  <DashboardLayout
+    className="h-[420px] overflow-hidden rounded-lg border border-neutral-6"
+    navbar={
+      <Navbar>
+        <SidebarTrigger />
+        <NavbarBrand>Acme</NavbarBrand>
+        <NavbarContent />
+        <NavbarActions>
+          <Badge variant="soft">Beta</Badge>
+        </NavbarActions>
+      </Navbar>
+    }
+    sidebar={
+      <Sidebar>
+        <SidebarHeader>Workspace</SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Overview</SidebarGroupLabel>
+            <SidebarNavItem active>Dashboard</SidebarNavItem>
+            <SidebarNavItem>Reports</SidebarNavItem>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+    }
+    footer={<Footer>v1.0.0</Footer>}
+  >
+    <StatCard label="Active users" value="2,431" trend={{ direction: "up", label: "+12%" }} />
+  </DashboardLayout>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "navbar", type: "ReactNode", description: "Rendered full-width, above everything else." },
+    { name: "sidebar", type: "ReactNode", description: "Rendered beside the scrollable content column." },
+    { name: "footer", type: "ReactNode", description: "Rendered under the scrollable body, inside the content column." },
+    { name: "defaultSidebarCollapsed", type: "boolean", default: "false", description: "Uncontrolled starting state for the sidebar this component wraps in a SidebarProvider." },
+    { name: "sidebarCollapsed", type: "boolean", description: "Controlled sidebar-collapsed state." },
+    { name: "onSidebarCollapsedChange", type: "(collapsed: boolean) => void", description: "Called when the sidebar is toggled." },
+  ]}
+/>
+
+<PropsTable
+  rows={[
+    { name: "side", type: '"left" | "right"', default: '"left"', description: "Sidebar only — which edge it's docked to." },
+  ]}
+/>
+
+## Widget & WidgetGrid
+
+A responsive grid of `Widget` cards, drag-and-drop sortable (pointer and
+keyboard, via `@dnd-kit`) whenever `onReorder` is given — drag a card below
+to reorder it, the new order is just local `useState` in this demo.
+Omitting `onReorder` renders a plain grid instead, with no `DndContext`
+mounted at all.
+
+<Example>
+  <WidgetGridDemo />
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "id", type: "string", description: "Widget only, required — must match this widget's entry in its WidgetGrid's items array." },
+    { name: "title", type: "ReactNode", description: "Widget only — rendered in the header, next to the drag handle." },
+    { name: "actions", type: "ReactNode", description: "Widget only — rendered on the header's trailing edge." },
+    { name: "disableDrag", type: "boolean", default: "false", description: "Widget only — hides the drag handle and disables dragging for just this widget." },
+    { name: "items", type: "string[]", description: "WidgetGrid only — ordered widget ids, matching each Widget child's id." },
+    { name: "onReorder", type: "(items: string[]) => void", description: "WidgetGrid only — called with the reordered id array once a drag completes. Omit for a plain, non-draggable grid." },
+    { name: "columns", type: "1 | 2 | 3 | 4", default: "3", description: "WidgetGrid only — columns at the md breakpoint and up; always a single column below it." },
+  ]}
+/>

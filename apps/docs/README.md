@@ -3,21 +3,24 @@
 The dogfooded documentation site for QuickadUI (`ARCHITECTURE.md`, §10) —
 built with QuickadUI's own components, same as `apps/playground`.
 
-## MVP scope
+## Scope
 
-This is the first real pass: a running Vite + MDX skeleton with navigation,
-a layout, and six hand-written pages (an introduction plus one overview
-each for `tokens`, `primitives`, `core`, `forms`, and `data`). Deliberately
-**not** in this pass:
+A running Vite + MDX site with navigation, a layout, and one hand-written
+page per covered package: an introduction plus an overview each for
+`tokens`, `theme`, `primitives`, `core`, `layout`, `forms`, `data`,
+`overlays`, `shell`, `charts`, `animation`, and `icons` — every visual
+package plus `theme`. `utils`/`hooks` (non-visual utilities) and
+`config`/`cli` (tooling) are deliberately out of scope, documented
+elsewhere. Deliberately **not** built yet:
 
 - **Generated prop tables.** Every prop table on these pages is
   hand-written. Parsing real TS source into prop tables automatically is
   planned for a later round, once this structure is proven out.
 - **Live Sandpack playgrounds.** Examples render live, real
   `@quickadui/*` components, but aren't editable in the browser yet.
-- **The other 10 packages, versioning per major, and a migration-guides
-  layer** ("from Chakra/MUI/Mantine") — all out of scope for this pass,
-  see `ARCHITECTURE.md`, §10/§11.
+- **Versioning per major and a migration-guides layer** ("from
+  Chakra/MUI/Mantine") — out of scope for now, see `ARCHITECTURE.md`,
+  §10/§11.
 
 ## Running it
 
@@ -37,8 +40,11 @@ pnpm --filter docs dev
   (grouped nav links).
 - `src/components/` — `PropsTable` (hand-written prop rows, rendered with
   the real `@quickadui/data` `Table`), `Example` (a live component preview,
-  optionally paired with a static, read-only source snippet), and
-  `ThemeToggle` (light/dark/system, via `@quickadui/theme`'s `useTheme()`).
+  optionally paired with a static, read-only source snippet), `ThemeToggle`
+  (light/dark/system, via `@quickadui/theme`'s `useTheme()`), and
+  `AccentPicker` (a single accent-color override, via the same hook's
+  `colors`/`setColor`/`resetColor` — both are rendered together in
+  `DocsLayout`'s header).
 - `src/pages/*.mdx` — the hand-written pages themselves. Each imports the
   real `@quickadui/*` components it demonstrates directly at the top of
   the file.

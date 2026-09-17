@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AccentPicker } from "../components/AccentPicker";
 import { ThemeToggle } from "../components/ThemeToggle";
 import type { NavGroup } from "../nav";
 import { Sidebar } from "./Sidebar";
@@ -18,7 +19,10 @@ export function DocsLayout({ nav, activeSlug, children }: DocsLayoutProps) {
           <a href="#introduction" className="text-sm font-semibold tracking-tight text-neutral-12">
             QuickadUI Docs
           </a>
-          <ThemeToggle />
+          <div className="flex items-center gap-3">
+            <AccentPicker />
+            <ThemeToggle />
+          </div>
         </header>
         <main className="flex-1 px-8 py-10">
           <div className="mx-auto max-w-3xl">{children}</div>

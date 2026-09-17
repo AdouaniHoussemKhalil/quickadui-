@@ -1,0 +1,117 @@
+import { Container, Flex, Grid, Section, Stack } from "@quickadui/layout";
+import { Example } from "../components/Example";
+import { PropsTable } from "../components/PropsTable";
+
+# Layout
+
+`@quickadui/layout` covers arranging things on a page — centering and
+capping width (`Container`), vertical rhythm (`Section`), and arranging
+children (`Flex`, `Stack`, `Grid`). None of these render any visual chrome
+of their own beyond what their variant props ask for.
+
+## Container
+
+Centers content and caps its width — the outermost wrapper for a page's
+content.
+
+<Example>
+  <Container maxWidth="sm" className="border border-dashed border-neutral-6">
+    <div className="rounded-md bg-accent-3 p-4 text-center text-sm text-accent-11">
+      max-w-3xl, centered
+    </div>
+  </Container>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "maxWidth", type: '"sm" | "md" | "lg" | "xl" | "full"', default: '"xl"', description: "Uses the fixed max-w-* scale (rem-based), not Tailwind's screens theme key." },
+  ]}
+/>
+
+## Flex
+
+The general-purpose flexbox primitive `Stack` and `Grid` build on top of.
+
+<Example>
+  <Flex gap="sm">
+    <div className="rounded-md bg-accent-3 p-3 text-sm text-accent-11">1</div>
+    <div className="rounded-md bg-accent-3 p-3 text-sm text-accent-11">2</div>
+    <div className="rounded-md bg-accent-3 p-3 text-sm text-accent-11">3</div>
+  </Flex>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "direction", type: '"row" | "column" | "row-reverse" | "column-reverse"', default: '"row"', description: "flex-direction." },
+    { name: "align", type: '"start" | "center" | "end" | "stretch" | "baseline"', default: '"stretch"', description: "align-items." },
+    { name: "justify", type: '"start" | "center" | "end" | "between" | "around" | "evenly"', default: '"start"', description: "justify-content." },
+    { name: "wrap", type: '"nowrap" | "wrap" | "wrap-reverse"', default: '"nowrap"', description: "flex-wrap." },
+    { name: "gap", type: '"none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl"', default: '"none"', description: "Same gap scale across Flex/Stack/Grid." },
+    { name: "as", type: "ElementType", default: '"div"', description: "Render as a different element/component — props stay typed against <div>'s." },
+  ]}
+/>
+
+## Stack
+
+Sugar over `Flex`, defaulting to a vertical stack (`direction="column"`,
+`gap="md"`) instead of `Flex`'s horizontal, gap-less defaults — the common
+case of "these things, spaced out, one under the other."
+
+<Example>
+  <Stack gap="sm" className="max-w-xs">
+    <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">1</div>
+    <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">2</div>
+    <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">3</div>
+  </Stack>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "direction", type: '"row" | "column"', default: '"column"', description: "flex-direction — a narrower set than Flex's, since Stack is for the simple vertical/horizontal case." },
+    { name: "align", type: '"start" | "center" | "end" | "stretch"', default: '"stretch"', description: "align-items." },
+    { name: "gap", type: '"none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl"', default: '"md"', description: "Same gap scale as Flex/Grid." },
+  ]}
+/>
+
+## Grid
+
+`columns` is a fixed set of common column counts — CSS utility classes have
+to exist ahead of time for Tailwind to generate them, so an arbitrary count
+outside this set needs `className` directly (e.g. `grid-cols-[7]`) instead.
+
+<Example>
+  <Grid columns="3" gap="sm">
+    <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">1</div>
+    <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">2</div>
+    <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">3</div>
+    <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">4</div>
+    <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">5</div>
+    <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">6</div>
+  </Grid>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "columns", type: '"1" | "2" | "3" | "4" | "6" | "12"', default: '"1"', description: "String keys, not numbers — cva variant keys." },
+    { name: "gap", type: '"none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl"', default: '"md"', description: "Same gap scale as Flex/Stack." },
+  ]}
+/>
+
+## Section
+
+A `<section>` with vertical rhythm baked in — the unit a page is usually
+built out of (hero, features, footer, ...). Renders a real `<section>`, not
+a `<div>`; wrap it in `Container` for horizontal centering, they're
+independent concerns.
+
+<Example>
+  <Section spacing="sm" className="border-y border-dashed border-neutral-6">
+    <div className="text-center text-sm text-neutral-11">py-8 of vertical rhythm</div>
+  </Section>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "spacing", type: '"sm" | "md" | "lg" | "xl"', default: '"md"', description: "Vertical padding." },
+  ]}
+/>

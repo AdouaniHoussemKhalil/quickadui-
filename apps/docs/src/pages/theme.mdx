@@ -1,0 +1,90 @@
+import { AccentPicker } from "../components/AccentPicker";
+import { ThemeToggle } from "../components/ThemeToggle";
+import { Example } from "../components/Example";
+import { PropsTable } from "../components/PropsTable";
+
+# Theme
+
+`@quickadui/theme` is the runtime layer over `@quickadui/tokens`' build-time
+data: a `ThemeProvider` that applies the current light/dark mode (and any
+accent-color override) straight to `document.documentElement`, and a
+`useTheme()` hook every themeable example on this site — including its own
+header — reads from. No rebuild or page reload is needed for either kind of
+change.
+
+## Mode: light / dark / system
+
+`theme` is the user's chosen mode (`"light"`, `"dark"`, or `"system"`);
+`resolvedTheme` is always `"light"` or `"dark"`, never `"system"` itself —
+what this site's own header toggle is built from:
+
+<Example
+  code={`const { theme, setTheme } = useTheme();
+
+<button onClick={() => setTheme("dark")}>{theme}</button>`}
+>
+  <ThemeToggle />
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "theme", type: '"light" | "dark" | "system"', description: "The user's chosen mode — may be \"system\"." },
+    { name: "resolvedTheme", type: '"light" | "dark"', description: "What \"system\" currently resolves to." },
+    { name: "setTheme", type: "(theme: ThemeMode) => void", description: "Changes the mode and persists it to localStorage." },
+  ]}
+/>
+
+## Accent color override
+
+`colors` holds whichever families are currently overridden away from
+`@quickadui/tokens`' build-time seed colors — a family absent from it is
+still using its build-time color. `setColor` regenerates that family's full
+12-step light+dark scale from a single `#RRGGBB` seed and applies it
+immediately; `resetColor` reverts it. This site exposes exactly one family
+this way — `accent` — next to the mode toggle in its own header, the same
+component rendered again here:
+
+<Example
+  code={`const { colors, setColor, resetColor } = useTheme();
+
+<input
+  type="color"
+  value={colors.accent ?? "#2563eb"}
+  onChange={(e) => setColor("accent", e.target.value)}
+/>`}
+>
+  <AccentPicker />
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "colors", type: "Partial<Record<ColorFamily, string>>", description: "Overridden families, keyed by family — each a #RRGGBB seed." },
+    { name: "setColor", type: "(family: ColorFamily, seedHex: string) => void", description: "Applies a new seed color to one family immediately. Throws on an invalid hex." },
+    { name: "resetColor", type: "(family: ColorFamily) => void", description: "Reverts one family back to its build-time color." },
+    { name: "resetColors", type: "() => void", description: "Reverts every overridden family at once." },
+  ]}
+/>
+
+## ThemeProvider
+
+Wraps the app once, near the root — this site's own `src/main.tsx` does
+exactly this, right under `<StrictMode>`.
+
+<PropsTable
+  rows={[
+    { name: "defaultTheme", type: '"light" | "dark" | "system"', default: '"system"', description: "Used only on the very first visit, before anything is stored." },
+    { name: "storageKey", type: "string", default: '"quickadui-theme"', description: "localStorage key for the mode." },
+    { name: "defaultColors", type: "Partial<Record<ColorFamily, string>>", description: "Seed-color overrides used only on the very first visit — a way to ship a different brand color without forking or rebuilding @quickadui/tokens." },
+    { name: "colorStorageKey", type: "string", default: '"quickadui-colors"', description: "localStorage key for setColor/resetColor overrides." },
+  ]}
+/>
+
+## ThemeScript
+
+`ThemeProvider` alone doesn't prevent a flash of the wrong theme *mode* on
+first paint — pair it with `<ThemeScript />` (or `getThemeScript()` inlined
+by hand) rendered as early as possible in `<head>`, ahead of
+`ThemeProvider` itself, so the correct mode applies before hydration. A
+stored *color* override doesn't have this treatment yet — it's applied once
+`ThemeProvider` mounts, so a returning visitor with a custom accent still
+sees one frame of the build-time brand color first.

@@ -5,18 +5,20 @@ import { Example } from "../components/Example";
 
 A complete frontend ecosystem for building React applications — components,
 layouts, theming, hooks, icons, animation, and a CLI, all under one
-`@quickadui/*` namespace. This site documents the five packages most people
-reach for first.
+`@quickadui/*` namespace. This site documents every visual package plus
+`theme` — `utils`/`hooks` (non-visual utilities) and `config`/`cli`
+(tooling) are out of scope here, documented elsewhere.
 
-<Badge variant="soft">Docs MVP</Badge> <Badge variant="outline">Hand-written pages</Badge>
+<Badge variant="soft">Hand-written pages</Badge>
 
 ## What's here, and what isn't yet
 
-This is the MVP pass of `apps/docs`: a real, running Vite + MDX site with
-navigation, a layout, and a handful of hand-written pages covering
-`tokens`, `primitives`, `core`, `forms`, and `data`. Every example on these
-pages renders the real, built `@quickadui/*` packages — this site
-dogfoods itself the same way `apps/playground` does.
+`apps/docs` is a real, running Vite + MDX site with navigation, a layout,
+and one hand-written page per covered package: `tokens`, `theme`,
+`primitives`, `core`, `layout`, `forms`, `data`, `overlays`, `shell`,
+`charts`, `animation`, and `icons`. Every example on these pages renders
+the real, built `@quickadui/*` packages — this site dogfoods itself the
+same way `apps/playground` does.
 
 Two things are deliberately **not** built yet, and every prop table below
 is hand-written because of it:

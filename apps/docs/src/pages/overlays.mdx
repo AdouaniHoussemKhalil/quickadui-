@@ -1,0 +1,142 @@
+import { Button } from "@quickadui/core";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+  Modal,
+  ModalClose,
+  ModalContent,
+  ModalDescription,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+  ModalTrigger,
+  Toaster,
+  toast,
+} from "@quickadui/overlays";
+import { Example } from "../components/Example";
+import { PropsTable } from "../components/PropsTable";
+
+# Overlays
+
+`@quickadui/overlays` covers UI that floats above the page: a centered
+`Modal`, an edge-anchored `Drawer` (the exact same underlying
+`@quickadui/primitives` `Dialog` as `Modal`, just styled to slide in from a
+side instead of appearing centered), a `Toaster` + `toast()` store, and a
+`ContextMenu`. Neither `Modal` nor `Drawer` animates its enter/exit yet —
+that needs Tailwind keyframes or `@quickadui/animation`, and isn't wired up
+here yet.
+
+## Modal
+
+<Example>
+  <Modal>
+    <ModalTrigger asChild>
+      <Button variant="outline">Open modal</Button>
+    </ModalTrigger>
+    <ModalContent>
+      <ModalHeader>
+        <ModalTitle>Delete project</ModalTitle>
+        <ModalDescription>This action can't be undone.</ModalDescription>
+      </ModalHeader>
+      <ModalFooter>
+        <ModalClose asChild>
+          <Button variant="ghost">Cancel</Button>
+        </ModalClose>
+        <Button variant="destructive">Delete</Button>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
+</Example>
+
+`Modal`/`ModalTrigger`/`ModalClose` are thin passthroughs over
+`@quickadui/primitives`' `Dialog`/`DialogTrigger`/`DialogClose` — `asChild`
+merges onto the button above rather than wrapping it in an extra element.
+
+## Drawer
+
+<Example>
+  <Drawer>
+    <DrawerTrigger asChild>
+      <Button variant="outline">Open drawer</Button>
+    </DrawerTrigger>
+    <DrawerContent side="right">
+      <DrawerHeader>
+        <DrawerTitle>Filters</DrawerTitle>
+        <DrawerDescription>Narrow down the results.</DrawerDescription>
+      </DrawerHeader>
+      <DrawerFooter>
+        <DrawerClose asChild>
+          <Button variant="ghost">Close</Button>
+        </DrawerClose>
+      </DrawerFooter>
+    </DrawerContent>
+  </Drawer>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "side", type: '"top" | "bottom" | "left" | "right"', default: '"right"', description: "DrawerContent only — which screen edge it's anchored to." },
+  ]}
+/>
+
+## Toast
+
+`toast()` adds one to a small module-level store; `Toaster` (mounted once,
+high in the tree — here, just for this example) renders whatever is
+currently in it.
+
+<Example>
+  <Toaster />
+  <Button
+    variant="outline"
+    onClick={() =>
+      toast({
+        title: "Saved",
+        description: "Your changes have been saved.",
+        variant: "success",
+      })
+    }
+  >
+    Show toast
+  </Button>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "title", type: "ReactNode", description: "Toast heading." },
+    { name: "description", type: "ReactNode", description: "Toast body." },
+    { name: "variant", type: '"default" | "success" | "warning" | "danger"', default: '"default"', description: "Visual style." },
+    { name: "duration", type: "number", default: "5000 (ToastProvider's own default)", description: "Milliseconds before auto-dismiss." },
+    { name: "actionLabel", type: "string", description: "Label for an optional action button — also its accessible altText." },
+    { name: "onAction", type: "() => void", description: "Called when the action button is clicked." },
+  ]}
+/>
+
+## Context menu
+
+<Example>
+  <ContextMenu>
+    <ContextMenuTrigger className="flex h-24 w-full items-center justify-center rounded-md border border-dashed border-neutral-6 text-sm text-neutral-11">
+      Right-click here
+    </ContextMenuTrigger>
+    <ContextMenuContent>
+      <ContextMenuItem>Rename</ContextMenuItem>
+      <ContextMenuItem>Duplicate</ContextMenuItem>
+      <ContextMenuItem>Delete</ContextMenuItem>
+    </ContextMenuContent>
+  </ContextMenu>
+</Example>
+
+Composes `@quickadui/primitives`' ContextMenu parts with the same visual
+language `@quickadui/core`'s `DropdownMenu` uses, for a consistent "menu"
+look regardless of how it opens.

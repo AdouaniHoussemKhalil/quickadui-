@@ -1,0 +1,152 @@
+import {
+  BarChart,
+  DonutChart,
+  LineChart,
+  Sparkline,
+  StatCard,
+} from "@quickadui/charts";
+import { Example } from "../components/Example";
+import { PropsTable } from "../components/PropsTable";
+
+export const monthlyData = [
+  { month: "Jan", desktop: 186, mobile: 80 },
+  { month: "Feb", desktop: 305, mobile: 200 },
+  { month: "Mar", desktop: 237, mobile: 120 },
+  { month: "Apr", desktop: 173, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+];
+
+export const trafficData = [
+  { key: "direct", label: "Direct", value: 45 },
+  { key: "search", label: "Search", value: 30 },
+  { key: "referral", label: "Referral", value: 15 },
+  { key: "social", label: "Social", value: 10 },
+];
+
+export const sparklineData = [4, 6, 5, 8, 7, 9, 12, 10, 14, 13, 16, 18];
+
+# Charts
+
+`@quickadui/charts` covers dashboard-style charts — grouped bars, lines,
+donuts, inline sparklines, and metric tiles — each hoverable/focusable with
+a shared tooltip convention, and a legend whenever there's more than one
+series. Requires its own stylesheet import alongside `@quickadui/theme`'s
+generated CSS (this site's own `src/index.css` does this):
+
+```css
+@import "@quickadui/charts/chart-tokens.css";
+```
+
+## BarChart
+
+<Example>
+  <BarChart
+    data={monthlyData}
+    categoryKey="month"
+    series={[
+      { key: "desktop", label: "Desktop" },
+      { key: "mobile", label: "Mobile" },
+    ]}
+  />
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "data", type: "readonly Record<string, string | number>[]", description: "One row per category — each row needs a value under every series[].key, plus categoryKey." },
+    { name: "categoryKey", type: "string", description: "Which field in each row is the category label." },
+    { name: "series", type: "{ key, label, color? }[]", description: "One or more value series to plot per category." },
+    { name: "height", type: "number", default: "240", description: "Plot height in CSS pixels — width always fills the container." },
+    { name: "valueFormatter", type: "(value: number) => string", description: "Formats axis ticks and tooltip values." },
+  ]}
+/>
+
+## LineChart
+
+<Example>
+  <LineChart
+    data={monthlyData}
+    categoryKey="month"
+    series={[
+      { key: "desktop", label: "Desktop" },
+      { key: "mobile", label: "Mobile" },
+    ]}
+    area
+  />
+</Example>
+
+Hovering anywhere over the plot snaps a crosshair to the nearest category
+and shows every series' value at that position in one shared tooltip,
+rather than requiring the pointer to land exactly on a line.
+
+<PropsTable
+  rows={[
+    { name: "area", type: "boolean", default: "false", description: "Fills under each line at ~10% opacity." },
+  ]}
+/>
+
+## DonutChart
+
+<Example>
+  <DonutChart data={trafficData} />
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "data", type: "{ key, label, value, color? }[]", description: "Segments — colored from the categorical palette in fixed order unless color is given." },
+    { name: "innerRadiusRatio", type: "number", default: "0.6", description: "0 renders a pie (no hole); 0.6 renders a donut with a 60%-of-radius hole." },
+    { name: "size", type: "number", default: "160", description: "Square size in CSS pixels." },
+    { name: "showTotal", type: "boolean", default: "true", description: "Shown in the donut's hole — has no effect when innerRadiusRatio is 0." },
+  ]}
+/>
+
+## Sparkline
+
+A minimal inline trend line with no axes, gridlines, or legend — meant to
+live inside a `StatCard` or a narrow `Widget`, single series only.
+
+<Example>
+  <Sparkline data={sparklineData} area />
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "data", type: "readonly number[]", description: "The series values." },
+    { name: "color", type: "string", default: "brand accent (single series, no categorical palette needed)", description: "Line/fill color." },
+    { name: "strokeWidth", type: "number", default: "2", description: "Line thickness." },
+    { name: "area", type: "boolean", default: "false", description: "Fills under the line at ~10% opacity." },
+    { name: "width", type: "number", default: "96", description: "SVG width in CSS pixels." },
+    { name: "height", type: "number", default: "32", description: "SVG height in CSS pixels." },
+  ]}
+/>
+
+## StatCard
+
+One dashboard metric — a label, a large value, an optional colored trend
+badge, and an optional embedded visual (typically a `Sparkline`). Meant to
+be dropped inside a `@quickadui/shell` `Widget` as its body, or used
+standalone.
+
+<Example>
+  <StatCard label="Revenue" value="$18.2K" trend={{ direction: "up", label: "+12%" }}>
+    <Sparkline data={sparklineData} />
+  </StatCard>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "label", type: "string", description: "Sentence case, no trailing colon." },
+    { name: "value", type: "ReactNode", description: "Pre-formatted (e.g. \"2,431\", \"$18.2K\") — this component doesn't compute compact notation for you." },
+    { name: "icon", type: "ReactNode", description: "Rendered next to label." },
+    { name: "trend", type: '{ direction: "up" | "down", label }', description: "Signed change vs. a named period, colored by direction using the success/danger tokens." },
+    { name: "children", type: "ReactNode", description: "A Sparkline (or other small visual) rendered below the value." },
+  ]}
+/>
+
+## Categorical palette
+
+Multi-series charts pull colors from a fixed, CVD-safe (color-vision-
+deficiency-safe) set of 8 — always assigned in the same order, never
+cycled or reordered independently. A single-series chart (`Sparkline`, or a
+`BarChart`/`LineChart` with one series) uses QuickadUI's own brand accent
+instead — a lone series needs no legend and no separation guarantee, so
+it's free to match the rest of the design system.

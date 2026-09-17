@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @import "@quickadui/theme/tokens.css";
 @import "@quickadui/theme/tailwind-theme.css";
+/*
+ * `@quickadui/charts`' 8-color categorical palette + its single-series
+ * accent variable ship as their own stylesheet, same as apps/playground —
+ * not folded into tokens.css since most consumers of the design system
+ * never render a chart. Grouped with the other @import lines above (CSS
+ * requires @import before any other rule, and Tailwind's own @source below
+ * counts as one).
+ */
+@import "@quickadui/charts/chart-tokens.css";
 
 /*
  * Same @source requirement as apps/playground/src/index.css (see that
@@ -9,16 +18,22 @@
  * which is where these packages' compiled output lands once pnpm
  * symlinks it into node_modules, so without an explicit @source their
  * hardcoded Tailwind classes (`bg-accent-9`, `rounded-md`, ...) never get
- * a matching rule generated. Scoped to just the packages this MVP
- * actually renders — `@quickadui/tokens` exports plain data (no JSX), so
- * it needs no @source. `primitives` is included defensively, same
+ * a matching rule generated. Scoped to just the packages this app
+ * actually renders — `@quickadui/tokens` exports plain data (no JSX) and
+ * `@quickadui/theme` is a runtime/provider package, so neither needs an
+ * @source; same for `animation` and `icons`, which carry no hardcoded
+ * classes of their own. `primitives` is included defensively, same
  * reasoning as playground's own comment, even though most of its parts
  * currently carry no hardcoded classes of their own.
  */
 @source "../../../packages/primitives/src";
 @source "../../../packages/core/src";
+@source "../../../packages/layout/src";
 @source "../../../packages/forms/src";
 @source "../../../packages/data/src";
+@source "../../../packages/overlays/src";
+@source "../../../packages/shell/src";
+@source "../../../packages/charts/src";
 
 body {
   @apply bg-neutral-1 text-neutral-12;

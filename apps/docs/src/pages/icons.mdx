@@ -1,0 +1,77 @@
+import {
+  CalendarIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ClockIcon,
+  CloseIcon,
+  ErrorIcon,
+  EyeIcon,
+  GripVerticalIcon,
+  InfoIcon,
+  LoaderIcon,
+  MenuIcon,
+  PlusIcon,
+  SearchIcon,
+  SettingsIcon,
+  SuccessIcon,
+  TrashIcon,
+  TrendDownIcon,
+  TrendUpIcon,
+  UserIcon,
+  WarningIcon,
+} from "@quickadui/icons";
+import { PropsTable } from "../components/PropsTable";
+
+export const iconEntries = [
+  { name: "SearchIcon", Icon: SearchIcon },
+  { name: "MenuIcon", Icon: MenuIcon },
+  { name: "UserIcon", Icon: UserIcon },
+  { name: "SettingsIcon", Icon: SettingsIcon },
+  { name: "CheckIcon", Icon: CheckIcon },
+  { name: "CloseIcon", Icon: CloseIcon },
+  { name: "ChevronDownIcon", Icon: ChevronDownIcon },
+  { name: "PlusIcon", Icon: PlusIcon },
+  { name: "TrashIcon", Icon: TrashIcon },
+  { name: "CalendarIcon", Icon: CalendarIcon },
+  { name: "ClockIcon", Icon: ClockIcon },
+  { name: "EyeIcon", Icon: EyeIcon },
+  { name: "InfoIcon", Icon: InfoIcon },
+  { name: "SuccessIcon", Icon: SuccessIcon },
+  { name: "WarningIcon", Icon: WarningIcon },
+  { name: "ErrorIcon", Icon: ErrorIcon },
+  { name: "LoaderIcon", Icon: LoaderIcon },
+  { name: "GripVerticalIcon", Icon: GripVerticalIcon },
+  { name: "TrendUpIcon", Icon: TrendUpIcon },
+  { name: "TrendDownIcon", Icon: TrendDownIcon },
+];
+
+# Icons
+
+`@quickadui/icons` re-exports a curated set of [Lucide](https://lucide.dev)
+icons under stable QuickadUI names, plus a couple of QuickadUI-original
+glyphs — a consumer never imports `lucide-react` directly. This list grows
+incrementally as components need new icons; it isn't meant to cover all of
+Lucide, just what QuickadUI's own components use plus a handful of
+generically useful ones.
+
+<div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+  {iconEntries.map(({ name, Icon }) => (
+    <div key={name} className="flex flex-col items-center gap-2 rounded-md border border-neutral-6 p-3">
+      <Icon size={20} />
+      <span className="text-center text-xs text-neutral-9">{name}</span>
+    </div>
+  ))}
+</div>
+
+<PropsTable
+  rows={[
+    { name: "size", type: "number | string", default: "24", description: "Icon width/height." },
+    { name: "color", type: "string", default: '"currentColor"', description: "Stroke color — inherits text color by default." },
+    { name: "strokeWidth", type: "number", default: "2", description: "Stroke thickness." },
+  ]}
+/>
+
+Every icon here is purely decorative unless it's the only content of an
+interactive element (a close button, say) — pair it with `aria-hidden` when
+adjacent visible text already conveys the meaning, or with an accessible
+label (`aria-label`, or a visually-hidden `<span>`) when it isn't.

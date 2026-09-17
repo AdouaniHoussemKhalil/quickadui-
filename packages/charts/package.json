@@ -3,6 +3,23 @@
   "version": "0.0.0",
   "description": "Ready-to-use dashboard stat/chart components — StatCard, Sparkline, BarChart, LineChart, DonutChart — hand-rolled SVG, zero chart-library dependency. Pairs with @quickadui/shell's Widget/WidgetGrid but doesn't depend on it.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdouaniHoussemKhalil/quickadui-.git",
+    "directory": "packages/charts"
+  },
+  "homepage": "https://github.com/AdouaniHoussemKhalil/quickadui-/tree/main/packages/charts#readme",
+  "bugs": {
+    "url": "https://github.com/AdouaniHoussemKhalil/quickadui-/issues"
+  },
+  "author": "Houssem Adouani Khalil (https://github.com/AdouaniHoussemKhalil)",
+  "keywords": [
+    "react",
+    "charts",
+    "dataviz",
+    "svg",
+    "quickadui"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

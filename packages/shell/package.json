@@ -3,6 +3,23 @@
   "version": "0.0.0",
   "description": "Application-shell layout components — Navbar, a collapsible Sidebar, Footer, a DashboardLayout that composes them, and a drag-and-drop-sortable WidgetGrid/Widget pair for building a configurable dashboard — for an admin/dashboard-style app frame. Not to be confused with @quickadui/layout's generic Flex/Stack/Grid/Container/Section primitives.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdouaniHoussemKhalil/quickadui-.git",
+    "directory": "packages/shell"
+  },
+  "homepage": "https://github.com/AdouaniHoussemKhalil/quickadui-/tree/main/packages/shell#readme",
+  "bugs": {
+    "url": "https://github.com/AdouaniHoussemKhalil/quickadui-/issues"
+  },
+  "author": "Houssem Adouani Khalil (https://github.com/AdouaniHoussemKhalil)",
+  "keywords": [
+    "react",
+    "dashboard",
+    "sidebar",
+    "drag-and-drop",
+    "quickadui"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

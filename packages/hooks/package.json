@@ -3,6 +3,21 @@
   "version": "0.0.0",
   "description": "Framework-agnostic utility hooks (useDisclosure, useMediaQuery, useDebounce, and friends).",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdouaniHoussemKhalil/quickadui-.git",
+    "directory": "packages/hooks"
+  },
+  "homepage": "https://github.com/AdouaniHoussemKhalil/quickadui-/tree/main/packages/hooks#readme",
+  "bugs": {
+    "url": "https://github.com/AdouaniHoussemKhalil/quickadui-/issues"
+  },
+  "author": "Houssem Adouani Khalil (https://github.com/AdouaniHoussemKhalil)",
+  "keywords": [
+    "react",
+    "hooks",
+    "quickadui"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

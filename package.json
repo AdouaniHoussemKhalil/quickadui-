@@ -2,7 +2,17 @@
   "name": "quickadui-monorepo",
   "private": true,
   "version": "0.0.0",
+  "description": "A complete frontend ecosystem for building React applications — components, layouts, theming, hooks, icons, animation, and a CLI, all under one @quickadui/* namespace.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdouaniHoussemKhalil/quickadui-.git"
+  },
+  "homepage": "https://github.com/AdouaniHoussemKhalil/quickadui-#readme",
+  "bugs": {
+    "url": "https://github.com/AdouaniHoussemKhalil/quickadui-/issues"
+  },
+  "author": "Houssem Adouani Khalil (https://github.com/AdouaniHoussemKhalil)",
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",

@@ -1,8 +1,25 @@
 {
   "name": "@quickadui/layout",
   "version": "0.0.0",
-  "description": "Layout building blocks \u2014 Grid, Flex, Stack, Container, Section, Page Container.",
+  "description": "Layout building blocks — Grid, Flex, Stack, Container, Section, Page Container.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdouaniHoussemKhalil/quickadui-.git",
+    "directory": "packages/layout"
+  },
+  "homepage": "https://github.com/AdouaniHoussemKhalil/quickadui-/tree/main/packages/layout#readme",
+  "bugs": {
+    "url": "https://github.com/AdouaniHoussemKhalil/quickadui-/issues"
+  },
+  "author": "Houssem Adouani Khalil (https://github.com/AdouaniHoussemKhalil)",
+  "keywords": [
+    "react",
+    "layout",
+    "flexbox",
+    "grid",
+    "quickadui"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

@@ -3,6 +3,22 @@
   "version": "0.0.0",
   "description": "cn(), formatters, and shared type helpers used across every other package.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdouaniHoussemKhalil/quickadui-.git",
+    "directory": "packages/utils"
+  },
+  "homepage": "https://github.com/AdouaniHoussemKhalil/quickadui-/tree/main/packages/utils#readme",
+  "bugs": {
+    "url": "https://github.com/AdouaniHoussemKhalil/quickadui-/issues"
+  },
+  "author": "Houssem Adouani Khalil (https://github.com/AdouaniHoussemKhalil)",
+  "keywords": [
+    "react",
+    "utilities",
+    "clsx",
+    "quickadui"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

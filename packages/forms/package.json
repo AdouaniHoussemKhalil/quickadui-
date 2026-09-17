@@ -3,6 +3,23 @@
   "version": "0.0.0",
   "description": "Form field components (Input, Textarea, Select, Checkbox, Switch, RadioGroup, Label) plus a React Hook Form + Zod bindings layer (Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage).",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdouaniHoussemKhalil/quickadui-.git",
+    "directory": "packages/forms"
+  },
+  "homepage": "https://github.com/AdouaniHoussemKhalil/quickadui-/tree/main/packages/forms#readme",
+  "bugs": {
+    "url": "https://github.com/AdouaniHoussemKhalil/quickadui-/issues"
+  },
+  "author": "Houssem Adouani Khalil (https://github.com/AdouaniHoussemKhalil)",
+  "keywords": [
+    "react",
+    "forms",
+    "react-hook-form",
+    "zod",
+    "quickadui"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

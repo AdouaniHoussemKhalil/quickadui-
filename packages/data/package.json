@@ -3,6 +3,22 @@
   "version": "0.0.0",
   "description": "Table, Pagination, Timeline, Tree View, and Stepper — data-display and multi-step navigation components. Tabs/Accordion ship in @quickadui/core instead; a sortable/filterable Data Grid is out of scope for now (see README).",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdouaniHoussemKhalil/quickadui-.git",
+    "directory": "packages/data"
+  },
+  "homepage": "https://github.com/AdouaniHoussemKhalil/quickadui-/tree/main/packages/data#readme",
+  "bugs": {
+    "url": "https://github.com/AdouaniHoussemKhalil/quickadui-/issues"
+  },
+  "author": "Houssem Adouani Khalil (https://github.com/AdouaniHoussemKhalil)",
+  "keywords": [
+    "react",
+    "table",
+    "data-display",
+    "quickadui"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

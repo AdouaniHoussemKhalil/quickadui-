@@ -1,8 +1,24 @@
 {
   "name": "@quickadui/config",
   "version": "0.0.0",
-  "description": "Shared tsconfig and Tailwind preset consumed by every QuickadUI package. See Blueprint \u00a714.",
+  "description": "Shared tsconfig and Tailwind preset consumed by every QuickadUI package. See Blueprint §14.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdouaniHoussemKhalil/quickadui-.git",
+    "directory": "packages/config"
+  },
+  "homepage": "https://github.com/AdouaniHoussemKhalil/quickadui-/tree/main/packages/config#readme",
+  "bugs": {
+    "url": "https://github.com/AdouaniHoussemKhalil/quickadui-/issues"
+  },
+  "author": "Houssem Adouani Khalil (https://github.com/AdouaniHoussemKhalil)",
+  "keywords": [
+    "typescript",
+    "tsconfig",
+    "biome",
+    "quickadui"
+  ],
   "private": false,
   "files": [
     "tsconfig",

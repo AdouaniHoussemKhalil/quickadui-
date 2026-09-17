@@ -1,8 +1,25 @@
 {
   "name": "@quickadui/tokens",
   "version": "0.0.0",
-  "description": "Design tokens \u2014 the single source of truth for color, space, type and motion.",
+  "description": "Design tokens — the single source of truth for color, space, type and motion.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdouaniHoussemKhalil/quickadui-.git",
+    "directory": "packages/tokens"
+  },
+  "homepage": "https://github.com/AdouaniHoussemKhalil/quickadui-/tree/main/packages/tokens#readme",
+  "bugs": {
+    "url": "https://github.com/AdouaniHoussemKhalil/quickadui-/issues"
+  },
+  "author": "Houssem Adouani Khalil (https://github.com/AdouaniHoussemKhalil)",
+  "keywords": [
+    "react",
+    "design-tokens",
+    "quickadui",
+    "oklch",
+    "color-scale"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

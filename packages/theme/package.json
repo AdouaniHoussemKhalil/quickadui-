@@ -1,8 +1,25 @@
 {
   "name": "@quickadui/theme",
   "version": "0.0.0",
-  "description": "ThemeProvider, the CSS-variable engine, and the Tailwind v4 @theme integration \u2014 see Blueprint \u00a77.",
+  "description": "ThemeProvider, the CSS-variable engine, and the Tailwind v4 @theme integration — see Blueprint §7.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdouaniHoussemKhalil/quickadui-.git",
+    "directory": "packages/theme"
+  },
+  "homepage": "https://github.com/AdouaniHoussemKhalil/quickadui-/tree/main/packages/theme#readme",
+  "bugs": {
+    "url": "https://github.com/AdouaniHoussemKhalil/quickadui-/issues"
+  },
+  "author": "Houssem Adouani Khalil (https://github.com/AdouaniHoussemKhalil)",
+  "keywords": [
+    "react",
+    "theming",
+    "dark-mode",
+    "css-variables",
+    "quickadui"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

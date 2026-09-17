@@ -1,8 +1,25 @@
 {
   "name": "create-quickadui",
   "version": "0.0.0",
-  "description": "create-quickadui \u2014 scaffolds a Vite + React + Tailwind v4 project (`quickadui init`) and installs QuickadUI packages into it (`quickadui add`). Editing an existing project's CSS is left to the person (see README) \u2014 narrower than the original framework-detection scope in Blueprint \u00a74/\u00a79.",
+  "description": "create-quickadui — scaffolds a Vite + React + Tailwind v4 project (`quickadui init`) and installs QuickadUI packages into it (`quickadui add`). Editing an existing project's CSS is left to the person (see README) — narrower than the original framework-detection scope in Blueprint §4/§9.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdouaniHoussemKhalil/quickadui-.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/AdouaniHoussemKhalil/quickadui-/tree/main/packages/cli#readme",
+  "bugs": {
+    "url": "https://github.com/AdouaniHoussemKhalil/quickadui-/issues"
+  },
+  "author": "Houssem Adouani Khalil (https://github.com/AdouaniHoussemKhalil)",
+  "keywords": [
+    "cli",
+    "scaffold",
+    "vite",
+    "react",
+    "quickadui"
+  ],
   "type": "module",
   "bin": {
     "quickadui": "./dist/index.js"

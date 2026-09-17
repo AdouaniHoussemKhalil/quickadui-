@@ -53,7 +53,15 @@ function useTreeViewContext(): TreeViewContextValue {
   return context;
 }
 
-export interface TreeViewProps extends Omit<ComponentProps<"ul">, "onSelect"> {
+// `<div>`, not `<ul>` — Biome's `a11y/noNoninteractiveElementToInteractiveRole`
+// flags a `<ul>` carrying the (interactive/widget) `role="tree"`, because a
+// `<ul>` already has its own strong implicit "list" semantics that the
+// browser/AT would have to override. A plain `<div>` has no implicit role
+// of its own, so layering `role="tree"` (and, on `TreeViewItem` below,
+// `role="group"`) onto it is exactly what Biome's own suggested fix
+// recommends, and it's how most real accessible tree implementations
+// (Radix, Reach UI, ...) do this for the same reason.
+export interface TreeViewProps extends Omit<ComponentProps<"div">, "onSelect"> {
   /** Uncontrolled starting set of expanded node ids — ignored once `expandedIds` is passed (controlled mode). */
   defaultExpandedIds?: string[];
   /** Controlled expanded-node-id set. Pass together with `onExpandedIdsChange` to drive it from outside. */
@@ -98,7 +106,7 @@ export function TreeView({
 
   return (
     <TreeViewContext.Provider value={{ expandedIds, toggle, selectedId, onSelect }}>
-      <ul
+      <div
         role="tree"
         data-slot="tree-view"
         className={cn("flex flex-col gap-0.5 text-sm", className)}
@@ -196,9 +204,9 @@ export function TreeViewItem({
         <span className="truncate">{label}</span>
       </div>
       {hasChildren && expanded && (
-        <ul role="group" className="ml-4 flex flex-col gap-0.5 border-l border-neutral-6 pl-2">
+        <div role="group" className="ml-4 flex flex-col gap-0.5 border-l border-neutral-6 pl-2">
           {children}
-        </ul>
+        </div>
       )}
     </li>
   );

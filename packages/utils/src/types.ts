@@ -6,4 +6,9 @@
  * identical, so this changes nothing about what's assignable at runtime or
  * compile time.
  */
+// biome-ignore lint/complexity/noBannedTypes: the trailing `& {}` is
+// intentional, not accidental — it's what forces TypeScript to eagerly
+// flatten the mapped type into a plain object shape in hover tooltips.
+// Removing it (to satisfy the rule) would defeat the only reason this
+// helper exists.
 export type Prettify<T> = { [K in keyof T]: T[K] } & {};

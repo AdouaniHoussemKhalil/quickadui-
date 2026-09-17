@@ -204,6 +204,14 @@ export function TreeViewItem({
         <span className="truncate">{label}</span>
       </div>
       {hasChildren && expanded && (
+        // biome-ignore lint/a11y/useSemanticElements: Biome's generic
+        // role→element mapping suggests <fieldset> for role="group", but
+        // that's a form-grouping element (default border/padding, meant
+        // for form controls) — not what's being grouped here. A treeitem's
+        // nested children wrapped in role="group" is the pattern the
+        // WAI-ARIA Authoring Practices Guide itself prescribes for
+        // TreeView (see the "Alphabetical Tree" example), so this stays a
+        // plain <div>.
         <div role="group" className="ml-4 flex flex-col gap-0.5 border-l border-neutral-6 pl-2">
           {children}
         </div>

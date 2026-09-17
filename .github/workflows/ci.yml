@@ -9,9 +9,19 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
+      # fetch-depth: 0 (full history, every branch) is required here, not
+      # just a couple of commits: the build step below compares against
+      # `origin/main` via `--filter=...[origin/main]`, and on a
+      # `pull_request` run actions/checkout only fetches the PR's own ref
+      # by default — `origin/main` doesn't exist locally at all unless the
+      # whole history/all branches are fetched. A shallow fetch-depth (we
+      # had 2) made that comparison fail immediately with exit code 1 on
+      # any PR whose base isn't in the shallow history — e.g. the
+      # "Version Packages" PR that changesets/action opens, which broke
+      # its CI check. Full history is fine here; this is a small repo.
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
  
       - uses: pnpm/action-setup@v4
  
@@ -25,3 +35,4 @@ jobs:
       # Turborepo builds/tests only what changed relative to main —
       # see the QuickadUI Blueprint, §12.
       - run: pnpm turbo run lint typecheck test build --filter=...[origin/main]
+ 

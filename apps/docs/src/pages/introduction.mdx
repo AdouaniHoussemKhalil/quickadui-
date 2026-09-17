@@ -1,0 +1,76 @@
+import { Badge, Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@quickadui/core";
+import { Example } from "../components/Example";
+
+# QuickadUI
+
+A complete frontend ecosystem for building React applications — components,
+layouts, theming, hooks, icons, animation, and a CLI, all under one
+`@quickadui/*` namespace. This site documents the five packages most people
+reach for first.
+
+<Badge variant="soft">Docs MVP</Badge> <Badge variant="outline">Hand-written pages</Badge>
+
+## What's here, and what isn't yet
+
+This is the MVP pass of `apps/docs`: a real, running Vite + MDX site with
+navigation, a layout, and a handful of hand-written pages covering
+`tokens`, `primitives`, `core`, `forms`, and `data`. Every example on these
+pages renders the real, built `@quickadui/*` packages — this site
+dogfoods itself the same way `apps/playground` does.
+
+Two things are deliberately **not** built yet, and every prop table below
+is hand-written because of it:
+
+- **Generated prop tables.** Parsing real TypeScript source into prop
+  tables automatically is planned (see `ARCHITECTURE.md`, §10), but this
+  pass proves out the site's structure first with hand-written tables.
+- **Live Sandpack playgrounds.** Examples here render live but aren't
+  editable in the browser yet.
+
+Later rounds also add versioning per published major and a guides layer
+("Migrating from Chakra/MUI/Mantine"). None of that is in this build.
+
+## Install
+
+```bash
+pnpm add @quickadui/core @quickadui/tokens @quickadui/theme
+```
+
+Wrap your app in `ThemeProvider` (from `@quickadui/theme`) and import its
+generated CSS once, alongside Tailwind v4 itself — see this site's own
+`src/main.tsx` and `src/index.css` for a working example of both.
+
+<Example
+  code={`import { Button } from "@quickadui/core";
+
+<Button variant="solid">Get started</Button>`}
+>
+  <Button variant="solid">Get started</Button>
+</Example>
+
+## Where to go next
+
+<div className="grid gap-4 sm:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Tokens</CardTitle>
+      <CardDescription>Color, space, type, and motion — the source of truth every other package builds on.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button asChild variant="outline" size="sm">
+        <a href="#tokens">View tokens</a>
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Core</CardTitle>
+      <CardDescription>Button, Card, Badge, Alert, and the rest of the everyday visual vocabulary.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button asChild variant="outline" size="sm">
+        <a href="#core">View core</a>
+      </Button>
+    </CardContent>
+  </Card>
+</div>

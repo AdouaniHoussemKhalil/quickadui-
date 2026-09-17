@@ -1,0 +1,154 @@
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Alert, AlertDescription, AlertTitle, Avatar, AvatarFallback, AvatarImage, Badge, Button, Spinner, Tabs, TabsContent, TabsList, TabsTrigger, Typography } from "@quickadui/core";
+import { Example } from "../components/Example";
+import { PropsTable } from "../components/PropsTable";
+
+# Core
+
+`@quickadui/core` is the everyday visual vocabulary — buttons, cards,
+badges, alerts, and the rest of what most screens are built from. Every
+part here composes `@quickadui/primitives` underneath and ships real,
+default Tailwind styling (unlike most of `primitives` itself).
+
+## Button
+
+<Example
+  code={`<Button variant="solid">Solid</Button>
+<Button variant="soft">Soft</Button>
+<Button variant="outline">Outline</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="destructive">Destructive</Button>`}
+>
+  <Button variant="solid">Solid</Button>
+  <Button variant="soft">Soft</Button>
+  <Button variant="outline">Outline</Button>
+  <Button variant="ghost">Ghost</Button>
+  <Button variant="destructive">Destructive</Button>
+</Example>
+
+<Example
+  code={`<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>`}
+>
+  <Button size="sm">Small</Button>
+  <Button size="md">Medium</Button>
+  <Button size="lg">Large</Button>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"solid" | "soft" | "outline" | "ghost" | "destructive"', default: '"solid"', description: "Visual style." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Height, padding, and font size." },
+    { name: "asChild", type: "boolean", default: "false", description: "Merge these props onto the single child instead of rendering a <button>." },
+  ]}
+/>
+
+## Badge
+
+<Example
+  code={`<Badge variant="solid">Solid</Badge>
+<Badge variant="soft">Soft</Badge>
+<Badge variant="outline">Outline</Badge>
+<Badge variant="success">Success</Badge>
+<Badge variant="warning">Warning</Badge>
+<Badge variant="danger">Danger</Badge>`}
+>
+  <Badge variant="solid">Solid</Badge>
+  <Badge variant="soft">Soft</Badge>
+  <Badge variant="outline">Outline</Badge>
+  <Badge variant="success">Success</Badge>
+  <Badge variant="warning">Warning</Badge>
+  <Badge variant="danger">Danger</Badge>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"solid" | "soft" | "outline" | "success" | "warning" | "danger"', default: '"soft"', description: "Visual style." },
+    { name: "asChild", type: "boolean", default: "false", description: "Merge these props onto the single child instead of rendering a <span>." },
+  ]}
+/>
+
+## Alert
+
+<Example>
+  <Alert variant="warning" className="w-full">
+    <AlertTitle>Heads up</AlertTitle>
+    <AlertDescription>This is what a warning alert looks like.</AlertDescription>
+  </Alert>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"default" | "success" | "warning" | "danger"', default: '"default"', description: "Visual style." },
+  ]}
+/>
+
+## Spinner
+
+<Example>
+  <Spinner size="sm" />
+  <Spinner size="md" />
+  <Spinner size="lg" />
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Diameter." },
+    { name: "label", type: "string", default: '"Loading"', description: "Announced to screen readers — the only accessible description, since the SVG itself is aria-hidden." },
+  ]}
+/>
+
+## Avatar
+
+<Example>
+  <Avatar>
+    <AvatarImage src="https://i.pravatar.cc/80" alt="" />
+    <AvatarFallback>QA</AvatarFallback>
+  </Avatar>
+</Example>
+
+## Tabs
+
+<Example>
+  <Tabs defaultValue="a">
+    <TabsList>
+      <TabsTrigger value="a">Account</TabsTrigger>
+      <TabsTrigger value="b">Password</TabsTrigger>
+    </TabsList>
+    <TabsContent value="a">Account settings.</TabsContent>
+    <TabsContent value="b">Password settings.</TabsContent>
+  </Tabs>
+</Example>
+
+## Accordion
+
+<Example>
+  <Accordion type="single" collapsible className="w-full">
+    <AccordionItem value="item-1">
+      <AccordionTrigger>What's different from Primitives' Accordion?</AccordionTrigger>
+      <AccordionContent>
+        This one ships QuickadUI's default chrome (border, spacing, the
+        rotating chevron) — the primitives version renders none of that.
+      </AccordionContent>
+    </AccordionItem>
+  </Accordion>
+</Example>
+
+## Typography
+
+<Example>
+  <div className="flex flex-col gap-2">
+    <Typography variant="h3">Heading 3</Typography>
+    <Typography variant="lead">A lead paragraph, slightly larger and muted.</Typography>
+    <Typography variant="body">Regular body text.</Typography>
+    <Typography variant="muted">Muted, smaller text.</Typography>
+  </div>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"h1" | "h2" | "h3" | "h4" | "body" | "lead" | "small" | "muted"', default: '"body"', description: "Sets both the styling and the default HTML tag." },
+    { name: "as", type: "ElementType", description: "Override the rendered tag independent of variant's default." },
+    { name: "asChild", type: "boolean", default: "false", description: "Merge these props onto the single child instead of rendering the default element." },
+  ]}
+/>

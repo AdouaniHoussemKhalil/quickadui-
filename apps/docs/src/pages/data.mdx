@@ -1,0 +1,136 @@
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Stepper, StepperDescription, StepperIndicator, StepperItem, StepperSeparator, StepperTitle, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator, TreeView, TreeViewItem } from "@quickadui/data";
+import { Example } from "../components/Example";
+import { PropsTable } from "../components/PropsTable";
+
+# Data
+
+`@quickadui/data` covers the components a real screen full of records
+tends to need: tables, pagination, multi-step flows, timelines, and tree
+views.
+
+## Table
+
+<Example>
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Status</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>Ada Lovelace</TableCell>
+        <TableCell>Active</TableCell>
+      </TableRow>
+      <TableRow selected>
+        <TableCell>Grace Hopper</TableCell>
+        <TableCell>Selected</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "selected", type: "boolean", description: "TableRow only — highlights the row. A plain boolean prop, not a raw cva variant key." },
+  ]}
+/>
+
+## Pagination
+
+<Example>
+  <Pagination>
+    <PaginationContent>
+      <PaginationItem>
+        <PaginationPrevious href="#" />
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink href="#">1</PaginationLink>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink href="#" isActive>2</PaginationLink>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink href="#">3</PaginationLink>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationNext href="#" />
+      </PaginationItem>
+    </PaginationContent>
+  </Pagination>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "isActive", type: "boolean", default: "false", description: "PaginationLink only — marks the current page (also sets aria-current)." },
+  ]}
+/>
+
+## Stepper
+
+<Example>
+  <Stepper value={1} className="w-full">
+    <StepperItem step={0}>
+      <StepperIndicator>1</StepperIndicator>
+      <StepperTitle>Account</StepperTitle>
+    </StepperItem>
+    <StepperSeparator step={0} />
+    <StepperItem step={1}>
+      <StepperIndicator>2</StepperIndicator>
+      <StepperTitle>Profile</StepperTitle>
+    </StepperItem>
+    <StepperSeparator step={1} />
+    <StepperItem step={2}>
+      <StepperIndicator>3</StepperIndicator>
+      <StepperTitle>Review</StepperTitle>
+    </StepperItem>
+  </Stepper>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "value", type: "number", description: "The stepper's current 0-based step index. Steps before it read as complete, this one as active, the rest as upcoming." },
+    { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "Layout direction." },
+  ]}
+/>
+
+## Timeline
+
+<Example>
+  <Timeline className="w-full max-w-sm">
+    <TimelineItem>
+      <TimelineSeparator>
+        <TimelineDot variant="accent" />
+        <TimelineConnector />
+      </TimelineSeparator>
+      <TimelineContent>Order placed</TimelineContent>
+    </TimelineItem>
+    <TimelineItem>
+      <TimelineSeparator>
+        <TimelineDot variant="success" />
+      </TimelineSeparator>
+      <TimelineContent>Delivered</TimelineContent>
+    </TimelineItem>
+  </Timeline>
+</Example>
+
+## Tree view
+
+<Example>
+  <TreeView defaultExpandedIds={["src"]} className="w-full max-w-sm">
+    <TreeViewItem nodeId="src" label="src">
+      <TreeViewItem nodeId="index" label="index.ts" />
+      <TreeViewItem nodeId="app" label="App.tsx" />
+    </TreeViewItem>
+  </TreeView>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "defaultExpandedIds", type: "string[]", description: "Uncontrolled starting set of expanded node ids." },
+    { name: "expandedIds", type: "ReadonlySet<string>", description: "Controlled expanded-node-id set — pass with onExpandedIdsChange." },
+    { name: "selectedId", type: "string", description: "Controlled selected node id." },
+    { name: "onSelect", type: "(id: string) => void", description: "Called when a node row is clicked or activated with Enter/Space." },
+  ]}
+/>

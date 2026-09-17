@@ -1,0 +1,72 @@
+import { Accordion, AccordionContent, AccordionHeader, AccordionItem, AccordionTrigger, Tabs, TabsContent, TabsList, TabsTrigger } from "@quickadui/primitives";
+import { Example } from "../components/Example";
+import { PropsTable } from "../components/PropsTable";
+
+# Primitives
+
+`@quickadui/primitives` is a thin adapter layer over Radix UI — the *only*
+package in the monorepo that imports `radix-ui` directly. Everything above
+it (including `@quickadui/core`) imports from here instead, so a future
+headless-primitives-vendor swap only ever touches this one package.
+
+Most parts here render no visual chrome of their own — no hardcoded
+Tailwind classes, just a stable `data-slot` attribute for hooking your own
+styles onto. The example below adds its own minimal classes by hand, which
+is exactly what a consumer building directly on `primitives` (skipping
+`core`) is expected to do. For QuickadUI's own default, already-styled
+version of the same component, see the [Core](#core) page's `Accordion`.
+
+<Example>
+  <Accordion type="single" collapsible className="w-full max-w-sm">
+    <AccordionItem value="item-1" className="border-b border-neutral-6">
+      <AccordionHeader>
+        <AccordionTrigger className="flex w-full items-center justify-between py-3 text-sm font-medium">
+          Is it unstyled by default?
+        </AccordionTrigger>
+      </AccordionHeader>
+      <AccordionContent className="pb-3 text-sm text-neutral-11">
+        Yes — every part here gets a <code>data-slot</code>, nothing else.
+        Styling is <code>@quickadui/core</code>'s job.
+      </AccordionContent>
+    </AccordionItem>
+  </Accordion>
+</Example>
+
+A handful of parts *are* always-styled chrome rather than unstyled
+building blocks — `Tabs`, for instance, since its trigger is QuickadUI's
+own visible tab button, not a generic thing a consumer composes their own
+button into:
+
+<Example>
+  <Tabs defaultValue="one">
+    <TabsList>
+      <TabsTrigger value="one">One</TabsTrigger>
+      <TabsTrigger value="two">Two</TabsTrigger>
+    </TabsList>
+    <TabsContent value="one">First panel.</TabsContent>
+    <TabsContent value="two">Second panel.</TabsContent>
+  </Tabs>
+</Example>
+
+## All exported parts
+
+<PropsTable
+  rows={[
+    { name: "Accordion, AccordionItem, AccordionHeader, AccordionTrigger, AccordionContent", type: "component", description: "Collapsible sections. Every part gets a data-slot." },
+    { name: "AvatarRoot, AvatarImage, AvatarFallback", type: "component", description: "Image with a fallback for load failure/no image." },
+    { name: "CheckboxRoot, CheckboxIndicator", type: "component", description: "Tri-state (checked/unchecked/indeterminate) checkbox." },
+    { name: "ContextMenu*", type: "component", description: "Right-click menu — same part set as DropdownMenu." },
+    { name: "Dialog, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogDescription, DialogClose", type: "component", description: "Modal dialog. Unstyled — default styling and composition is @quickadui/overlays' job." },
+    { name: "DropdownMenu*", type: "component", description: "Menu triggered from a button, with items, checkboxes, radios, and submenus." },
+    { name: "Label", type: "component", description: "Accessible form label, pairs with the peer- state classes on form controls." },
+    { name: "Popover*", type: "component", description: "Non-modal floating panel anchored to a trigger." },
+    { name: "RadioGroupRoot, RadioGroupItem, RadioGroupIndicator", type: "component", description: "Single-select group of radio buttons." },
+    { name: "Select*", type: "component", description: "Listbox-style select. SelectTrigger/Content/Item all get a data-slot — QuickadUI's own default select chrome." },
+    { name: "Separator", type: "component", description: "Visual/semantic divider." },
+    { name: "Slot, Slottable", type: "component", description: "Merges props onto a single child instead of rendering a wrapper element — powers every asChild prop above this layer." },
+    { name: "SwitchRoot, SwitchThumb", type: "component", description: "Toggle switch." },
+    { name: "Tabs, TabsList, TabsTrigger, TabsContent", type: "component", description: "Tabbed panels. Always-styled chrome, unlike most of this package." },
+    { name: "Toast*", type: "component", description: "Toast notifications, with a viewport/provider." },
+    { name: "Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, TooltipPortal, TooltipArrow", type: "component", description: "Hover/focus tooltip. TooltipProvider is required once, high in the tree." },
+  ]}
+/>

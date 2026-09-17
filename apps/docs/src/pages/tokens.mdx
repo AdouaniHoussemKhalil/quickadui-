@@ -1,0 +1,92 @@
+import { duration, easing, fontSize, fontWeight, radius, spacing } from "@quickadui/tokens";
+import { PropsTable } from "../components/PropsTable";
+
+# Tokens
+
+`@quickadui/tokens` is the single source of truth for color, space, type,
+and motion (see `ARCHITECTURE.md`, §1 and §7). It renders nothing itself —
+it exports plain data and types. `@quickadui/theme` turns this into real
+CSS custom properties and a Tailwind v4 `@theme` block; every color swatch
+on this page is Tailwind classes backed by that generated CSS, not a
+direct read of the raw color math.
+
+## Color
+
+Every semantic scale (`accent`, `neutral`, `success`, `warning`, `danger`)
+has 12 steps, light and dark. Step 9 is always the solid brand color, 3/4
+the soft interactive background, 7 the outline border, 11 the text color
+at that intensity.
+
+<div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+  <div className="rounded-md bg-accent-9 p-3 text-center text-xs font-medium text-white">accent-9</div>
+  <div className="rounded-md bg-neutral-9 p-3 text-center text-xs font-medium text-white">neutral-9</div>
+  <div className="rounded-md bg-success-9 p-3 text-center text-xs font-medium text-white">success-9</div>
+  <div className="rounded-md bg-danger-9 p-3 text-center text-xs font-medium text-white">danger-9</div>
+</div>
+
+Runtime color overrides (`setColor`, `resetColor`) live on `useTheme()`
+from `@quickadui/theme` — see that package's own docs for the full
+API once this site covers it.
+
+## Spacing
+
+A 4px base unit. Values below are read directly from `spacing` at
+render time — real data, not copy-pasted numbers.
+
+<div className="mb-6 flex flex-wrap items-end gap-3">
+  {[1, 2, 4, 6, 8, 12].map((key) => (
+    <div key={key} className="flex flex-col items-center gap-1">
+      <div
+        className="rounded-sm bg-accent-9"
+        style={{ width: spacing[key], height: spacing[key] }}
+      />
+      <span className="text-xs text-neutral-9">{key}</span>
+    </div>
+  ))}
+</div>
+
+## Radius
+
+<div className="mb-6 flex flex-wrap gap-4">
+  {Object.keys(radius).map((key) => (
+    <div key={key} className="flex flex-col items-center gap-1">
+      <div
+        className="size-12 border-2 border-accent-9"
+        style={{ borderRadius: radius[key] }}
+      />
+      <span className="text-xs text-neutral-9">{key}</span>
+    </div>
+  ))}
+</div>
+
+## Type scale
+
+<PropsTable
+  rows={Object.entries(fontSize).map(([key, value]) => ({
+    name: key,
+    type: "{ size, lineHeight }",
+    default: `${value.size}px / ${value.lineHeight}px`,
+    description: "Font size and line height, in px.",
+  }))}
+/>
+
+Font weights: {Object.entries(fontWeight).map(([key, value]) => `${key} (${value})`).join(", ")}.
+
+## Motion
+
+<PropsTable
+  rows={[
+    ...Object.entries(duration).map(([key, value]) => ({
+      name: `duration.${key}`,
+      type: "number",
+      default: `${value}ms`,
+      description: "Animation/transition duration.",
+    })),
+    ...Object.entries(easing).map(([key, value]) => ({
+      name: `easing.${key}`,
+      type: "string",
+      default: value,
+      description: "CSS cubic-bezier() easing curve.",
+    })),
+  ]}
+/>

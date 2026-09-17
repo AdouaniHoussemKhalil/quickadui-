@@ -2,7 +2,34 @@
   "name": "docs",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "echo 'apps/docs scaffold only \u2014 build begins in Roadmap Phase 1, see Blueprint \u00a710' && exit 0"
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check ."
+  },
+  "dependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "@quickadui/theme": "workspace:*",
+    "@quickadui/tokens": "workspace:*",
+    "@quickadui/primitives": "workspace:*",
+    "@quickadui/core": "workspace:*",
+    "@quickadui/forms": "workspace:*",
+    "@quickadui/data": "workspace:*",
+    "@quickadui/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@quickadui/config": "workspace:*",
+    "typescript": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "vite": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "tailwindcss": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@mdx-js/rollup": "^3.1.0"
   }
 }

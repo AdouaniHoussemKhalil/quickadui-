@@ -1,0 +1,99 @@
+import { Checkbox, Input, Label, RadioGroup, RadioGroupItem, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Switch, Textarea } from "@quickadui/forms";
+import { Example } from "../components/Example";
+import { PropsTable } from "../components/PropsTable";
+
+# Forms
+
+`@quickadui/forms` covers everyday form controls, plus a `Form`/`FormField`
+layer (re-exporting `react-hook-form`, with a `zodResolver` re-export for
+`zod` schemas) for wiring them up with validation. The examples below show
+the controls standalone; a full `Form` + `zod` walkthrough is planned for
+a later pass of this page.
+
+## Input
+
+<Example
+  code={`<Input placeholder="you@example.com" />
+<Input inputSize="sm" placeholder="Small" />
+<Input state="error" placeholder="Invalid" />`}
+>
+  <Input placeholder="you@example.com" />
+  <Input inputSize="sm" placeholder="Small" />
+  <Input state="error" placeholder="Invalid" />
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "inputSize", type: '"sm" | "md" | "lg"', default: '"md"', description: 'Named inputSize, not size — the native <input> element already has its own size attribute (visible character width).' },
+    { name: "state", type: '"default" | "error"', default: '"default"', description: "Validation state styling." },
+  ]}
+/>
+
+## Textarea
+
+<Example>
+  <Textarea placeholder="Write something…" className="w-full max-w-sm" />
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "state", type: '"default" | "error"', default: '"default"', description: "Validation state styling." },
+  ]}
+/>
+
+## Checkbox
+
+<Example>
+  <div className="flex items-center gap-2">
+    <Checkbox id="terms" />
+    <Label htmlFor="terms">Accept terms and conditions</Label>
+  </div>
+</Example>
+
+## Switch
+
+<Example>
+  <div className="flex items-center gap-2">
+    <Switch id="notifications" />
+    <Label htmlFor="notifications">Enable notifications</Label>
+  </div>
+</Example>
+
+## Radio group
+
+<Example>
+  <RadioGroup defaultValue="a">
+    <div className="flex items-center gap-2">
+      <RadioGroupItem value="a" id="r-a" />
+      <Label htmlFor="r-a">Option A</Label>
+    </div>
+    <div className="flex items-center gap-2">
+      <RadioGroupItem value="b" id="r-b" />
+      <Label htmlFor="r-b">Option B</Label>
+    </div>
+  </RadioGroup>
+</Example>
+
+## Select
+
+<Example>
+  <Select>
+    <SelectTrigger className="w-48">
+      <SelectValue placeholder="Pick a fruit" />
+    </SelectTrigger>
+    <SelectContent>
+      <SelectItem value="apple">Apple</SelectItem>
+      <SelectItem value="banana">Banana</SelectItem>
+      <SelectItem value="cherry">Cherry</SelectItem>
+    </SelectContent>
+  </Select>
+</Example>
+
+## Form + validation
+
+`Form` is `react-hook-form`'s own `FormProvider` under QuickadUI's name;
+`FormField`/`FormItem`/`FormLabel`/`FormControl`/`FormDescription`/
+`FormMessage` wire up ids, `aria-*` attributes, and error display for you,
+the same pattern shadcn/ui's `Form` uses. Combine with `useForm` +
+`zodResolver` for schema validation. A worked example belongs on this page
+in a later pass, once this MVP's structure is proven out.

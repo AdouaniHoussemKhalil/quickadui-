@@ -1,0 +1,57 @@
+@import "tailwindcss";
+@import "@quickadui/theme/tokens.css";
+@import "@quickadui/theme/tailwind-theme.css";
+
+/*
+ * Same @source requirement as apps/playground/src/index.css (see that
+ * file's own comment for the full explanation): Tailwind's automatic
+ * content detection skips anything .gitignore'd (dist/node_modules),
+ * which is where these packages' compiled output lands once pnpm
+ * symlinks it into node_modules, so without an explicit @source their
+ * hardcoded Tailwind classes (`bg-accent-9`, `rounded-md`, ...) never get
+ * a matching rule generated. Scoped to just the packages this MVP
+ * actually renders — `@quickadui/tokens` exports plain data (no JSX), so
+ * it needs no @source. `primitives` is included defensively, same
+ * reasoning as playground's own comment, even though most of its parts
+ * currently carry no hardcoded classes of their own.
+ */
+@source "../../../packages/primitives/src";
+@source "../../../packages/core/src";
+@source "../../../packages/forms/src";
+@source "../../../packages/data/src";
+
+body {
+  @apply bg-neutral-1 text-neutral-12;
+}
+
+/*
+ * Minimal, dependency-free "prose" styling for the markdown output MDX
+ * compiles pages down to. Deliberately not @tailwindcss/typography (one
+ * more dependency this sandbox can't validate against real types with no
+ * npm registry access — see the project status doc's standing
+ * local-validation methodology) and deliberately no syntax highlighter for
+ * `<pre><code>` — both are a fixed, small enough rule set to hand-write,
+ * and a highlighter is the kind of thing better added once Sandpack lands
+ * (deferred past this MVP, same doc).
+ */
+.qa-prose h1 {
+  @apply mb-2 mt-0 scroll-m-20 text-4xl font-bold tracking-tight text-neutral-12;
+}
+.qa-prose h2 {
+  @apply mb-4 mt-10 scroll-m-20 border-b border-neutral-6 pb-2 text-2xl font-semibold tracking-tight text-neutral-12 first:mt-0;
+}
+.qa-prose h3 {
+  @apply mb-3 mt-8 scroll-m-20 text-xl font-semibold tracking-tight text-neutral-12;
+}
+.qa-prose p {
+  @apply mb-4 leading-7 text-neutral-11;
+}
+.qa-prose ul {
+  @apply mb-4 ml-6 list-disc [&>li]:mt-2;
+}
+.qa-prose a {
+  @apply font-medium text-accent-11 underline underline-offset-4;
+}
+.qa-prose > :first-child {
+  @apply mt-0;
+}

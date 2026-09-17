@@ -32,7 +32,23 @@ jobs:
  
       - run: pnpm install --frozen-lockfile
  
+      # Run once from the repo root, not per-package via `turbo run lint`.
+      # Each package's own "lint" script runs `biome check .` with its cwd
+      # set to that package's own directory (that's just how turbo/pnpm
+      # dispatch a workspace script) — and Biome 2.5.13 doesn't reliably
+      # apply the ROOT biome.json's settings when invoked that way: the
+      # formatter silently falls back to its own default (indentStyle:
+      # "tab", not this repo's configured "space"), and `biome-ignore`
+      # suppression comments stop attaching to the rule they're meant to
+      # suppress. Both symptoms disappear when cwd == the directory the
+      # config file actually lives in, which is exactly the case here,
+      # since Biome doesn't yet have real monorepo-awareness (nested
+      # configs resolved per package) — see biomejs/biome#2228. One
+      # repo-wide pass is also fast enough (well under a second for this
+      # whole tree) that losing per-package incrementality for lint alone
+      # isn't a real cost.
+      - run: pnpm exec biome check .
+ 
       # Turborepo builds/tests only what changed relative to main —
       # see the QuickadUI Blueprint, §12.
-      - run: pnpm turbo run lint typecheck test build --filter=...[origin/main]
- 
+      - run: pnpm turbo run typecheck test build --filter=...[origin/main]

@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useDebouncedValue } from "./use-debounced-value";
 
@@ -25,7 +25,9 @@ describe("useDebouncedValue", () => {
     );
 
     rerender({ value: "b" });
-    vi.advanceTimersByTime(199);
+    act(() => {
+      vi.advanceTimersByTime(199);
+    });
 
     expect(result.current).toBe("a");
   });
@@ -39,7 +41,9 @@ describe("useDebouncedValue", () => {
     );
 
     rerender({ value: "b" });
-    vi.advanceTimersByTime(200);
+    act(() => {
+      vi.advanceTimersByTime(200);
+    });
 
     expect(result.current).toBe("b");
   });
@@ -53,16 +57,24 @@ describe("useDebouncedValue", () => {
     );
 
     rerender({ value: "b" });
-    vi.advanceTimersByTime(100);
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
     rerender({ value: "c" });
-    vi.advanceTimersByTime(100);
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
     rerender({ value: "d" });
-    vi.advanceTimersByTime(100);
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
 
     // Each rerender restarted the 200ms window, so nothing has committed yet.
     expect(result.current).toBe("a");
 
-    vi.advanceTimersByTime(100);
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
 
     expect(result.current).toBe("d");
   });

@@ -1,6 +1,6 @@
 {
   "name": "@quickadui/shell",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Application-shell layout components — Navbar, a collapsible Sidebar, Footer, a DashboardLayout that composes them, and a drag-and-drop-sortable WidgetGrid/Widget pair for building a configurable dashboard — for an admin/dashboard-style app frame. Not to be confused with @quickadui/layout's generic Flex/Stack/Grid/Container/Section primitives.",
   "license": "MIT",
   "repository": {

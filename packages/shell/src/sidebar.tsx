@@ -170,8 +170,8 @@ export function SidebarTrigger({ className, onClick, ...props }: ComponentProps<
   // through here. Contrast with `@quickadui/data`'s `tree-view.tsx`, where
   // the event is only used internally (`.stopPropagation()`) and never
   // forwarded, so a narrow structural type is safe there. Pulled out to a
-  // named `const` (rather than inlined on the JSX attribute) so this
-  // biome-ignore reliably attaches to a plain statement.
+  // named `const` (rather than inlined on the JSX attribute) so the
+  // suppression directive below reliably attaches to a plain statement.
   // biome-ignore lint/suspicious/noExplicitAny: see comment above — must forward to the real MouseEventHandler<HTMLButtonElement> onClick prop
   const handleClick = (event: any) => {
     onClick?.(event);

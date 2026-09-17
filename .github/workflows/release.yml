@@ -1,31 +1,44 @@
 name: Release
-
+ 
 on:
   push:
     branches: [main]
-
+ 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
-
+ 
+# changesets/action pushes a commit and opens/updates a "Version Packages"
+# PR — GitHub's repo-wide default for a new repo is read-only GITHUB_TOKEN
+# permissions, which would make both fail with "Resource not accessible by
+# integration". Declaring the permissions explicitly here covers that.
+#
+# It does NOT cover a second, separate gate: repo Settings → Actions →
+# General → "Workflow permissions" also has an "Allow GitHub Actions to
+# create and approve pull requests" checkbox, off by default, that blocks
+# PR creation outright ("GitHub Actions is not permitted to create or
+# approve pull requests") no matter what this file declares — confirmed
+# by hitting exactly that error on this repo's first real run. That one
+# has to be turned on by hand in the repo's settings; nothing in this
+# file can do it.
 permissions:
   contents: write
   pull-requests: write
-
+ 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+ 
       - uses: pnpm/action-setup@v4
-
+ 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
-
+ 
       - run: pnpm install --frozen-lockfile
       - run: pnpm turbo run build --filter="./packages/*"
-
+ 
       # Opens/updates the "Version Packages" PR from pending changesets;
       # only merging THAT PR publishes to npm — see Blueprint §12/§13.
       - uses: changesets/action@v1

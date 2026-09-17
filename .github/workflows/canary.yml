@@ -1,25 +1,25 @@
 name: Canary
-
+ 
 on:
   push:
     branches: [main]
-
+ 
 jobs:
   canary:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+ 
       - uses: pnpm/action-setup@v4
-
+ 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
-
+ 
       - run: pnpm install --frozen-lockfile
       - run: pnpm turbo run build --filter="./packages/*"
-
+ 
       # Publishes every merge to main under the `next` dist-tag, so early
       # adopters can install bleeding-edge fixes without a stable cut —
       # see the QuickadUI Blueprint, §12/§13.
@@ -27,3 +27,4 @@ jobs:
       - run: pnpm changeset publish --tag next --no-git-tag
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+ 

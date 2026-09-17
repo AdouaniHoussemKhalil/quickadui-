@@ -81,8 +81,9 @@ pnpm dev:playground
 - `apps/playground` — a live demo exercising every package with real
   props, including the drag-and-drop dashboard (`#dashboard`) and the
   runtime theme/color pickers.
-- `apps/docs` — documentation site, not built yet (see the roadmap in
-  `ARCHITECTURE.md`, §10 and §15).
+- `apps/docs` — documentation site, live at
+  **https://quickadui-docs-nu.vercel.app/** (deployed on Vercel, one page
+  per visual package plus `theme`; see `apps/docs/README.md`).
 - `templates/`, `examples/` — starter kits and per-package examples,
   populated as the roadmap's hardening phase reaches them.
 

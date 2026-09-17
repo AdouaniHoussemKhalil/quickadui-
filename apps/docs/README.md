@@ -3,6 +3,14 @@
 The dogfooded documentation site for QuickadUI (`ARCHITECTURE.md`, §10) —
 built with QuickadUI's own components, same as `apps/playground`.
 
+## Live
+
+**https://quickadui-docs-nu.vercel.app/** — deployed on Vercel, redeployed
+automatically on every push to the default branch. Hash-based routing (see
+`src/Root.tsx`'s comment) means no rewrite rules are needed on Vercel; the
+only manual setting is Root Directory = `apps/docs` (Vercel's Turborepo
+detection handles the rest).
+
 ## Scope
 
 A running Vite + MDX site with navigation, a layout, and one hand-written

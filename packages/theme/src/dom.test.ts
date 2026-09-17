@@ -71,8 +71,9 @@ describe("getThemeScript", () => {
     // The script is meant to run as an inline <script> tag, executing in
     // global scope with `document`/`localStorage` already available — the
     // Function constructor is the closest a unit test gets to that without
-    // actually injecting a <script> element into jsdom.
-    // biome-ignore lint/security/noGlobalEval: exercising the exact string ThemeScript inlines
+    // actually injecting a <script> element into jsdom. Biome's
+    // `noGlobalEval` rule only targets literal `eval()` calls, not `new
+    // Function(...)`, so there's nothing here for it to flag.
     new Function(script)();
   }
 

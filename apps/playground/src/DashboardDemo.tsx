@@ -177,7 +177,7 @@ export function DashboardDemo() {
           <SidebarTrigger />
           <NavbarBrand>QuickadUI</NavbarBrand>
           <NavbarActions>
-            <a href="#" className="text-sm text-neutral-11 hover:text-neutral-12">
+            <a href="#playground" className="text-sm text-neutral-11 hover:text-neutral-12">
               &larr; Back to component playground
             </a>
           </NavbarActions>

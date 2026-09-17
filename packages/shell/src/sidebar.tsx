@@ -154,31 +154,36 @@ export function SidebarNavItem({
 /** Toggles the nearest `<SidebarProvider>`'s collapsed state — typically placed in a `Navbar` (see `navbar.tsx`), not inside the `Sidebar` it controls. */
 export function SidebarTrigger({ className, onClick, ...props }: ComponentProps<"button">) {
   const { collapsed, toggle } = useSidebar();
+
+  // Annotated `any`, not a narrow structural type — this handler FORWARDS
+  // `event` onward to the real `onClick` prop (destructured from
+  // `ComponentProps<"button">` above) instead of only consuming it
+  // internally. Under the real `@types/react` used by consumers of this
+  // package, that destructured `onClick` is genuinely typed
+  // `MouseEventHandler<HTMLButtonElement>`, i.e.
+  // `(event: MouseEvent<HTMLButtonElement>) => void` — passing a narrower
+  // structural type or `unknown` there fails to compile (`unknown` is not
+  // assignable to a specific parameter type without a guard). `any` is the
+  // only annotation assignable to both that real signature and the local
+  // react-stub's permissive `[elemName: string]: any` typing (see
+  // `react.d.ts`) that a hardcoded `<button onClick={...}>` resolves
+  // through here. Contrast with `@quickadui/data`'s `tree-view.tsx`, where
+  // the event is only used internally (`.stopPropagation()`) and never
+  // forwarded, so a narrow structural type is safe there. Pulled out to a
+  // named `const` (rather than inlined on the JSX attribute) so this
+  // biome-ignore reliably attaches to a plain statement.
+  // biome-ignore lint/suspicious/noExplicitAny: see comment above — must forward to the real MouseEventHandler<HTMLButtonElement> onClick prop
+  const handleClick = (event: any) => {
+    onClick?.(event);
+    toggle();
+  };
+
   return (
     <button
       type="button"
       data-slot="sidebar-trigger"
       aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-      onClick={(event: any) => {
-        // Annotated `any`, not a narrow structural type — this handler
-        // FORWARDS `event` onward to the real `onClick` prop (destructured
-        // from `ComponentProps<"button">` above) instead of only consuming
-        // it internally. Under the real `@types/react` used by consumers
-        // of this package, that destructured `onClick` is genuinely typed
-        // `MouseEventHandler<HTMLButtonElement>`, i.e.
-        // `(event: MouseEvent<HTMLButtonElement>) => void` — passing a
-        // narrower structural type or `unknown` there fails to compile
-        // (`unknown` is not assignable to a specific parameter type
-        // without a guard). `any` is the only annotation assignable to
-        // both that real signature and the local react-stub's permissive
-        // `[elemName: string]: any` typing (see `react.d.ts`) that a
-        // hardcoded `<button onClick={...}>` resolves through here.
-        // Contrast with `@quickadui/data`'s `tree-view.tsx`, where the
-        // event is only used internally (`.stopPropagation()`) and never
-        // forwarded, so a narrow structural type is safe there.
-        onClick?.(event);
-        toggle();
-      }}
+      onClick={handleClick}
       className={cn(
         "inline-flex size-8 shrink-0 items-center justify-center rounded-md text-neutral-11 transition-colors hover:bg-neutral-3",
         className,

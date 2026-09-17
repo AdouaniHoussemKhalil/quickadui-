@@ -3,7 +3,7 @@
 // depend on any particular React types module. `PossibleRef` covers both
 // ref shapes React accepts: a callback, or a `{ current }` object.
 
-export type RefCallback<T> = (node: T | null) => void | (() => void);
+export type RefCallback<T> = (node: T | null) => undefined | (() => void);
 export type RefObject<T> = { current: T | null };
 export type PossibleRef<T> = RefCallback<T> | RefObject<T> | null | undefined;
 

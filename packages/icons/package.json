@@ -1,6 +1,6 @@
 {
   "name": "@quickadui/icons",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Wrapped Lucide icons behind one stable Icon contract; QuickadUI-original glyphs land incrementally.",
   "license": "MIT",
   "repository": {

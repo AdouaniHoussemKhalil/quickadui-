@@ -1,6 +1,6 @@
 {
   "name": "@quickadui/overlays",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Modal, Drawer — Context Menu and Toast/Notification land incrementally. Tooltip/Popover/Dropdown ship in @quickadui/core instead.",
   "license": "MIT",
   "repository": {

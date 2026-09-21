@@ -72,6 +72,18 @@ describe("resolveDependencyClosure", () => {
     expect(names.at(-1)).toBe("@quickadui/forms");
   });
 
+  it("resolves charts' closure (icons + utils, no external chart-library dependency)", () => {
+    const result = resolveDependencyClosure(["charts"]);
+    const names = result.map((pkg) => pkg.name);
+    expect(names).toContain("@quickadui/icons");
+    expect(names).toContain("@quickadui/utils");
+    expect(names.at(-1)).toBe("@quickadui/charts");
+    expect(findPackage("charts")?.externalDependencies.map((dep) => dep.name)).toEqual([
+      "react",
+      "react-dom",
+    ]);
+  });
+
   it("throws, naming the bad input, for an unknown package", () => {
     expect(() => resolveDependencyClosure(["not-a-real-package"])).toThrow(/not-a-real-package/);
   });

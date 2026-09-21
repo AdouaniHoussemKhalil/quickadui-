@@ -4,6 +4,7 @@ import {
   renderPackageJson,
   renderScaffoldFiles,
   renderTsconfigJson,
+  renderViteEnvDts,
 } from "./templates";
 
 describe("renderPackageJson", () => {
@@ -30,6 +31,12 @@ describe("renderIndexCss", () => {
   });
 });
 
+describe("renderViteEnvDts", () => {
+  it("references vite/client, giving side-effect CSS imports a type declaration", () => {
+    expect(renderViteEnvDts()).toContain('/// <reference types="vite/client" />');
+  });
+});
+
 describe("renderScaffoldFiles", () => {
   it("includes every expected file exactly once", () => {
     const files = renderScaffoldFiles("my-app");
@@ -44,6 +51,7 @@ describe("renderScaffoldFiles", () => {
       "src/main.tsx",
       "src/App.tsx",
       "src/index.css",
+      "src/vite-env.d.ts",
     ]);
     expect(new Set(paths).size).toBe(paths.length);
   });

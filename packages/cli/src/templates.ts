@@ -128,6 +128,11 @@ export function renderAppTsx(projectName: string): string {
 `;
 }
 
+export function renderViteEnvDts(): string {
+  return `/// <reference types="vite/client" />
+`;
+}
+
 export function renderIndexCss(): string {
   return `@import "tailwindcss";
 `;
@@ -186,5 +191,6 @@ export function renderScaffoldFiles(projectName: string): readonly ScaffoldFile[
     { path: "src/main.tsx", contents: renderMainTsx() },
     { path: "src/App.tsx", contents: renderAppTsx(projectName) },
     { path: "src/index.css", contents: renderIndexCss() },
+    { path: "src/vite-env.d.ts", contents: renderViteEnvDts() },
   ];
 }

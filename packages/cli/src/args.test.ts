@@ -50,4 +50,27 @@ describe("parseArgs", () => {
     const result = parseArgs(["init", "--verbose"]);
     expect(result.positionals).toEqual([]);
   });
+
+  it("parses `generate resource <Type>` as a command with two positionals", () => {
+    const result = parseArgs(["generate", "resource", "Product"]);
+    expect(result.command).toBe("generate");
+    expect(result.positionals).toEqual(["resource", "Product"]);
+  });
+
+  it("parses --fields, --endpoint and --api-base", () => {
+    const result = parseArgs([
+      "generate",
+      "resource",
+      "Product",
+      "--fields",
+      "title:string,price:number",
+      "--endpoint",
+      "products",
+      "--api-base",
+      "https://dummyjson.com",
+    ]);
+    expect(result.fields).toBe("title:string,price:number");
+    expect(result.endpoint).toBe("products");
+    expect(result.apiBase).toBe("https://dummyjson.com");
+  });
 });

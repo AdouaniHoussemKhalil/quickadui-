@@ -9,10 +9,10 @@
 // and isn't something an external project adds at runtime, so it's
 // deliberately left out of this registry.
 //
-// None of these packages are published to npm yet (every one of them is
-// still at `0.0.0`), so the version range recorded here is `^0.0.0` —
-// that's the only honest thing to write until a real release happens.
-// Update it here once real versions ship.
+// All of these packages are published to npm as of 2026-09-17, at
+// version 0.1.0 (verified against registry.npmjs.org, not assumed), so
+// the version range recorded here is `^0.1.0`. Update it here again
+// whenever a new minor/major ships.
 
 export interface ExternalDependency {
   readonly name: string;
@@ -51,7 +51,7 @@ const REACT_PEER_DEPENDENCIES: readonly ExternalDependency[] = [
 export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   {
     name: "@quickadui/tokens",
-    version: "^0.0.0",
+    version: "^0.1.0",
     description: "Design tokens — the single source of truth for color, space, type and motion.",
     quickaduiDependencies: [],
     externalDependencies: [],
@@ -59,7 +59,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/utils",
-    version: "^0.0.0",
+    version: "^0.1.0",
     description: "cn(), formatters, and shared type helpers used across every other package.",
     quickaduiDependencies: [],
     externalDependencies: [
@@ -70,7 +70,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/hooks",
-    version: "^0.0.0",
+    version: "^0.1.0",
     description:
       "Framework-agnostic utility hooks (useDisclosure, useMediaQuery, useDebounce, and friends).",
     quickaduiDependencies: [],
@@ -79,7 +79,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/theme",
-    version: "^0.0.0",
+    version: "^0.1.0",
     description: "ThemeProvider, the CSS-variable engine, and the Tailwind v4 @theme integration.",
     quickaduiDependencies: ["@quickadui/tokens"],
     externalDependencies: [],
@@ -87,7 +87,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/icons",
-    version: "^0.0.0",
+    version: "^0.1.0",
     description:
       "Wrapped Lucide icons behind one stable Icon contract; QuickadUI-original glyphs land incrementally.",
     quickaduiDependencies: [],
@@ -96,7 +96,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/primitives",
-    version: "^0.0.0",
+    version: "^0.1.0",
     description: "Unstyled behavior primitives. The only package that imports Radix UI directly.",
     quickaduiDependencies: [],
     externalDependencies: [{ name: "radix-ui", range: "^1.6.0" }],
@@ -104,7 +104,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/core",
-    version: "^0.0.0",
+    version: "^0.1.0",
     description:
       "Core components — Button, IconButton, Card, Badge, Avatar, Alert, Spinner, Skeleton, Typography.",
     quickaduiDependencies: ["@quickadui/primitives", "@quickadui/utils"],
@@ -113,7 +113,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/layout",
-    version: "^0.0.0",
+    version: "^0.1.0",
     description: "Layout building blocks — Grid, Flex, Stack, Container, Section, Page Container.",
     quickaduiDependencies: ["@quickadui/theme", "@quickadui/utils"],
     externalDependencies: [
@@ -125,7 +125,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/overlays",
-    version: "^0.0.0",
+    version: "^0.1.0",
     description: "Modal, Drawer — Context Menu and Toast/Notification land incrementally.",
     quickaduiDependencies: [
       "@quickadui/icons",
@@ -138,7 +138,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/data",
-    version: "^0.0.0",
+    version: "^0.1.0",
     description: "Table, Pagination, Timeline, Tree View, and Stepper.",
     quickaduiDependencies: ["@quickadui/icons", "@quickadui/theme", "@quickadui/utils"],
     externalDependencies: [{ name: "class-variance-authority", range: "^0.7.0" }],
@@ -146,7 +146,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/forms",
-    version: "^0.0.0",
+    version: "^0.1.0",
     description: "Form field components plus a React Hook Form + Zod bindings layer.",
     quickaduiDependencies: [
       "@quickadui/icons",
@@ -163,8 +163,31 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
     needsSourceDirective: true,
   },
   {
+    name: "@quickadui/shell",
+    version: "^0.1.0",
+    description:
+      "Navbar, collapsible Sidebar, Footer, DashboardLayout, and a drag-and-drop WidgetGrid/Widget pair for an admin/dashboard app frame.",
+    quickaduiDependencies: ["@quickadui/icons", "@quickadui/utils"],
+    externalDependencies: [
+      { name: "class-variance-authority", range: "^0.7.0" },
+      { name: "@dnd-kit/core", range: "^6.3.1" },
+      { name: "@dnd-kit/sortable", range: "^10.0.0" },
+      { name: "@dnd-kit/utilities", range: "^3.2.2" },
+    ],
+    needsSourceDirective: true,
+  },
+  {
+    name: "@quickadui/charts",
+    version: "^0.1.0",
+    description:
+      "Ready-to-use dashboard stat/chart components — StatCard, Sparkline, BarChart, LineChart, DonutChart — hand-rolled SVG, zero chart-library dependency. Pairs with @quickadui/shell's Widget/WidgetGrid but doesn't depend on it.",
+    quickaduiDependencies: ["@quickadui/icons", "@quickadui/utils"],
+    externalDependencies: [],
+    needsSourceDirective: true,
+  },
+  {
     name: "@quickadui/animation",
-    version: "^0.0.0",
+    version: "^0.1.0",
     description: "Motion presets, reusable animation variants, and a Reveal convenience component.",
     quickaduiDependencies: [],
     externalDependencies: [{ name: "motion", range: "^13.4.0" }],

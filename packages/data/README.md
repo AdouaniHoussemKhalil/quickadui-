@@ -33,6 +33,11 @@ same spirit as `@quickadui/layout`.
   should show — the actual hard part of building pagination UI. None of
   the components call it for you (there's no one-size-fits-all page-click
   handler to bake in) — see the usage example below for how they compose.
+  `PaginationPrevious`/`PaginationNext` are icon-only (a chevron, no
+  hardcoded "Previous"/"Next" text) so a consuming app isn't stuck with
+  an English word regardless of its own locale — pass your own
+  `aria-label` to translate/override the default ("Go to previous/next
+  page"), which is what's actually announced to assistive tech.
 - **`Stepper`** (`value`: 0-based current-step index, `orientation`) /
   **`StepperItem`** (`step`: this item's own 0-based index) /
   **`StepperIndicator`** (renders a check mark once complete, otherwise

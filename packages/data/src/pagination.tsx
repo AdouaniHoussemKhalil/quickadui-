@@ -68,31 +68,42 @@ export function PaginationLink({ className, isActive, ...props }: PaginationLink
   );
 }
 
+/**
+ * Icon-only "previous page" control — no "Previous" text baked in, so a
+ * consuming app isn't stuck with an English word regardless of its own
+ * locale. `aria-label` still carries the meaning for assistive tech; it's
+ * set before `{...props}` so a caller can translate/override it by
+ * passing their own `aria-label`. `mr-1` gives it a bit of breathing room
+ * from the first page link, which otherwise sits right against it (only
+ * `PaginationContent`'s own `gap-1` separated them before, and a
+ * same-size icon button reads as glued to a same-size page number at
+ * that distance — most noticeable on page 1, e.g. "‹1" with no gap
+ * beyond the shared 4px).
+ */
 export function PaginationPrevious({ className, ...props }: ComponentProps<"button">) {
   return (
     <button
       type="button"
       data-slot="pagination-previous"
       aria-label="Go to previous page"
-      className={cn(paginationLinkVariants({ state: "default" }), "gap-1 px-2.5", className)}
+      className={cn(paginationLinkVariants({ state: "default" }), "mr-1", className)}
       {...props}
     >
       <ChevronLeftIcon size={16} />
-      <span className="hidden sm:inline">Previous</span>
     </button>
   );
 }
 
+/** Icon-only "next page" control — see `PaginationPrevious` above for why. */
 export function PaginationNext({ className, ...props }: ComponentProps<"button">) {
   return (
     <button
       type="button"
       data-slot="pagination-next"
       aria-label="Go to next page"
-      className={cn(paginationLinkVariants({ state: "default" }), "gap-1 px-2.5", className)}
+      className={cn(paginationLinkVariants({ state: "default" }), "ml-1", className)}
       {...props}
     >
-      <span className="hidden sm:inline">Next</span>
       <ChevronRightIcon size={16} />
     </button>
   );

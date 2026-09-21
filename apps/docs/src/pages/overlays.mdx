@@ -61,6 +61,9 @@ here yet.
 `Modal`/`ModalTrigger`/`ModalClose` are thin passthroughs over
 `@quickadui/primitives`' `Dialog`/`DialogTrigger`/`DialogClose` — `asChild`
 merges onto the button above rather than wrapping it in an extra element.
+`ModalOverlay` (the dimmed backdrop) is rendered automatically inside
+`ModalContent` — reach for it directly only if you build your own, custom
+`ModalContent`.
 
 ## Drawer
 

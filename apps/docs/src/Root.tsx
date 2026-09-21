@@ -25,6 +25,7 @@ function useHashSlug(): string {
 // hand-written MDX page from `src/pages`.
 const PAGES = {
   introduction: lazy(() => import("./pages/introduction.mdx")),
+  "getting-started": lazy(() => import("./pages/getting-started.mdx")),
   tokens: lazy(() => import("./pages/tokens.mdx")),
   theme: lazy(() => import("./pages/theme.mdx")),
   primitives: lazy(() => import("./pages/primitives.mdx")),

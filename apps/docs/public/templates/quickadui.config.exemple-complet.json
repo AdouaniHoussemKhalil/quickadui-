@@ -1,0 +1,81 @@
+{
+  "project": {
+    "name": "My Shop",
+    "apiBase": "https://dummyjson.com"
+  },
+  "theme": {
+    "default": "dark",
+    "colors": {
+      "accent": "#2563EB"
+    }
+  },
+  "auth": {
+    "enabled": true,
+    "roles": ["admin", "user"]
+  },
+  "resources": [
+    {
+      "name": "product",
+      "endpoint": "products",
+      "fields": [
+        { "name": "title", "type": "string" },
+        { "name": "price", "type": "number" },
+        { "name": "stock", "type": "number" }
+      ],
+      "buttonIcons": {
+        "create": "Plus",
+        "edit": { "icon": "Settings", "showLabel": false },
+        "delete": { "icon": "Trash", "showLabel": false },
+        "save": "Check",
+        "cancel": { "icon": "Close", "showLabel": false }
+      },
+      "toasts": {
+        "createSuccess": "Product added.",
+        "updateSuccess": "Changes saved.",
+        "deleteSuccess": "Product removed.",
+        "deleteError": "Couldn't remove the product — try again."
+      },
+      "confirmDelete": "Delete this product? This can't be undone."
+    },
+    {
+      "name": "todo",
+      "endpoint": "todos",
+      "fields": [
+        { "name": "todo", "type": "string" },
+        { "name": "completed", "type": "boolean" }
+      ],
+      "toasts": {},
+      "confirmDelete": true
+    }
+  ],
+  "navbar": {
+    "enabled": true,
+    "brand": "My Shop",
+    "items": [
+      { "label": "Dashboard", "href": "#/", "icon": "TrendUp" },
+      { "label": "Products", "href": "#/products", "icon": "Settings" },
+      { "label": "Todos", "href": "#/todos", "icon": "Check" }
+    ]
+  },
+  "sidebar": {
+    "enabled": true,
+    "items": [
+      { "label": "Dashboard", "href": "#/", "icon": "TrendUp" },
+      { "label": "Products", "href": "#/products", "icon": "Settings" },
+      { "label": "Todos", "href": "#/todos", "icon": "Check" }
+    ]
+  },
+  "footer": {
+    "enabled": true
+  },
+  "dashboard": {
+    "enabled": true,
+    "route": "#/",
+    "columns": 3,
+    "widgets": [
+      { "id": "product-count", "type": "stat", "title": "Products", "resource": "product", "icon": "Settings" },
+      { "id": "todo-count", "type": "stat", "title": "Todos", "resource": "todo", "icon": "Check" },
+      { "id": "recent-todos", "type": "list", "title": "Recent todos", "resource": "todo", "limit": 5 }
+    ]
+  }
+}

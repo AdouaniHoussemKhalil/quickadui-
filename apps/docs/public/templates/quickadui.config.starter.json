@@ -1,0 +1,37 @@
+{
+  "project": {
+    "name": "Mon Projet",
+    "apiBase": "https://dummyjson.com"
+  },
+  "theme": {
+    "default": "system",
+    "colors": {
+      "accent": "#2563EB"
+    }
+  },
+  "auth": {
+    "enabled": false
+  },
+  "resources": [
+    {
+      "name": "product",
+      "fields": [
+        { "name": "title", "type": "string" },
+        { "name": "price", "type": "number" },
+        { "name": "inStock", "type": "boolean" }
+      ]
+    }
+  ],
+  "navbar": {
+    "enabled": true
+  },
+  "sidebar": {
+    "enabled": false
+  },
+  "footer": {
+    "enabled": true
+  },
+  "dashboard": {
+    "enabled": false
+  }
+}

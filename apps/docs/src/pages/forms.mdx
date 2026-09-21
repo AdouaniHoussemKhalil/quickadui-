@@ -1,4 +1,20 @@
-import { Checkbox, Input, Label, RadioGroup, RadioGroupItem, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Switch, Textarea } from "@quickadui/forms";
+import {
+  Checkbox,
+  Input,
+  Label,
+  RadioGroup,
+  RadioGroupItem,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+  Switch,
+  Textarea,
+} from "@quickadui/forms";
 import { Example } from "../components/Example";
 import { PropsTable } from "../components/PropsTable";
 
@@ -82,12 +98,25 @@ a later pass of this page.
       <SelectValue placeholder="Pick a fruit" />
     </SelectTrigger>
     <SelectContent>
-      <SelectItem value="apple">Apple</SelectItem>
-      <SelectItem value="banana">Banana</SelectItem>
-      <SelectItem value="cherry">Cherry</SelectItem>
+      <SelectGroup>
+        <SelectLabel>Fruits</SelectLabel>
+        <SelectItem value="apple">Apple</SelectItem>
+        <SelectItem value="banana">Banana</SelectItem>
+        <SelectItem value="cherry">Cherry</SelectItem>
+      </SelectGroup>
+      <SelectSeparator />
+      <SelectGroup>
+        <SelectLabel>Vegetables</SelectLabel>
+        <SelectItem value="carrot">Carrot</SelectItem>
+        <SelectItem value="potato">Potato</SelectItem>
+      </SelectGroup>
     </SelectContent>
   </Select>
 </Example>
+
+`SelectGroup`/`SelectLabel`/`SelectSeparator` are optional — group related
+items and label each group when a list is long enough to need it; a short,
+flat list (as in the earlier examples on this page) can skip them.
 
 ## Form + validation
 

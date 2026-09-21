@@ -1,4 +1,34 @@
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious, Stepper, StepperDescription, StepperIndicator, StepperItem, StepperSeparator, StepperTitle, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator, TreeView, TreeViewItem } from "@quickadui/data";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  Stepper,
+  StepperDescription,
+  StepperIndicator,
+  StepperItem,
+  StepperSeparator,
+  StepperTitle,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+  Timeline,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineItem,
+  TimelineSeparator,
+  TreeView,
+  TreeViewItem,
+} from "@quickadui/data";
 import { Example } from "../components/Example";
 import { PropsTable } from "../components/PropsTable";
 
@@ -28,6 +58,13 @@ views.
         <TableCell>Selected</TableCell>
       </TableRow>
     </TableBody>
+    <TableFooter>
+      <TableRow>
+        <TableCell>Total</TableCell>
+        <TableCell>2 people</TableCell>
+      </TableRow>
+    </TableFooter>
+    <TableCaption>A list of people and their current status.</TableCaption>
   </Table>
 </Example>
 
@@ -49,10 +86,16 @@ views.
         <PaginationLink href="#">1</PaginationLink>
       </PaginationItem>
       <PaginationItem>
-        <PaginationLink href="#" isActive>2</PaginationLink>
+        <PaginationEllipsis />
       </PaginationItem>
       <PaginationItem>
-        <PaginationLink href="#">3</PaginationLink>
+        <PaginationLink href="#" isActive>5</PaginationLink>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink href="#">6</PaginationLink>
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationEllipsis />
       </PaginationItem>
       <PaginationItem>
         <PaginationNext href="#" />
@@ -61,17 +104,15 @@ views.
   </Pagination>
 </Example>
 
+`PaginationEllipsis` is what `getPaginationRange` (see the Usage section in
+this package's README) tells you to render in place of a run of skipped
+page numbers — it's purely presentational, not a link.
+
 <PropsTable
   rows={[
     { name: "isActive", type: "boolean", default: "false", description: "PaginationLink only — marks the current page (also sets aria-current)." },
   ]}
 />
-
-`PaginationPrevious`/`PaginationNext` are icon-only (no hardcoded
-"Previous"/"Next" text baked in) so a consuming app isn't stuck with an
-English word regardless of its own locale — pass your own `aria-label`
-to translate or override the default ("Go to previous/next page"),
-which is what's actually announced to assistive tech.
 
 ## Stepper
 

@@ -1,6 +1,95 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Alert, AlertDescription, AlertTitle, Avatar, AvatarFallback, AvatarImage, Badge, Button, Spinner, Tabs, TabsContent, TabsList, TabsTrigger, Typography } from "@quickadui/core";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+  IconButton,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Skeleton,
+  Spinner,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+  Typography,
+} from "@quickadui/core";
+import { PlusIcon, SettingsIcon } from "@quickadui/icons";
+import { useState } from "react";
 import { Example } from "../components/Example";
 import { PropsTable } from "../components/PropsTable";
+
+function DropdownMenuDemo() {
+  const [showActivity, setShowActivity] = useState(true);
+  const [sort, setSort] = useState("recent");
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">Open menu</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>My account</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            Profile
+            <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem>Billing</DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuCheckboxItem checked={showActivity} onCheckedChange={setShowActivity}>
+          Show activity
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup value={sort} onValueChange={setSort}>
+          <DropdownMenuRadioItem value="recent">Sort by recent</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="name">Sort by name</DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>More</DropdownMenuSubTrigger>
+          <DropdownMenuSubContent>
+            <DropdownMenuItem>Export</DropdownMenuItem>
+            <DropdownMenuItem>Duplicate</DropdownMenuItem>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
 # Core
 
@@ -35,22 +124,11 @@ default Tailwind styling (unlike most of `primitives` itself).
   <Button size="lg">Large</Button>
 </Example>
 
-<Example
-  code={`<Button isLoading>Saving</Button>
-<Button variant="outline" isLoading iconPosition="right">Loading, icon on the right</Button>`}
->
-  <Button isLoading>Saving</Button>
-  <Button variant="outline" isLoading iconPosition="right">Loading, icon on the right</Button>
-</Example>
-
 <PropsTable
   rows={[
     { name: "variant", type: '"solid" | "soft" | "outline" | "ghost" | "destructive"', default: '"solid"', description: "Visual style." },
     { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Height, padding, and font size." },
     { name: "asChild", type: "boolean", default: "false", description: "Merge these props onto the single child instead of rendering a <button>." },
-    { name: "isLoading", type: "boolean", default: "false", description: "Shows an inline Spinner in place of icon and forces the button disabled. No effect when asChild is set (Slot needs exactly one child)." },
-    { name: "icon", type: "ReactNode", description: "An icon rendered alongside children, sized automatically. Swapped for the loading Spinner while isLoading. No effect when asChild is set." },
-    { name: "iconPosition", type: '"left" | "right"', default: '"left"', description: "Which side icon (or the loading Spinner) renders on." },
   ]}
 />
 
@@ -163,3 +241,120 @@ default Tailwind styling (unlike most of `primitives` itself).
     { name: "asChild", type: "boolean", default: "false", description: "Merge these props onto the single child instead of rendering the default element." },
   ]}
 />
+
+## IconButton
+
+An icon-only button — unlike `Button`, `aria-label` is a *required* prop:
+there's no visible text for a screen reader to fall back on without one.
+
+<Example
+  code={`<IconButton aria-label="Add item"><PlusIcon size={18} /></IconButton>
+<IconButton aria-label="Settings" variant="outline"><SettingsIcon size={18} /></IconButton>
+<IconButton aria-label="Settings" size="sm" variant="ghost"><SettingsIcon size={16} /></IconButton>`}
+>
+  <IconButton aria-label="Add item"><PlusIcon size={18} /></IconButton>
+  <IconButton aria-label="Settings" variant="outline"><SettingsIcon size={18} /></IconButton>
+  <IconButton aria-label="Settings" size="sm" variant="ghost"><SettingsIcon size={16} /></IconButton>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"solid" | "soft" | "outline" | "ghost"', default: '"ghost"', description: "Visual style — no destructive variant here, unlike Button." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Diameter of the square button." },
+    { name: "asChild", type: "boolean", default: "false", description: "Merge these props onto the single child instead of rendering a <button>." },
+    { name: "aria-label", type: "string", description: "Required — the only accessible name an icon-only button has." },
+  ]}
+/>
+
+## Card
+
+<Example>
+  <Card className="w-full max-w-sm">
+    <CardHeader>
+      <CardTitle>Project alpha</CardTitle>
+      <CardDescription>Created 3 days ago</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <p className="text-sm text-neutral-11">
+        Structural only — no variants. A visually distinct card is a
+        className override, not a new enum value to maintain forever.
+      </p>
+    </CardContent>
+    <CardFooter>
+      <Button size="sm">View project</Button>
+    </CardFooter>
+  </Card>
+</Example>
+
+`Card`/`CardHeader`/`CardTitle`/`CardDescription`/`CardContent`/`CardFooter`
+are plain structural wrappers — compose whichever parts you need.
+
+## Skeleton
+
+A single `animate-pulse` placeholder block — size it with `className`.
+
+<Example>
+  <div className="flex items-center gap-4">
+    <Skeleton className="size-12 rounded-full" />
+    <div className="flex flex-col gap-2">
+      <Skeleton className="h-4 w-40" />
+      <Skeleton className="h-4 w-24" />
+    </div>
+  </div>
+</Example>
+
+## Tooltip
+
+`TooltipProvider` must wrap the app (or subtree) exactly once, high in the
+tree — it's what makes a second tooltip skip the opening delay. It's
+included in this example only because this page has no app-wide one of
+its own.
+
+<Example>
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button variant="outline">Hover me</Button>
+      </TooltipTrigger>
+      <TooltipContent>Saved 2 minutes ago</TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "sideOffset", type: "number", default: "4", description: "TooltipContent only — pixel gap between the trigger and the tooltip." },
+  ]}
+/>
+
+## Popover
+
+<Example>
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button variant="outline">Open popover</Button>
+    </PopoverTrigger>
+    <PopoverContent>
+      <p className="text-sm text-neutral-12">Popover content goes here — any JSX.</p>
+    </PopoverContent>
+  </Popover>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "align", type: '"start" | "center" | "end"', default: '"center"', description: "PopoverContent only — alignment relative to the trigger." },
+    { name: "sideOffset", type: "number", default: "4", description: "PopoverContent only — pixel gap between the trigger and the popover." },
+  ]}
+/>
+
+## DropdownMenu
+
+<Example>
+  <DropdownMenuDemo />
+</Example>
+
+`DropdownMenu`/`DropdownMenuTrigger`/`DropdownMenuGroup`/`DropdownMenuSub`/
+`DropdownMenuRadioGroup` are thin passthroughs with no styling of their own.
+`DropdownMenuContent`/`DropdownMenuSubContent` bake in the portal.
+`DropdownMenuShortcut` is cosmetic only — a plain `<span>`, not derived from
+any Radix part — for a right-aligned hint like a keyboard shortcut.

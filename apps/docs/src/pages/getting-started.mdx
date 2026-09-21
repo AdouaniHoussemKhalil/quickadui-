@@ -1,0 +1,238 @@
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@quickadui/data";
+
+# Create your first project
+
+The `quickadui` CLI (published as `create-quickadui`) scaffolds a new
+project, adds packages to an existing one, and generates a working front
+end for a resource, for login/profile, or for a whole app shell — either
+one command at a time, or all at once from a single JSON config file. It
+never generates a back end: every generated API client just calls
+whatever REST-shaped URL you point it at (a free demo API by default).
+
+## Prerequisites
+
+Node 22+ and one of npm/pnpm/yarn. No QuickadUI account, API key, or
+network access beyond your own package manager registry is needed.
+
+## 1. Scaffold a project
+
+```sh
+npx create-quickadui init my-app
+cd my-app
+npm install
+npm run dev
+```
+
+`init` writes a Vite + React 19 + TypeScript + Tailwind v4 project,
+pre-wired so `quickadui add`/`generate`/`apply` work right away. It
+refuses to write into a non-empty directory — pass `--force` to scaffold
+into one anyway.
+
+## 2. Two ways to build from here
+
+**One command/package at a time** — `add` a package, then `generate` a
+resource, auth, or the app shell, in whatever order you like:
+
+```sh
+quickadui add core data forms theme shell
+quickadui generate resource Product --fields "title:string,price:number,inStock:boolean"
+quickadui generate auth
+quickadui generate app
+```
+
+**One config file, one command** — describe the whole app (resources,
+auth, navbar/sidebar/footer, dashboard) in a single JSON file and run
+`apply`: it validates the whole file, then runs `add` + every needed
+`generate` step for you, non-interactively.
+
+```sh
+quickadui apply ./quickadui.config.json
+```
+
+Both paths produce the same kind of output — plain, router-free React
+components you own and can edit freely. Re-running either one only
+overwrites existing files with `--force`.
+
+## Commands reference
+
+<div className="mb-6 overflow-hidden rounded-lg border border-neutral-6">
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Command</TableHead>
+        <TableHead>What it does</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell><code>quickadui init [dir] [--force]</code></TableCell>
+        <TableCell>Scaffold a new Vite + React + TypeScript + Tailwind project.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><code>quickadui add {'<pkg...>'} [--dir] [--pm npm|pnpm|yarn]</code></TableCell>
+        <TableCell>Add one or more QuickadUI packages (and their dependencies) to package.json.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><code>quickadui generate resource {'<Type>'} --fields "..." [--endpoint] [--api-base]</code></TableCell>
+        <TableCell>Generate an API client, a Zod schema, a list page, and a create/edit form for one resource. Needs core, data, forms.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><code>quickadui generate auth [--api-base]</code></TableCell>
+        <TableCell>Generate an auth client, AuthProvider/useAuth(), a login page, and a profile page. Needs core, forms.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><code>quickadui generate app [--navbar|--no-navbar] [--sidebar|--no-sidebar] [--footer|--no-footer] [--yes] [--force]</code></TableCell>
+        <TableCell>Generate src/App.tsx — theme toggle plus a router wired to every generated page. Needs core, theme, and shell for navbar/sidebar/footer.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><code>quickadui apply {'<config.json>'} [--dir] [--pm] [--force]</code></TableCell>
+        <TableCell>Declarative alternative to the four commands above — read one config file, run everything it implies.</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+</div>
+
+## The config file, in brief
+
+A `quickadui apply` config is a plain JSON object. `resources` is the only
+required section — everything else is optional, but **omitting a section
+isn't the same as disabling it**: `navbar`/`footer` default to *enabled*
+even when left out entirely (matching `generate app`'s own defaults),
+while `sidebar` defaults to *disabled*. Set `{ "enabled": false }`
+explicitly to turn one off.
+
+<div className="mb-6 overflow-hidden rounded-lg border border-neutral-6">
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Section</TableHead>
+        <TableHead>Covers</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell><code>project</code></TableCell>
+        <TableCell>Project name, default API base for every resource.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><code>theme</code></TableCell>
+        <TableCell>Default light/dark/system mode, brand color overrides.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><code>auth</code></TableCell>
+        <TableCell>Enable login/profile, declare roles, pick the role field.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><code>resources</code></TableCell>
+        <TableCell>One entry per resource — fields, button icons, toast messages, delete confirmation.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><code>navbar</code> / <code>sidebar</code></TableCell>
+        <TableCell>Brand text or a custom logo image, and the link list (with icons).</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><code>footer</code></TableCell>
+        <TableCell>On/off.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell><code>dashboard</code></TableCell>
+        <TableCell>A generated DashboardPage with draggable stat/list widgets.</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+</div>
+
+A minimal example — one resource, everything else left at its default
+(still generates a Navbar and a Footer, no Sidebar):
+
+```json
+{
+  "resources": [
+    {
+      "name": "product",
+      "fields": [
+        { "name": "title", "type": "string" },
+        { "name": "price", "type": "number" },
+        { "name": "inStock", "type": "boolean" }
+      ]
+    }
+  ]
+}
+```
+
+A fuller example, with auth, a custom logo, and a dashboard:
+
+```json
+{
+  "project": { "name": "My Shop", "apiBase": "https://dummyjson.com" },
+  "theme": { "default": "dark", "colors": { "accent": "#2563EB" } },
+  "auth": { "enabled": true, "roles": ["admin", "user"] },
+  "resources": [
+    {
+      "name": "product",
+      "fields": [
+        { "name": "title", "type": "string" },
+        { "name": "price", "type": "number" },
+        { "name": "stock", "type": "number" }
+      ],
+      "buttonIcons": { "create": "Plus", "delete": { "icon": "Trash", "showLabel": false } },
+      "confirmDelete": "Delete this product? This can't be undone."
+    }
+  ],
+  "navbar": {
+    "enabled": true,
+    "logo": "/logo.svg",
+    "items": [{ "label": "Products", "href": "#/products", "icon": "Settings" }]
+  },
+  "dashboard": {
+    "enabled": true,
+    "widgets": [
+      { "id": "product-count", "type": "stat", "title": "Products", "resource": "product" }
+    ]
+  }
+}
+```
+
+The full field-by-field schema — every optional key, its default, and
+every validation rule — is documented on the types themselves in
+`packages/cli/src/quickadui-config.ts`, and in prose in
+`packages/cli/README.md`. Every rejection from `apply` names the exact
+bad path (e.g. `resources[0].views.list.fields`), never a vague "invalid
+config".
+
+## Download a starter config
+
+Two ready-to-edit files — save either one as `quickadui.config.json` next
+to a project scaffolded with `quickadui init`, then run
+`quickadui apply ./quickadui.config.json`:
+
+<div className="mb-6 flex flex-wrap gap-3">
+  <a
+    href="/templates/quickadui.config.starter.json"
+    download
+    className="inline-flex h-10 items-center justify-center rounded-md bg-accent-9 px-4 text-sm font-medium text-white transition-colors hover:bg-accent-10"
+  >
+    Download starter config
+  </a>
+  <a
+    href="/templates/quickadui.config.exemple-complet.json"
+    download
+    className="inline-flex h-10 items-center justify-center rounded-md border border-accent-7 bg-transparent px-4 text-sm font-medium text-accent-11 transition-colors hover:bg-accent-3"
+  >
+    Download full example config
+  </a>
+</div>
+
+The starter has one resource and nothing else configured — the smallest
+useful starting point. The full example turns on every section this page
+covers at once (auth with roles, icons, toasts, delete confirmation, a
+navbar logo, and a dashboard) — good for seeing everything generated in
+one pass, then trimming down to what you actually need.
+
+## Next steps
+
+Re-running `apply`/`generate app` is how you pick up config changes —
+pass `--force` to overwrite the files they've already written (`src/App.tsx`,
+generated pages, …). Once your first project is generated, the rest of
+these docs cover each package's components individually — start with
+[Core](#core) for buttons, cards, and the rest of the everyday vocabulary.

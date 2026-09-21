@@ -9,17 +9,20 @@ export interface NavGroup {
 }
 
 /**
- * The docs app's fixed page list — hand-written pages (an introduction
- * plus one overview per covered package), not one page per component. See
- * the project status doc: this package set and "hand-written pages, not
- * generated" are both explicit, user-confirmed scope decisions. Covers
- * every visual package plus `theme` — `utils`/`hooks` (non-visual
- * utilities) and `config`/`cli` (tooling) are deliberately out of scope,
- * documented elsewhere. `Root.tsx`'s `PAGES` map is the other half of this
- * list — keep both in sync when a page is added.
+ * The docs app's fixed page list — hand-written pages (an introduction, a
+ * getting-started/CLI guide, plus one overview per covered package), not
+ * one page per component. See the project status doc: this package set
+ * and "hand-written pages, not generated" are both explicit, user-confirmed
+ * scope decisions. Covers every visual package plus `theme`, plus a single
+ * getting-started page for the `cli` package (the only page not backed by
+ * a package of the same name) — `utils`/`hooks` (non-visual utilities) and
+ * `config` (tooling) are deliberately out of scope, documented elsewhere.
+ * `Root.tsx`'s `PAGES` map is the other half of this list — keep both in
+ * sync when a page is added.
  */
 export const nav: NavGroup[] = [
   { label: "Introduction", pages: [{ slug: "introduction", label: "Introduction" }] },
+  { label: "Getting started", pages: [{ slug: "getting-started", label: "Create your first project" }] },
   { label: "Tokens", pages: [{ slug: "tokens", label: "Overview" }] },
   { label: "Theme", pages: [{ slug: "theme", label: "Overview" }] },
   { label: "Primitives", pages: [{ slug: "primitives", label: "Overview" }] },

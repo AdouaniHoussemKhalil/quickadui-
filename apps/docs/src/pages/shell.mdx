@@ -9,6 +9,7 @@ import {
   NavbarContent,
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
@@ -75,6 +76,9 @@ integration renders it unconstrained, at the top of the app tree.
             <SidebarNavItem>Reports</SidebarNavItem>
           </SidebarGroup>
         </SidebarContent>
+        <SidebarFooter>
+          <span className="text-xs text-neutral-11">v1.0.0</span>
+        </SidebarFooter>
       </Sidebar>
     }
     footer={<Footer>v1.0.0</Footer>}

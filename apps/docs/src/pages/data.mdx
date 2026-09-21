@@ -67,6 +67,12 @@ views.
   ]}
 />
 
+`PaginationPrevious`/`PaginationNext` are icon-only (no hardcoded
+"Previous"/"Next" text baked in) so a consuming app isn't stuck with an
+English word regardless of its own locale — pass your own `aria-label`
+to translate or override the default ("Go to previous/next page"),
+which is what's actually announced to assistive tech.
+
 ## Stepper
 
 <Example>

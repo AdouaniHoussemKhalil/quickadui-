@@ -35,11 +35,22 @@ default Tailwind styling (unlike most of `primitives` itself).
   <Button size="lg">Large</Button>
 </Example>
 
+<Example
+  code={`<Button isLoading>Saving</Button>
+<Button variant="outline" isLoading iconPosition="right">Loading, icon on the right</Button>`}
+>
+  <Button isLoading>Saving</Button>
+  <Button variant="outline" isLoading iconPosition="right">Loading, icon on the right</Button>
+</Example>
+
 <PropsTable
   rows={[
     { name: "variant", type: '"solid" | "soft" | "outline" | "ghost" | "destructive"', default: '"solid"', description: "Visual style." },
     { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Height, padding, and font size." },
     { name: "asChild", type: "boolean", default: "false", description: "Merge these props onto the single child instead of rendering a <button>." },
+    { name: "isLoading", type: "boolean", default: "false", description: "Shows an inline Spinner in place of icon and forces the button disabled. No effect when asChild is set (Slot needs exactly one child)." },
+    { name: "icon", type: "ReactNode", description: "An icon rendered alongside children, sized automatically. Swapped for the loading Spinner while isLoading. No effect when asChild is set." },
+    { name: "iconPosition", type: '"left" | "right"', default: '"left"', description: "Which side icon (or the loading Spinner) renders on." },
   ]}
 />
 

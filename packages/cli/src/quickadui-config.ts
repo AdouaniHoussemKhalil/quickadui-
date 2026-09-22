@@ -26,6 +26,8 @@ const FIELD_TYPES: readonly FieldType[] = ["string", "number", "boolean"];
 const ACTION_KINDS: readonly ActionKind[] = ["navigate", "submit", "delete", "custom"];
 const DASHBOARD_WIDGET_TYPES: readonly DashboardWidgetType[] = ["stat", "list"];
 const DASHBOARD_COLUMNS = [1, 2, 3, 4] as const;
+const RESOURCE_ENDPOINT_METHODS: readonly ResourceEndpointMethod[] = ["GET", "POST", "PUT", "PATCH", "DELETE"];
+const RESOURCE_LIST_RESPONSE_SHAPES = ["wrapped", "array"] as const;
 
 export interface QuickaduiConfigProject {
   readonly name?: string;
@@ -210,12 +212,69 @@ export interface QuickaduiConfigResourceToasts {
   readonly deleteError?: string;
 }
 
+export type ResourceEndpointMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+
+/**
+ * Overrides the URL path (relative to `apiBase`) and/or HTTP method
+ * `generate resource`/`apply` use for one of a resource's five CRUD
+ * requests. Omit either key to keep that action's own default — see
+ * `QuickaduiConfigResourceEndpoints`'s doc comment for what those
+ * defaults are. `path` for `get`/`update`/`delete` must contain a
+ * literal `"{id}"` placeholder (anywhere in the string, e.g.
+ * `"books/{id}"` or `"books/{id}/details"`) — the generated client
+ * substitutes the real id there at runtime. `list`/`create` take a plain
+ * path with no placeholder, since there's no id in scope yet.
+ */
+export interface QuickaduiConfigResourceEndpointAction {
+  readonly path?: string;
+  readonly method?: ResourceEndpointMethod;
+}
+
+/**
+ * Same as `QuickaduiConfigResourceEndpointAction`, plus `responseShape`:
+ * `"wrapped"` (default) expects DummyJSON's own list shape —
+ * `{ total, skip, limit, "<endpoint>": T[] }` — and the generated list
+ * page drives real server-side pagination from it (`?limit=&skip=`).
+ * `"array"` expects the response to just *be* the array of items, like
+ * most real REST APIs (including a plain ASP.NET/Express/Fastify
+ * `GET /books`) — there's no server-side total/skip/limit to read, so
+ * the generated list page fetches the full list once instead and
+ * paginates it client-side.
+ */
+export interface QuickaduiConfigResourceListEndpoint extends QuickaduiConfigResourceEndpointAction {
+  readonly responseShape?: "wrapped" | "array";
+}
+
+/**
+ * Per-action overrides for the five requests `generate resource`/`apply`
+ * generate for a resource — every key independently optional. Omitting
+ * `endpoints` entirely keeps today's default end to end, matching the
+ * free DummyJSON demo API this CLI defaults `apiBase` to: `list`/`get`
+ * plain GETs against `<endpoint>`/`<endpoint>/{id}`, `create` a POST to
+ * `<endpoint>/add` (DummyJSON's own convention, not standard REST),
+ * `update`/`delete` against `<endpoint>/{id}`, and a `"wrapped"` list
+ * response. Point this at a real backend without hand-editing the
+ * generated `src/api/*.api.ts` afterward — e.g. a plain REST API that
+ * takes `POST` straight to `<endpoint>` (no `/add`) and returns a bare
+ * array from `GET <endpoint>` only needs:
+ * `{ "create": { "path": "books" }, "list": { "responseShape": "array" } }`.
+ */
+export interface QuickaduiConfigResourceEndpoints {
+  readonly list?: QuickaduiConfigResourceListEndpoint;
+  readonly get?: QuickaduiConfigResourceEndpointAction;
+  readonly create?: QuickaduiConfigResourceEndpointAction;
+  readonly update?: QuickaduiConfigResourceEndpointAction;
+  readonly delete?: QuickaduiConfigResourceEndpointAction;
+}
+
 export interface QuickaduiConfigResource {
   readonly name: string;
   /** Defaults to a naive plural of `name`, kebab-cased — same default as `generate resource --endpoint`. */
   readonly endpoint?: string;
   /** Overrides `project.apiBase` for this resource only. */
   readonly apiBase?: string;
+  /** Omit entirely for today's default: DummyJSON-style conventions for every action — see `QuickaduiConfigResourceEndpoints`'s own doc comment. */
+  readonly endpoints?: QuickaduiConfigResourceEndpoints;
   readonly fields: readonly QuickaduiConfigField[];
   /** Omit entirely for today's default behavior: every field in every view, in declaration order — matches plain `generate resource --fields`. */
   readonly views?: QuickaduiConfigResourceViews;
@@ -515,6 +574,58 @@ function parseConfirmDelete(raw: unknown, path: string): boolean | string {
   fail(path, `expected a boolean or a non-empty string, got ${JSON.stringify(raw)}.`);
 }
 
+function parseResourceEndpointAction(
+  raw: unknown,
+  path: string,
+  requiresId: boolean,
+): QuickaduiConfigResourceEndpointAction {
+  if (!isPlainObject(raw)) {
+    fail(path, "expected an object with optional \"path\"/\"method\" keys.");
+  }
+  const rawPath = raw.path === undefined ? undefined : expectString(raw.path, `${path}.path`);
+  if (rawPath !== undefined && requiresId && !rawPath.includes("{id}")) {
+    fail(`${path}.path`, `must include a literal "{id}" placeholder for this action, got ${JSON.stringify(rawPath)}.`);
+  }
+  const method = raw.method === undefined ? undefined : expectOneOf(raw.method, RESOURCE_ENDPOINT_METHODS, `${path}.method`);
+  return {
+    ...(rawPath !== undefined ? { path: rawPath } : {}),
+    ...(method !== undefined ? { method } : {}),
+  };
+}
+
+function parseResourceListEndpoint(raw: unknown, path: string): QuickaduiConfigResourceListEndpoint {
+  if (!isPlainObject(raw)) {
+    fail(path, "expected an object with optional \"path\"/\"method\"/\"responseShape\" keys.");
+  }
+  const action = parseResourceEndpointAction(raw, path, false);
+  const responseShape =
+    raw.responseShape === undefined
+      ? undefined
+      : expectOneOf(raw.responseShape, RESOURCE_LIST_RESPONSE_SHAPES, `${path}.responseShape`);
+  return {
+    ...action,
+    ...(responseShape !== undefined ? { responseShape } : {}),
+  };
+}
+
+function parseResourceEndpoints(raw: unknown, path: string): QuickaduiConfigResourceEndpoints {
+  if (!isPlainObject(raw)) {
+    fail(path, "expected an object with optional \"list\"/\"get\"/\"create\"/\"update\"/\"delete\" keys.");
+  }
+  const list = raw.list === undefined ? undefined : parseResourceListEndpoint(raw.list, `${path}.list`);
+  const get = raw.get === undefined ? undefined : parseResourceEndpointAction(raw.get, `${path}.get`, true);
+  const create = raw.create === undefined ? undefined : parseResourceEndpointAction(raw.create, `${path}.create`, false);
+  const update = raw.update === undefined ? undefined : parseResourceEndpointAction(raw.update, `${path}.update`, true);
+  const del = raw.delete === undefined ? undefined : parseResourceEndpointAction(raw.delete, `${path}.delete`, true);
+  return {
+    ...(list !== undefined ? { list } : {}),
+    ...(get !== undefined ? { get } : {}),
+    ...(create !== undefined ? { create } : {}),
+    ...(update !== undefined ? { update } : {}),
+    ...(del !== undefined ? { delete: del } : {}),
+  };
+}
+
 function parseResource(raw: unknown, path: string, knownRoles: readonly string[] | undefined): QuickaduiConfigResource {
   if (!isPlainObject(raw)) {
     fail(path, "expected an object with \"name\" and \"fields\".");
@@ -522,6 +633,7 @@ function parseResource(raw: unknown, path: string, knownRoles: readonly string[]
   const name = expectString(raw.name, `${path}.name`);
   const endpoint = raw.endpoint === undefined ? undefined : expectString(raw.endpoint, `${path}.endpoint`);
   const apiBase = raw.apiBase === undefined ? undefined : expectString(raw.apiBase, `${path}.apiBase`);
+  const endpoints = raw.endpoints === undefined ? undefined : parseResourceEndpoints(raw.endpoints, `${path}.endpoints`);
 
   if (!Array.isArray(raw.fields) || raw.fields.length === 0) {
     fail(`${path}.fields`, "expected a non-empty array of fields.");
@@ -562,6 +674,7 @@ function parseResource(raw: unknown, path: string, knownRoles: readonly string[]
     fields,
     ...(endpoint !== undefined ? { endpoint } : {}),
     ...(apiBase !== undefined ? { apiBase } : {}),
+    ...(endpoints !== undefined ? { endpoints } : {}),
     ...(views !== undefined ? { views } : {}),
     ...(buttonIcons !== undefined ? { buttonIcons } : {}),
     ...(toasts !== undefined ? { toasts } : {}),

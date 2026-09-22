@@ -70,6 +70,61 @@ describe("renderResourceApi", () => {
   });
 });
 
+describe("renderResourceApi — endpoints overrides", () => {
+  it("overrides just create's path, e.g. a real REST backend with no DummyJSON-style /add suffix", () => {
+    const file = renderResourceApi({ ...options, endpoints: { create: { path: "products" } } });
+    expect(file.contents).toContain("/products`, {\n    method: \"POST\",");
+    expect(file.contents).not.toContain("/products/add");
+    // Every other action keeps its own default, untouched by the create override.
+    expect(file.contents).toContain("/products?limit=");
+    expect(file.contents).toContain('method: "PUT"');
+    expect(file.contents).toContain('method: "DELETE"');
+  });
+
+  it("overrides an action's method", () => {
+    const file = renderResourceApi({ ...options, endpoints: { update: { method: "PATCH" } } });
+    expect(file.contents).toContain('method: "PATCH"');
+    expect(file.contents).not.toContain('method: "PUT"');
+  });
+
+  it("substitutes a configured \"{id}\" placeholder with the generated function's own \"${id}\" template hole", () => {
+    const file = renderResourceApi({ ...options, endpoints: { get: { path: "products/{id}/details" } } });
+    expect(file.contents).toContain("fetch(`${API_BASE}/products/${id}/details`)");
+  });
+
+  it("defaults list's responseShape to \"wrapped\" — a DummyJSON-shaped interface with total/skip/limit and server-side pagination params", () => {
+    const file = renderResourceApi(options);
+    expect(file.contents).toContain("export interface ProductsListResult {");
+    expect(file.contents).toContain('readonly "products": readonly Product[];');
+    expect(file.contents).toContain("export async function listProducts(options: ListProductsOptions = {}):");
+    expect(file.contents).toContain("?limit=${limit}&skip=${skip}");
+  });
+
+  it("switches to a plain array type/response and drops pagination params when responseShape is \"array\"", () => {
+    const file = renderResourceApi({ ...options, endpoints: { list: { responseShape: "array" } } });
+    expect(file.contents).toContain("export type ProductsListResult = readonly Product[];");
+    expect(file.contents).not.toContain("export interface ProductsListResult");
+    expect(file.contents).toContain("export async function listProducts(): Promise<ProductsListResult> {");
+    expect(file.contents).not.toContain("?limit=");
+    expect(file.contents).not.toContain("ListProductsOptions");
+  });
+
+  it("resolves every action from a single list/get/create/update/delete override object at once", () => {
+    const file = renderResourceApi({
+      ...options,
+      endpoints: {
+        list: { path: "products", responseShape: "array" },
+        get: { path: "products/{id}" },
+        create: { path: "products" },
+        update: { path: "products/{id}" },
+        delete: { path: "products/{id}" },
+      },
+    });
+    expect(file.contents).not.toContain("/products/add");
+    expect(file.contents).toContain("export type ProductsListResult = readonly Product[];");
+  });
+});
+
 describe("renderResourceListPage", () => {
   it("renders one table column per field plus an actions column", () => {
     const file = renderResourceListPage(options);
@@ -306,6 +361,39 @@ describe("renderResourceListPage — confirmDelete", () => {
     expect(file.contents).toContain(
       'import { Modal, ModalClose, ModalContent, ModalDescription, ModalFooter, ModalHeader, ModalTitle, toast } from "@quickadui/overlays";',
     );
+  });
+});
+
+describe("renderResourceListPage — endpoints.list.responseShape", () => {
+  it("keeps today's default (server-paginated, wrapped) when endpoints is unset", () => {
+    const file = renderResourceListPage(options);
+    expect(file.contents).toContain("const [total, setTotal] = useState(0);");
+    expect(file.contents).toContain("listProducts({ skip, limit: PAGE_SIZE })");
+    expect(file.contents).toContain("const pagedItems = items;");
+    expect(file.contents).not.toContain(".slice(skip, skip + PAGE_SIZE)");
+  });
+
+  it("fetches once and paginates client-side when responseShape is \"array\"", () => {
+    const file = renderResourceListPage({ ...options, endpoints: { list: { responseShape: "array" } } });
+    expect(file.contents).toContain("listProducts()\n      .then((result) => {");
+    expect(file.contents).toContain("setItems(result);");
+    expect(file.contents).not.toContain('setItems(result["products"]);');
+    expect(file.contents).not.toContain("const [total, setTotal] = useState(0);");
+    expect(file.contents).toContain("const total = items.length;");
+    expect(file.contents).toContain("const pagedItems = items.slice(skip, skip + PAGE_SIZE);");
+    // Fetches the full list once on mount — no server-side page to re-fetch when skip changes.
+    expect(file.contents).toContain("}, []);");
+  });
+
+  it("still renders the same pagination JSX either way — only the state/effect section differs", () => {
+    const wrapped = renderResourceListPage(options);
+    const array = renderResourceListPage({ ...options, endpoints: { list: { responseShape: "array" } } });
+    for (const file of [wrapped, array]) {
+      expect(file.contents).toContain("const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));");
+      expect(file.contents).toContain("const currentPage = Math.floor(skip / PAGE_SIZE) + 1;");
+      expect(file.contents).toContain("{pagedItems.map((item) => (");
+      expect(file.contents).toContain("disabled={skip + PAGE_SIZE >= total}");
+    }
   });
 });
 

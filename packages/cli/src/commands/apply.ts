@@ -318,6 +318,7 @@ export async function runApply(options: ApplyOptions): Promise<ApplyResult> {
       fieldsSpec,
       endpoint: resource.endpoint,
       apiBase: resource.apiBase ?? config.project?.apiBase,
+      endpoints: resource.endpoints,
       buttonIcons: resource.buttonIcons,
       toasts: resource.toasts,
       confirmDelete: resource.confirmDelete,

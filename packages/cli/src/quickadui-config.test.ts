@@ -316,6 +316,126 @@ describe("parseQuickaduiConfig — resource buttonIcons", () => {
   });
 });
 
+describe("parseQuickaduiConfig — resource endpoints", () => {
+  it("omits endpoints entirely when the config doesn't set it — today's default, DummyJSON-style conventions", () => {
+    const config = parseQuickaduiConfig(minimalValidConfig());
+    expect(config.resources[0]?.endpoints).toBeUndefined();
+  });
+
+  it("parses just a create.path override — the common case for a real REST backend with no DummyJSON-style /add suffix", () => {
+    const raw = {
+      resources: [
+        {
+          name: "book",
+          fields: [{ name: "title", type: "string" }],
+          endpoints: { create: { path: "books" } },
+        },
+      ],
+    };
+    const config = parseQuickaduiConfig(raw);
+    expect(config.resources[0]?.endpoints).toEqual({ create: { path: "books" } });
+  });
+
+  it("parses a full endpoints object — every action, path, method, and the list's responseShape", () => {
+    const raw = {
+      resources: [
+        {
+          name: "book",
+          fields: [{ name: "title", type: "string" }],
+          endpoints: {
+            list: { path: "books", method: "GET", responseShape: "array" },
+            get: { path: "books/{id}", method: "GET" },
+            create: { path: "books", method: "POST" },
+            update: { path: "books/{id}", method: "PUT" },
+            delete: { path: "books/{id}", method: "DELETE" },
+          },
+        },
+      ],
+    };
+    const config = parseQuickaduiConfig(raw);
+    expect(config.resources[0]?.endpoints).toEqual({
+      list: { path: "books", method: "GET", responseShape: "array" },
+      get: { path: "books/{id}", method: "GET" },
+      create: { path: "books", method: "POST" },
+      update: { path: "books/{id}", method: "PUT" },
+      delete: { path: "books/{id}", method: "DELETE" },
+    });
+  });
+
+  it("throws when endpoints isn't an object", () => {
+    const raw = {
+      resources: [{ name: "book", fields: [{ name: "title", type: "string" }], endpoints: "books" }],
+    };
+    expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.endpoints/);
+  });
+
+  it("throws when one action isn't an object", () => {
+    const raw = {
+      resources: [
+        { name: "book", fields: [{ name: "title", type: "string" }], endpoints: { create: "books" } },
+      ],
+    };
+    expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.endpoints\.create/);
+  });
+
+  it("throws when method isn't one of GET/POST/PUT/PATCH/DELETE", () => {
+    const raw = {
+      resources: [
+        {
+          name: "book",
+          fields: [{ name: "title", type: "string" }],
+          endpoints: { create: { method: "FETCH" } },
+        },
+      ],
+    };
+    expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.endpoints\.create\.method/);
+  });
+
+  it.each(["get", "update", "delete"])(
+    "throws when %s's path is missing the required \"{id}\" placeholder",
+    (action) => {
+      const raw = {
+        resources: [
+          {
+            name: "book",
+            fields: [{ name: "title", type: "string" }],
+            endpoints: { [action]: { path: "books" } },
+          },
+        ],
+      };
+      expect(() => parseQuickaduiConfig(raw)).toThrow(
+        new RegExp(`resources\\[0\\]\\.endpoints\\.${action}\\.path`),
+      );
+    },
+  );
+
+  it.each(["list", "create"])("doesn't require an \"{id}\" placeholder in %s's path — there's no id in scope yet", (action) => {
+    const raw = {
+      resources: [
+        {
+          name: "book",
+          fields: [{ name: "title", type: "string" }],
+          endpoints: { [action]: { path: "books" } },
+        },
+      ],
+    };
+    expect(() => parseQuickaduiConfig(raw)).not.toThrow();
+  });
+
+  it("throws when list.responseShape isn't \"wrapped\" or \"array\"", () => {
+    const raw = {
+      resources: [
+        {
+          name: "book",
+          fields: [{ name: "title", type: "string" }],
+          endpoints: { list: { responseShape: "paginated" } },
+        },
+      ],
+    };
+    expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.endpoints\.list\.responseShape/);
+  });
+});
+
 describe("parseQuickaduiConfig — view errors", () => {
   it("throws when a view references a field the resource doesn't declare", () => {
     const raw = {

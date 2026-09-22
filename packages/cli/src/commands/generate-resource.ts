@@ -3,7 +3,12 @@ import { toKebabCase, toNaivePlural, toPascalCase } from "../generate/case.js";
 import { checkRequiredPackages } from "../generate/check-prerequisites.js";
 import { parseFieldSpec } from "../generate/field-spec.js";
 import { renderGenerateResourceNextSteps } from "../generate/render-generate-next-steps.js";
-import { renderResourceFiles, type ResourceButtonIcons, type ResourceToasts } from "../generate/resource-templates.js";
+import {
+  renderResourceFiles,
+  type ResourceButtonIcons,
+  type ResourceEndpoints,
+  type ResourceToasts,
+} from "../generate/resource-templates.js";
 import { writeScaffoldFiles } from "../generate/write-files.js";
 
 const DEFAULT_API_BASE = "https://dummyjson.com";
@@ -23,6 +28,8 @@ export interface GenerateResourceOptions {
   readonly endpoint?: string | undefined;
   /** Defaults to the free DummyJSON demo API. */
   readonly apiBase?: string | undefined;
+  /** Omit entirely for today's default: DummyJSON-style conventions for every action. Currently only reachable via `quickadui apply <config.json>` — no CLI flag for it yet, same reasoning as `buttonIcons` below. */
+  readonly endpoints?: ResourceEndpoints | undefined;
   /** Omit entirely for today's default: every standard button stays text-only. Currently only reachable via `quickadui apply <config.json>` — no CLI flag for it yet, since it's a small object, not a single string worth a flag mini-format. */
   readonly buttonIcons?: ResourceButtonIcons | undefined;
   /** Omit entirely for today's default: no toasts. Currently only reachable via `quickadui apply <config.json>`, same reasoning as `buttonIcons`. */
@@ -63,6 +70,7 @@ export function runGenerateResource(options: GenerateResourceOptions): GenerateR
     fields,
     endpoint,
     apiBase,
+    ...(options.endpoints !== undefined ? { endpoints: options.endpoints } : {}),
     ...(options.buttonIcons !== undefined ? { buttonIcons: options.buttonIcons } : {}),
     ...(options.toasts !== undefined ? { toasts: options.toasts } : {}),
     ...(options.confirmDelete !== undefined ? { confirmDelete: options.confirmDelete } : {}),

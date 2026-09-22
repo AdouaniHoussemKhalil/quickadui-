@@ -405,6 +405,63 @@ Delete button falls back to `variant="ghost"` plus a danger-colored
 `className` to keep the same visual intent, rather than a true
 destructive-styled icon button.
 
+Another exception, wired end to end: a resource's `endpoints` overrides
+the URL path and/or HTTP method `generate resource`/`apply` use for one
+or more of that resource's five requests (`list`/`get`/`create`/
+`update`/`delete`), and — for `list` only — the shape of the response
+they expect back. Omit `endpoints` entirely (today's default) and every
+request follows the free DummyJSON demo API's own conventions: a plain
+GET against `<endpoint>`/`<endpoint>/{id}`, a POST to `<endpoint>/add`
+(DummyJSON's own convention — **not** standard REST), PUT/DELETE against
+`<endpoint>/{id}`, and a list response wrapped as
+`{ total, skip, limit, "<endpoint>": [...] }` that drives real
+server-side pagination (`?limit=&skip=`).
+
+Most real backends don't work that way — `POST` goes straight to the
+plain endpoint, and `GET <endpoint>` returns a bare array with no
+wrapper or built-in pagination. Point at one of those without
+hand-editing the generated `src/api/*.api.ts` afterward:
+
+```json
+{
+  "resources": [
+    {
+      "name": "book",
+      "endpoint": "books",
+      "fields": [{ "name": "title", "type": "string" }],
+      "endpoints": {
+        "list": { "responseShape": "array" },
+        "create": { "path": "books" }
+      }
+    }
+  ]
+}
+```
+
+`list`/`get`/`create`/`update`/`delete` are all independently optional —
+set only the ones that differ from the defaults above. Each takes:
+
+- `path` — the URL path relative to `apiBase`, replacing the default
+  built from `endpoint`. For `get`/`update`/`delete` it must contain a
+  literal `"{id}"` placeholder somewhere in the string (e.g.
+  `"books/{id}"` or `"books/{id}/details"`) — rejected at parse time
+  otherwise, since those three requests need somewhere to put the id.
+  `list`/`create` take a plain path, no placeholder.
+- `method` — one of `"GET"`/`"POST"`/`"PUT"`/`"PATCH"`/`"DELETE"`,
+  replacing that action's own natural default.
+- `responseShape` (`list` only) — `"wrapped"` (default, DummyJSON's own
+  shape, described above) or `"array"`, when the response *is* the array
+  of items with no wrapper. `"array"` has no server-side total/skip/limit
+  to read, so the generated list page fetches the full list once and
+  paginates it client-side instead of asking the server for one page at
+  a time.
+
+This only covers the five requests `generate resource` already
+generates — a custom, non-CRUD action (a `PATCH /books/{id}/read`
+"mark as read" toggle, say) isn't something `endpoints` maps to; add
+that by hand to the generated `src/api/*.api.ts` and wire your own UI
+for it, same as before this feature existed.
+
 Another exception, wired end to end: `theme.default` and `theme.colors`
 control `<ThemeProvider>`'s own `defaultTheme`/`defaultColors` props in
 the generated `src/App.tsx`. `theme.default` (`"light"`/`"dark"`/

@@ -46,7 +46,10 @@ export function renderGenerateResourceNextSteps(options: GenerateResourceNextSte
     );
   } else {
     lines.push(`  2. Pointed at ${apiBase} — double check its REST shape matches what was generated`);
-    lines.push(`     (GET/POST .../add/PUT/DELETE .../${endpoint}) and adjust src/api/*.api.ts if not.`);
+    lines.push(`     (GET/POST .../add/PUT/DELETE .../${endpoint}). If it differs, set`);
+    lines.push(`     resources[].endpoints in your quickadui.config.json and regenerate via`);
+    lines.push(`     \`quickadui apply\` (see packages/cli/README.md) instead of hand-editing`);
+    lines.push(`     src/api/*.api.ts.`);
   }
 
   return lines.join("\n");

@@ -68,11 +68,11 @@ describe("renderDashboardPage — stat widgets", () => {
     expect(file.contents).not.toContain("StatCard");
   });
 
-  it("renders the widget wrapped in a (now draggable) Widget with no title (StatCard supplies its own label)", () => {
+  it("renders the widget wrapped in a draggable Widget with its own title, matching list widgets (avoids an empty, floating header)", () => {
     const file = renderDashboardPage({
       widgets: [{ id: "products-count", type: "stat", title: "Products", resource: productRef }],
     });
-    expect(file.contents).toContain('<Widget id={"products-count"}>');
+    expect(file.contents).toContain('<Widget id={"products-count"} title={"Products"}>');
     expect(file.contents).not.toContain("disableDrag");
   });
 });
@@ -298,7 +298,7 @@ describe("renderDashboardPage — widget id sanitization", () => {
       widgets: [{ id: 'weird"id', type: "stat", title: "Weird", resource: productRef }],
     });
     expect(file.contents).toContain("function WeirdIdWidget()");
-    expect(file.contents).toContain('<Widget id={"weird\\"id"}>');
+    expect(file.contents).toContain('<Widget id={"weird\\"id"} title={"Weird"}>');
   });
 
   it("prefixes with an underscore when the id starts with a digit, keeping the identifier valid", () => {
@@ -314,5 +314,6 @@ describe("renderDashboardPage — widget id sanitization", () => {
       widgets: [{ id: "a", type: "stat", title: 'Say "hi"', resource: productRef }],
     });
     expect(file.contents).toContain('<StatCard label={"Say \\"hi\\""} value={total} />');
+    expect(file.contents).toContain('<Widget id={"a"} title={"Say \\"hi\\""}>');
   });
 });

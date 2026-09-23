@@ -149,7 +149,7 @@ function renderStatWidget(widget: DashboardWidgetOptions): string {
   }, []);
 
   return (
-    <Widget id={${jsString(widget.id)}}>
+    <Widget id={${jsString(widget.id)}} title={${jsString(widget.title)}}>
       {error ? (
         <p className="text-sm text-danger-11">{error}</p>
       ) : total === undefined ? (

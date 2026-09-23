@@ -17,6 +17,15 @@ integration — see the QuickadUI Blueprint, §7.
   above, so Tailwind utilities (`bg-accent-9`, ...) stay theme-reactive
   instead of freezing whatever value was true at build time. Ships
   pre-rendered as `dist/tailwind-theme.css`.
+- **`generateScrollbarCss()`** — a ready-made, theme-reactive stylesheet for
+  the browser's *native* scrollbar (Firefox's `scrollbar-color`, the
+  WebKit/Blink `::-webkit-scrollbar` family), so the default browser gray
+  scrollbar doesn't sit next to an otherwise fully themed UI. Same
+  `var(--qa-color-*)` references as everything else above, so it follows
+  light/dark mode and any runtime `setColor("accent", ...)` override with
+  zero extra wiring. Ships pre-rendered as `dist/scrollbar.css` — a
+  separate, opt-in import (see "Usage" below), not folded into
+  `tokens.css` itself.
 - **`ThemeProvider` / `useTheme()`** — a React context that tracks the
   user's chosen mode (`"light" | "dark" | "system"`), resolves `"system"`
   against `prefers-color-scheme` (and keeps tracking it live), and mirrors
@@ -45,6 +54,7 @@ integration — see the QuickadUI Blueprint, §7.
 @import "tailwindcss";
 @import "@quickadui/theme/tokens.css";
 @import "@quickadui/theme/tailwind-theme.css";
+@import "@quickadui/theme/scrollbar.css"; /* optional — see "Scrollbar theming" below */
 ```
 
 ```tsx
@@ -133,3 +143,33 @@ a returning visitor with a custom accent still sees one frame of the
 build-time brand color before `<ThemeProvider>` mounts and corrects it.
 Shipping an equivalent script would mean inlining the OKLCH scale generator
 itself as a second copy of plain JS; not done in this first round.
+
+## Scrollbar theming
+
+By default, browsers render scrollbars in their own flat gray — even on a
+page that's otherwise fully themed through `tokens.css`. `scrollbar.css`
+fixes that with a small, dependency-free stylesheet:
+
+```css
+@import "@quickadui/theme/scrollbar.css";
+```
+
+It's a separate, optional import — not bundled into `tokens.css` — so an
+app that already styles its own scrollbars, or wants to keep the OS
+default, doesn't have to override anything to opt out. Once imported, it
+applies globally to every scrollbar on the page (not just the outer page
+scroll — any `overflow-auto`/`overflow-scroll` element too), using the same
+`var(--qa-color-accent-9)`/`var(--qa-color-neutral-3)` custom properties
+every other themed surface in this library reads from — so it tracks
+light/dark mode and any `setColor("accent", ...)` runtime override
+automatically, no rebuild.
+
+Covers both scrollbar styling mechanisms browsers actually implement:
+Firefox's `scrollbar-color`/`scrollbar-width` (set once on `:root`, since
+they're inherited properties — every scrollable descendant picks them up
+for free) and the WebKit/Blink `::-webkit-scrollbar` pseudo-element family
+(not inherited, so it targets every element directly instead).
+
+`generateScrollbarCss()` is exported from `@quickadui/theme` itself if you
+want the raw string — for a custom build pipeline, or to compose it
+differently than the pre-rendered `dist/scrollbar.css` does.

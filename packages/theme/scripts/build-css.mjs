@@ -7,11 +7,12 @@
 import { writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { tokens } from "@quickadui/tokens";
-import { generateTailwindTheme, generateTokensCss } from "../dist/index.js";
+import { generateScrollbarCss, generateTailwindTheme, generateTokensCss } from "../dist/index.js";
 
 const distDir = fileURLToPath(new URL("../dist/", import.meta.url));
 
 await writeFile(`${distDir}tokens.css`, generateTokensCss(tokens));
 await writeFile(`${distDir}tailwind-theme.css`, generateTailwindTheme(tokens));
+await writeFile(`${distDir}scrollbar.css`, generateScrollbarCss());
 
-console.log("Wrote dist/tokens.css and dist/tailwind-theme.css");
+console.log("Wrote dist/tokens.css, dist/tailwind-theme.css and dist/scrollbar.css");

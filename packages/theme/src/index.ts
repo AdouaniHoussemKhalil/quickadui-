@@ -8,6 +8,7 @@ export {
   readStoredColorOverrides,
   storeColorOverrides,
 } from "./color-runtime";
+export { generateScrollbarCss } from "./css/scrollbar-css";
 export { generateTailwindTheme } from "./css/tailwind-theme";
 export { generateTokensCss } from "./css/tokens-css";
 export {

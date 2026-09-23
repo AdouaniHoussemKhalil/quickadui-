@@ -2,6 +2,14 @@
 @import "@quickadui/theme/tokens.css";
 @import "@quickadui/theme/tailwind-theme.css";
 /*
+ * Opt-in — themes the browser's native scrollbar (Firefox `scrollbar-color`
+ * + WebKit/Blink `::-webkit-scrollbar`) to the same accent/neutral colors
+ * as everything else, instead of the browser's flat gray. This site imports
+ * it so its own scrollbar doubles as a live example — see theme.mdx's
+ * "Scrollbar" section.
+ */
+@import "@quickadui/theme/scrollbar.css";
+/*
  * `@quickadui/charts`' 8-color categorical palette + its single-series
  * accent variable ship as their own stylesheet, same as apps/playground —
  * not folded into tokens.css since most consumers of the design system

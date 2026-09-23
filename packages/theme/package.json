@@ -31,7 +31,8 @@
       "require": "./dist/index.cjs"
     },
     "./tokens.css": "./dist/tokens.css",
-    "./tailwind-theme.css": "./dist/tailwind-theme.css"
+    "./tailwind-theme.css": "./dist/tailwind-theme.css",
+    "./scrollbar.css": "./dist/scrollbar.css"
   },
   "files": [
     "dist"

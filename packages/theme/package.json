@@ -1,6 +1,6 @@
 {
   "name": "@quickadui/theme",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "ThemeProvider, the CSS-variable engine, and the Tailwind v4 @theme integration — see Blueprint §7.",
   "license": "MIT",
   "repository": {

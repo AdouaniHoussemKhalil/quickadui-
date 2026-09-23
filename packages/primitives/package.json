@@ -1,6 +1,6 @@
 {
   "name": "@quickadui/primitives",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Unstyled behavior primitives. The only package that imports Radix UI directly — see Blueprint §1 and §4.",
   "license": "MIT",
   "repository": {

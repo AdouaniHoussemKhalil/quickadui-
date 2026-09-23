@@ -1,5 +1,18 @@
 # @quickadui/forms
 
+## 0.2.0
+
+### Minor Changes
+
+- f568ca6: Add `PasswordInput` (with an optional `PasswordStrengthMeter`) and `startIcon`/`endIcon` slot props on `Input` for rendering icons at the start or end of a text field.
+
+### Patch Changes
+
+- Updated dependencies [f568ca6]
+- Updated dependencies [f568ca6]
+  - @quickadui/primitives@0.2.0
+  - @quickadui/theme@0.2.0
+
 ## 0.1.0
 
 ### Minor Changes

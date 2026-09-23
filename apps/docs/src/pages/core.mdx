@@ -159,7 +159,12 @@ default Tailwind styling (unlike most of `primitives` itself).
 
 ## Alert
 
-<Example>
+<Example
+  code={`<Alert variant="warning">
+  <AlertTitle>Heads up</AlertTitle>
+  <AlertDescription>This is what a warning alert looks like.</AlertDescription>
+</Alert>`}
+>
   <Alert variant="warning" className="w-full">
     <AlertTitle>Heads up</AlertTitle>
     <AlertDescription>This is what a warning alert looks like.</AlertDescription>
@@ -174,7 +179,11 @@ default Tailwind styling (unlike most of `primitives` itself).
 
 ## Spinner
 
-<Example>
+<Example
+  code={`<Spinner size="sm" />
+<Spinner size="md" />
+<Spinner size="lg" />`}
+>
   <Spinner size="sm" />
   <Spinner size="md" />
   <Spinner size="lg" />
@@ -189,16 +198,39 @@ default Tailwind styling (unlike most of `primitives` itself).
 
 ## Avatar
 
-<Example>
+<Example
+  code={`<Avatar>
+  <AvatarImage src="/path/to/photo.jpg" alt="" />
+  <AvatarFallback>QA</AvatarFallback>
+</Avatar>`}
+>
   <Avatar>
     <AvatarImage src="https://i.pravatar.cc/80" alt="" />
     <AvatarFallback>QA</AvatarFallback>
   </Avatar>
 </Example>
 
+`AvatarFallback` renders whenever `AvatarImage` has no `src`, or its image
+fails to load — always give it initials or an icon, never leave it empty.
+
+<PropsTable
+  rows={[
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Avatar only — diameter of the circle." },
+  ]}
+/>
+
 ## Tabs
 
-<Example>
+<Example
+  code={`<Tabs defaultValue="a">
+  <TabsList>
+    <TabsTrigger value="a">Account</TabsTrigger>
+    <TabsTrigger value="b">Password</TabsTrigger>
+  </TabsList>
+  <TabsContent value="a">Account settings.</TabsContent>
+  <TabsContent value="b">Password settings.</TabsContent>
+</Tabs>`}
+>
   <Tabs defaultValue="a">
     <TabsList>
       <TabsTrigger value="a">Account</TabsTrigger>
@@ -209,9 +241,27 @@ default Tailwind styling (unlike most of `primitives` itself).
   </Tabs>
 </Example>
 
+<PropsTable
+  rows={[
+    { name: "defaultValue", type: "string", description: "Uncontrolled — which tab is open initially." },
+    { name: "value", type: "string", description: "Controlled — pair with onValueChange to own the open tab yourself." },
+    { name: "onValueChange", type: "(value: string) => void", description: "Called when the open tab changes." },
+  ]}
+/>
+
 ## Accordion
 
-<Example>
+<Example
+  code={`<Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>What's different from Primitives' Accordion?</AccordionTrigger>
+    <AccordionContent>
+      This one ships QuickadUI's default chrome (border, spacing, the
+      rotating chevron) — the primitives version renders none of that.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>`}
+>
   <Accordion type="single" collapsible className="w-full">
     <AccordionItem value="item-1">
       <AccordionTrigger>What's different from Primitives' Accordion?</AccordionTrigger>
@@ -223,9 +273,18 @@ default Tailwind styling (unlike most of `primitives` itself).
   </Accordion>
 </Example>
 
+`type="single"` allows only one item open at a time (add `collapsible` to
+let that one item close too); `type="multiple"` allows several open at
+once. Both come straight from the underlying Radix Accordion.
+
 ## Typography
 
-<Example>
+<Example
+  code={`<Typography variant="h3">Heading 3</Typography>
+<Typography variant="lead">A lead paragraph, slightly larger and muted.</Typography>
+<Typography variant="body">Regular body text.</Typography>
+<Typography variant="muted">Muted, smaller text.</Typography>`}
+>
   <div className="flex flex-col gap-2">
     <Typography variant="h3">Heading 3</Typography>
     <Typography variant="lead">A lead paragraph, slightly larger and muted.</Typography>
@@ -268,7 +327,20 @@ there's no visible text for a screen reader to fall back on without one.
 
 ## Card
 
-<Example>
+<Example
+  code={`<Card>
+  <CardHeader>
+    <CardTitle>Project alpha</CardTitle>
+    <CardDescription>Created 3 days ago</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p>Structural only — no variants.</p>
+  </CardContent>
+  <CardFooter>
+    <Button size="sm">View project</Button>
+  </CardFooter>
+</Card>`}
+>
   <Card className="w-full max-w-sm">
     <CardHeader>
       <CardTitle>Project alpha</CardTitle>
@@ -293,7 +365,15 @@ are plain structural wrappers — compose whichever parts you need.
 
 A single `animate-pulse` placeholder block — size it with `className`.
 
-<Example>
+<Example
+  code={`<div className="flex items-center gap-4">
+  <Skeleton className="size-12 rounded-full" />
+  <div className="flex flex-col gap-2">
+    <Skeleton className="h-4 w-40" />
+    <Skeleton className="h-4 w-24" />
+  </div>
+</div>`}
+>
   <div className="flex items-center gap-4">
     <Skeleton className="size-12 rounded-full" />
     <div className="flex flex-col gap-2">
@@ -310,7 +390,16 @@ tree — it's what makes a second tooltip skip the opening delay. It's
 included in this example only because this page has no app-wide one of
 its own.
 
-<Example>
+<Example
+  code={`<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <Button variant="outline">Hover me</Button>
+    </TooltipTrigger>
+    <TooltipContent>Saved 2 minutes ago</TooltipContent>
+  </Tooltip>
+</TooltipProvider>`}
+>
   <TooltipProvider>
     <Tooltip>
       <TooltipTrigger asChild>
@@ -329,7 +418,16 @@ its own.
 
 ## Popover
 
-<Example>
+<Example
+  code={`<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Open popover</Button>
+  </PopoverTrigger>
+  <PopoverContent>
+    <p>Popover content goes here — any JSX.</p>
+  </PopoverContent>
+</Popover>`}
+>
   <Popover>
     <PopoverTrigger asChild>
       <Button variant="outline">Open popover</Button>
@@ -340,6 +438,10 @@ its own.
   </Popover>
 </Example>
 
+`Popover`/`PopoverTrigger`/`PopoverAnchor`/`PopoverClose` are thin
+passthroughs with no styling of their own — `PopoverContent` bakes in the
+portal and the little arrow pointing back at the trigger.
+
 <PropsTable
   rows={[
     { name: "align", type: '"start" | "center" | "end"', default: '"center"', description: "PopoverContent only — alignment relative to the trigger." },
@@ -349,7 +451,43 @@ its own.
 
 ## DropdownMenu
 
-<Example>
+<Example
+  code={`const [showActivity, setShowActivity] = useState(true);
+const [sort, setSort] = useState("recent");
+
+<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Open menu</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>My account</DropdownMenuLabel>
+    <DropdownMenuGroup>
+      <DropdownMenuItem>
+        Profile
+        <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
+      </DropdownMenuItem>
+      <DropdownMenuItem>Billing</DropdownMenuItem>
+    </DropdownMenuGroup>
+    <DropdownMenuSeparator />
+    <DropdownMenuCheckboxItem checked={showActivity} onCheckedChange={setShowActivity}>
+      Show activity
+    </DropdownMenuCheckboxItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuRadioGroup value={sort} onValueChange={setSort}>
+      <DropdownMenuRadioItem value="recent">Sort by recent</DropdownMenuRadioItem>
+      <DropdownMenuRadioItem value="name">Sort by name</DropdownMenuRadioItem>
+    </DropdownMenuRadioGroup>
+    <DropdownMenuSeparator />
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger>More</DropdownMenuSubTrigger>
+      <DropdownMenuSubContent>
+        <DropdownMenuItem>Export</DropdownMenuItem>
+        <DropdownMenuItem>Duplicate</DropdownMenuItem>
+      </DropdownMenuSubContent>
+    </DropdownMenuSub>
+  </DropdownMenuContent>
+</DropdownMenu>`}
+>
   <DropdownMenuDemo />
 </Example>
 

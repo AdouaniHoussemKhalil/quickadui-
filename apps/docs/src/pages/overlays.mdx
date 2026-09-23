@@ -38,7 +38,25 @@ here yet.
 
 ## Modal
 
-<Example>
+<Example
+  code={`<Modal>
+  <ModalTrigger asChild>
+    <Button variant="outline">Open modal</Button>
+  </ModalTrigger>
+  <ModalContent>
+    <ModalHeader>
+      <ModalTitle>Delete project</ModalTitle>
+      <ModalDescription>This action can't be undone.</ModalDescription>
+    </ModalHeader>
+    <ModalFooter>
+      <ModalClose asChild>
+        <Button variant="ghost">Cancel</Button>
+      </ModalClose>
+      <Button variant="destructive">Delete</Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>`}
+>
   <Modal>
     <ModalTrigger asChild>
       <Button variant="outline">Open modal</Button>
@@ -67,7 +85,24 @@ merges onto the button above rather than wrapping it in an extra element.
 
 ## Drawer
 
-<Example>
+<Example
+  code={`<Drawer>
+  <DrawerTrigger asChild>
+    <Button variant="outline">Open drawer</Button>
+  </DrawerTrigger>
+  <DrawerContent side="right">
+    <DrawerHeader>
+      <DrawerTitle>Filters</DrawerTitle>
+      <DrawerDescription>Narrow down the results.</DrawerDescription>
+    </DrawerHeader>
+    <DrawerFooter>
+      <DrawerClose asChild>
+        <Button variant="ghost">Close</Button>
+      </DrawerClose>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>`}
+>
   <Drawer>
     <DrawerTrigger asChild>
       <Button variant="outline">Open drawer</Button>
@@ -98,7 +133,21 @@ merges onto the button above rather than wrapping it in an extra element.
 high in the tree — here, just for this example) renders whatever is
 currently in it.
 
-<Example>
+<Example
+  code={`<Toaster />
+<Button
+  variant="outline"
+  onClick={() =>
+    toast({
+      title: "Saved",
+      description: "Your changes have been saved.",
+      variant: "success",
+    })
+  }
+>
+  Show toast
+</Button>`}
+>
   <Toaster />
   <Button
     variant="outline"
@@ -127,7 +176,18 @@ currently in it.
 
 ## Context menu
 
-<Example>
+<Example
+  code={`<ContextMenu>
+  <ContextMenuTrigger>
+    Right-click here
+  </ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuItem>Rename</ContextMenuItem>
+    <ContextMenuItem>Duplicate</ContextMenuItem>
+    <ContextMenuItem>Delete</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>`}
+>
   <ContextMenu>
     <ContextMenuTrigger className="flex h-24 w-full items-center justify-center rounded-md border border-dashed border-neutral-6 text-sm text-neutral-11">
       Right-click here

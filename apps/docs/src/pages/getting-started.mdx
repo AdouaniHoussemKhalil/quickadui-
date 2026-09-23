@@ -24,34 +24,106 @@ npm run dev
 ```
 
 `init` writes a Vite + React 19 + TypeScript + Tailwind v4 project,
-pre-wired so `quickadui add`/`generate`/`apply` work right away. It
-refuses to write into a non-empty directory — pass `--force` to scaffold
-into one anyway.
+pre-wired so `quickadui add`/`generate`/`apply` work right away — a
+`src/index.css` with Tailwind's own `@import "tailwindcss";` already in
+it, a `vite.config.ts` with the React and Tailwind plugins, and nothing
+else generated yet. It refuses to write into a non-empty directory — pass
+`--force` to scaffold into one anyway.
 
-## 2. Two ways to build from here
+## 2. Don't skip this: wire up your CSS
+
+This is the single most common "why does everything look unstyled"
+question, so it gets its own step before anything else.
+
+**`quickadui add` (and `apply`, which calls `add` for you) never touches
+your `src/index.css`.** Rewriting a stylesheet it doesn't know the shape
+of risks corrupting whatever you've already added to it — so instead, every
+`add` prints the exact lines to paste in yourself, under "Next steps" in
+your terminal. After installing packages, open `src/index.css` and add,
+right after `@import "tailwindcss";`:
+
+```css
+@import "tailwindcss";
+
+/* Only if you installed @quickadui/theme (most projects do): */
+@import "@quickadui/theme/tokens.css";
+@import "@quickadui/theme/tailwind-theme.css";
+
+/* One @source line per QuickadUI package you installed that ships
+   styled components (core, forms, data, overlays, shell, charts, ...): */
+@source "../node_modules/@quickadui/core";
+@source "../node_modules/@quickadui/forms";
+/* ...one more per package */
+
+@layer base {
+  body {
+    @apply bg-neutral-1 text-neutral-12;
+  }
+}
+```
+
+Why this matters, and why it's silent: Tailwind v4 only generates CSS for
+classes it can actually see referenced somewhere it's told to scan. A
+QuickadUI package's own components live in `node_modules`, outside your
+`src/`, so without an explicit `@source` line pointing at each one,
+Tailwind simply never looks there — and **nothing errors**. Every
+component from that package still renders, just with none of its classes
+turned into real CSS, so it looks like plain unstyled HTML. The same goes
+for `@quickadui/theme`'s two stylesheets: skip them and every semantic
+color class (`bg-accent-9`, `border-neutral-6`, …) resolves to nothing, so
+components render with no color at all — easy to mistake for "the CLI
+generated something broken" when it's really just a missing import.
+
+One more subtlety if you ever move your CSS entry point: `@source` paths
+are resolved **relative to the stylesheet they're written in**, not your
+project root. The `../node_modules/...` prefix above assumes it's still at
+`src/index.css` (the `init` default, one directory below where
+`node_modules` lives) — if you move it elsewhere, adjust the `../` prefix
+to match.
+
+## 3. Two ways to build from here
 
 **One command/package at a time** — `add` a package, then `generate` a
-resource, auth, or the app shell, in whatever order you like:
+resource, auth, or the app shell, in whatever order you like. This is the
+more hands-on path: you see each generator's own "next steps" output
+(including the CSS lines from step 2) as you go.
 
 ```sh
 quickadui add core data forms theme shell
+# → paste the printed @import/@source lines into src/index.css (see step 2)
+
 quickadui generate resource Product --fields "title:string,price:number,inStock:boolean"
 quickadui generate auth
 quickadui generate app
 ```
 
+Each `generate` step only needs the packages it actually uses already
+added — `generate resource` needs `core`, `data`, `forms`; `generate app`
+needs `core`, `theme`, and `shell` if you want a navbar/sidebar/footer.
+Running one before its packages are added still writes the file, but the
+import will fail until you `add` the missing package.
+
 **One config file, one command** — describe the whole app (resources,
 auth, navbar/sidebar/footer, dashboard) in a single JSON file and run
 `apply`: it validates the whole file, then runs `add` + every needed
-`generate` step for you, non-interactively.
+`generate` step for you, non-interactively — still printing the same CSS
+"next steps" at the end, since `apply` doesn't touch `index.css` either.
 
 ```sh
 quickadui apply ./quickadui.config.json
 ```
 
 Both paths produce the same kind of output — plain, router-free React
-components you own and can edit freely. Re-running either one only
-overwrites existing files with `--force`.
+components you own and can edit freely. **Re-running either one only
+overwrites files it's already written when you pass `--force`** — without
+it, `generate app`/`apply` refuse to clobber an existing `src/App.tsx` (and
+similar already-generated files), so it's safe to run once to see what
+gets written, then re-run with `--force` once you're ready to regenerate
+for real:
+
+```sh
+quickadui apply ./quickadui.config.json --force
+```
 
 ## Commands reference
 
@@ -70,7 +142,7 @@ overwrites existing files with `--force`.
       </TableRow>
       <TableRow>
         <TableCell><code>quickadui add {'<pkg...>'} [--dir] [--pm npm|pnpm|yarn]</code></TableCell>
-        <TableCell>Add one or more QuickadUI packages (and their dependencies) to package.json.</TableCell>
+        <TableCell>Add one or more QuickadUI packages (and their dependencies) to package.json. Never touches index.css — see step 2 above.</TableCell>
       </TableRow>
       <TableRow>
         <TableCell><code>quickadui generate resource {'<Type>'} --fields "..." [--endpoint] [--api-base]</code></TableCell>
@@ -82,11 +154,11 @@ overwrites existing files with `--force`.
       </TableRow>
       <TableRow>
         <TableCell><code>quickadui generate app [--navbar|--no-navbar] [--sidebar|--no-sidebar] [--footer|--no-footer] [--yes] [--force]</code></TableCell>
-        <TableCell>Generate src/App.tsx — theme toggle plus a router wired to every generated page. Needs core, theme, and shell for navbar/sidebar/footer.</TableCell>
+        <TableCell>Generate src/App.tsx — theme toggle plus a router wired to every generated page. Needs core, theme, and shell for navbar/sidebar/footer. Overwrites an existing src/App.tsx only with --force.</TableCell>
       </TableRow>
       <TableRow>
         <TableCell><code>quickadui apply {'<config.json>'} [--dir] [--pm] [--force]</code></TableCell>
-        <TableCell>Declarative alternative to the four commands above — read one config file, run everything it implies.</TableCell>
+        <TableCell>Declarative alternative to the four commands above — read one config file, run everything it implies. --force is forwarded to the generate app step.</TableCell>
       </TableRow>
     </TableBody>
   </Table>
@@ -124,7 +196,7 @@ explicitly to turn one off.
       </TableRow>
       <TableRow>
         <TableCell><code>resources</code></TableCell>
-        <TableCell>One entry per resource — fields, button icons, toast messages, delete confirmation.</TableCell>
+        <TableCell>One entry per resource — fields, per-action endpoints, button icons, toast messages, delete confirmation.</TableCell>
       </TableRow>
       <TableRow>
         <TableCell><code>navbar</code> / <code>sidebar</code></TableCell>
@@ -142,8 +214,12 @@ explicitly to turn one off.
   </Table>
 </div>
 
-A minimal example — one resource, everything else left at its default
-(still generates a Navbar and a Footer, no Sidebar):
+### Building one up, step by step
+
+Start from the smallest thing that generates anything at all — one
+resource, everything else left at its default (still generates a Navbar
+and a Footer, no Sidebar, pointed at the free `https://dummyjson.com` demo
+API):
 
 ```json
 {
@@ -160,11 +236,13 @@ A minimal example — one resource, everything else left at its default
 }
 ```
 
-A fuller example, with auth, a custom logo, and a dashboard:
+Run `quickadui apply ./quickadui.config.json`, look at what got generated,
+then grow the file from there. A fuller example — your own API, auth with
+roles, a custom logo, and a dashboard:
 
 ```json
 {
-  "project": { "name": "My Shop", "apiBase": "https://dummyjson.com" },
+  "project": { "name": "My Shop", "apiBase": "https://api.myshop.com" },
   "theme": { "default": "dark", "colors": { "accent": "#2563EB" } },
   "auth": { "enabled": true, "roles": ["admin", "user"] },
   "resources": [
@@ -200,6 +278,115 @@ every validation rule — is documented on the types themselves in
 bad path (e.g. `resources[0].views.list.fields`), never a vague "invalid
 config".
 
+### Common scenarios
+
+A few situations that come up almost every time you point `quickadui` at
+something other than the demo API, with what to actually do about each.
+
+**You don't have a backend yet.** Leave `apiBase` unset, or point it at
+`https://dummyjson.com` — every generated API client works against it out
+of the box, so you can build and preview the whole UI first and swap in
+your real API once it exists. Nothing else in your config needs to change
+later except `project.apiBase` (and, if your real API's REST shape
+differs — almost always true — the `endpoints` override below).
+
+**Your backend's REST shape doesn't match DummyJSON's conventions.** By
+default, every generated resource assumes DummyJSON-style routes:
+
+<div className="mb-6 overflow-hidden rounded-lg border border-neutral-6">
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Action</TableHead>
+        <TableHead>Default request</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell>list</TableCell>
+        <TableCell><code>GET endpoint</code> — wrapped as <code>total/skip/limit/endpoint</code>, with limit/skip pagination.</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>get</TableCell>
+        <TableCell><code>GET endpoint/id</code></TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>create</TableCell>
+        <TableCell><code>POST endpoint/add</code></TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>update</TableCell>
+        <TableCell><code>PUT endpoint/id</code></TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell>delete</TableCell>
+        <TableCell><code>DELETE endpoint/id</code></TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+</div>
+
+A real backend rarely matches all of that — a create endpoint with no
+`/add` suffix and a list endpoint that returns a bare array with no
+pagination are both extremely common. Override only the actions that
+actually differ, per resource, with `endpoints`:
+
+```json
+{
+  "resources": [
+    {
+      "name": "book",
+      "endpoint": "books",
+      "endpoints": {
+        "list": { "responseShape": "array" },
+        "create": { "path": "books" }
+      },
+      "fields": [{ "name": "title", "type": "string" }]
+    }
+  ]
+}
+```
+
+Anything you don't override — `get`/`update`/`delete` in this example —
+keeps its DummyJSON-shaped default from the table above (`GET`/`PUT`/`DELETE`
+on the resource's own endpoint plus its id), which happens to match a
+great many real REST APIs already. Each action's `path` and `method` can
+be overridden independently, and `list` additionally takes
+`responseShape: "array" | "wrapped"`. Full details, including how to
+override a single-item path that doesn't end in a plain id, are in
+`packages/cli/README.md`.
+
+**Your frontend and backend run on different origins and requests fail
+silently or with a CORS error.** This one isn't something `quickadui`
+generates around — it's a browser security rule, and the fix is on your
+backend, not in the config file. If your dev server is `http://localhost:5173`
+and your API is on a different port or host, your backend needs to
+explicitly allow that origin. For an ASP.NET Core Minimal API, for
+example:
+
+```csharp
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+        policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod());
+});
+// ...
+app.UseCors("Frontend"); // before app.Map*Endpoints()
+```
+
+Every backend framework has an equivalent — the shape is always "explicitly
+allow this origin," never something a frontend-only tool can paper over.
+
+**Nothing loads and you're not sure why.** Before suspecting the
+generated code, open your browser's DevTools Network tab and check the
+actual request: is the URL exactly right (right port, right scheme)? A
+`https`-vs-`http` or wrong-port mismatch on `apiBase` is a very common
+cause of "it just doesn't work" — for instance, ASP.NET Core's dev server
+often listens on a *different port for HTTPS than for HTTP* (check your
+backend's `Properties/launchSettings.json`, `applicationUrl`, or the
+`Now listening on:` lines it prints on startup) — pointing `apiBase` at
+the wrong one of the two fails before your backend code ever runs.
+
 ## Download a starter config
 
 Two ready-to-edit files — save either one as `quickadui.config.json` next
@@ -233,6 +420,9 @@ one pass, then trimming down to what you actually need.
 
 Re-running `apply`/`generate app` is how you pick up config changes —
 pass `--force` to overwrite the files they've already written (`src/App.tsx`,
-generated pages, …). Once your first project is generated, the rest of
-these docs cover each package's components individually — start with
-[Core](#core) for buttons, cards, and the rest of the everyday vocabulary.
+generated pages, dashboard widgets, …). Changing a resource's `endpoints`
+and re-running with `--force` regenerates both its API client *and* any
+dashboard widgets that read from it, so the two never drift out of sync.
+Once your first project is generated, the rest of these docs cover each
+package's components individually — start with [Core](#core) for buttons,
+cards, and the rest of the everyday vocabulary.

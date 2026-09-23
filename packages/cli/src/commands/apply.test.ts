@@ -440,6 +440,42 @@ describe("runApply — dashboard", () => {
     expect(dashboardTsx).toContain('import { listCategories } from "../api/category.api";');
   });
 
+  it('threads a resource\'s endpoints.list.responseShape: "array" through to its dashboard widgets, matching the generated api client\'s actual list<Plural>() signature', async () => {
+    // Regression test: dashboard widgets used to unconditionally assume
+    // the "wrapped" DummyJSON-style list shape (list<Plural>({ limit })
+    // returning { total, "<endpoint>": T[] }). Against a resource
+    // configured with endpoints.list.responseShape: "array" (see
+    // resource-templates.ts), list<Plural>() takes no argument and
+    // resolves straight to T[] — a widget still assuming "wrapped" read
+    // `undefined` at runtime and crashed at render, past its own `error`
+    // state (`items.map` on `undefined`). This pins both widget types.
+    const dir = makeInitializedProject();
+    const configPath = writeConfigFile({
+      resources: [
+        {
+          name: "book",
+          endpoint: "books",
+          fields: [{ name: "title", type: "string" }],
+          endpoints: { list: { responseShape: "array" } },
+        },
+      ],
+      dashboard: {
+        enabled: true,
+        widgets: [
+          { id: "books-count", type: "stat", title: "Books", resource: "book" },
+          { id: "recent-books", type: "list", title: "Recent books", resource: "book" },
+        ],
+      },
+    });
+    await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+
+    const dashboardTsx = readFileSync(join(dir, "src", "pages", "DashboardPage.tsx"), "utf8");
+    expect(dashboardTsx).toContain("setTotal(result.length);");
+    expect(dashboardTsx).not.toContain("listBooks({ limit: 1 })");
+    expect(dashboardTsx).toContain("setItems(result.slice(0, 5));");
+    expect(dashboardTsx).not.toContain('setItems(result["books"]);');
+  });
+
   it("uses a custom dashboard.route instead of the default #/", async () => {
     const dir = makeInitializedProject();
     const configPath = writeConfigFile({

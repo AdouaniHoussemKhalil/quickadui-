@@ -198,6 +198,12 @@ function resolveDashboardWidgets(config: QuickaduiConfig): DashboardWidgetOption
     const typeName = toPascalCase(resourceConfig.name);
     const endpoint = resourceConfig.endpoint ?? toKebabCase(toNaivePlural(typeName));
     const primaryField = resourceConfig.fields[0]?.name;
+    // Same default `resource-templates.ts`'s own `resolveEndpoints` uses
+    // for `endpoints.list.responseShape` — every widget below reads from
+    // the exact same generated `list<Plural>()` a resource's own list
+    // page does, so it must resolve to the same shape that function was
+    // actually generated with, not silently assume the "wrapped" default.
+    const responseShape = resourceConfig.endpoints?.list?.responseShape ?? "wrapped";
     return {
       id: widget.id,
       type: widget.type,
@@ -205,6 +211,7 @@ function resolveDashboardWidgets(config: QuickaduiConfig): DashboardWidgetOption
       resource: {
         typeName,
         endpoint,
+        responseShape,
         ...(primaryField !== undefined ? { primaryField } : {}),
       },
       ...(widget.metric !== undefined ? { metric: widget.metric } : {}),

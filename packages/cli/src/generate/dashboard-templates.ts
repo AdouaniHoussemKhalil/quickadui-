@@ -39,6 +39,19 @@ export interface DashboardWidgetResourceRef {
   readonly endpoint: string;
   /** The resource's first declared field name, shown as a "list" widget's row label (`String(item.<primaryField>)`). `undefined` when the resource has no fields — rows fall back to `#<id>`. */
   readonly primaryField?: string;
+  /**
+   * Mirrors the resource's own `endpoints.list.responseShape` (see
+   * `resource-templates.ts`'s `resolveEndpoints`) — `list<Plural>()`'s
+   * actual return shape and signature depend on it: `"wrapped"` (the
+   * default) takes a `{ limit }` argument and returns
+   * `{ total, skip, limit, "<endpoint>": T[] }`; `"array"` takes no
+   * argument and resolves straight to `T[]`. Every widget reads from the
+   * same generated `list<Plural>()` a resource's own list page does, so
+   * it must agree with it here too — this is `apply.ts`'s
+   * `resolveDashboardWidgets` resolving the same default `resource-templates.ts`
+   * does, not a second independent default.
+   */
+  readonly responseShape?: "wrapped" | "array";
 }
 
 export interface DashboardWidgetOptions {
@@ -99,9 +112,17 @@ function jsString(value: string): string {
 
 function renderStatWidget(widget: DashboardWidgetOptions): string {
   const { typeName } = widget.resource;
+  const isArray = widget.resource.responseShape === "array";
   const plural = toNaivePlural(typeName);
   const fnName = widgetFunctionName(widget.id);
   const icon = iconJsx(widget.icon);
+  // "array"-shaped resources' list<Plural>() takes no argument and
+  // resolves straight to T[] — there's no server-side `.total` to read,
+  // so the count is the fetched array's own length. "wrapped" (the
+  // default) keeps asking for just one row and reading the server's own
+  // `.total`, same as before this branch existed.
+  const listCall = isArray ? `list${plural}()` : `list${plural}({ limit: 1 })`;
+  const totalExpr = isArray ? "result.length" : "result.total";
 
   return `function ${fnName}() {
   const [total, setTotal] = useState<number | undefined>(undefined);
@@ -109,10 +130,10 @@ function renderStatWidget(widget: DashboardWidgetOptions): string {
 
   useEffect(() => {
     let cancelled = false;
-    list${plural}({ limit: 1 })
+    ${listCall}
       .then((result) => {
         if (!cancelled) {
-          setTotal(result.total);
+          setTotal(${totalExpr});
         }
       })
       .catch((cause: unknown) => {
@@ -143,6 +164,7 @@ function renderStatWidget(widget: DashboardWidgetOptions): string {
 
 function renderListWidget(widget: DashboardWidgetOptions): string {
   const { typeName, endpoint, primaryField } = widget.resource;
+  const isArray = widget.resource.responseShape === "array";
   const plural = toNaivePlural(typeName);
   const limit = widget.limit ?? 5;
   const fnName = widgetFunctionName(widget.id);
@@ -151,6 +173,18 @@ function renderListWidget(widget: DashboardWidgetOptions): string {
     ? `{<span className="flex items-center gap-2">${icon}{${jsString(widget.title)}}</span>}`
     : `{${jsString(widget.title)}}`;
   const rowLabel = primaryField !== undefined ? `String(item.${primaryField})` : "`#${item.id}`";
+  // "array"-shaped resources' list<Plural>() takes no argument and
+  // resolves straight to T[] — there's no server-side `limit` to ask
+  // for, so the preview is truncated client-side after the fetch.
+  // "wrapped" (the default) keeps asking the server for `limit` rows and
+  // reading them back out from under the endpoint's own key, same as
+  // before this branch existed. Reading `result["${endpoint}"]` on a
+  // bare array (the bug this branch fixes) silently resolved to
+  // `undefined` — `items.map` then threw at render, not at fetch time,
+  // which is why it surfaced as a blank-page crash instead of the
+  // widget's own `error` state.
+  const listCall = isArray ? `list${plural}()` : `list${plural}({ limit: ${limit} })`;
+  const itemsExpr = isArray ? `result.slice(0, ${limit})` : `result["${endpoint}"]`;
 
   return `function ${fnName}() {
   const [items, setItems] = useState<readonly ${typeName}[]>([]);
@@ -159,10 +193,10 @@ function renderListWidget(widget: DashboardWidgetOptions): string {
 
   useEffect(() => {
     let cancelled = false;
-    list${plural}({ limit: ${limit} })
+    ${listCall}
       .then((result) => {
         if (!cancelled) {
-          setItems(result["${endpoint}"]);
+          setItems(${itemsExpr});
         }
       })
       .catch((cause: unknown) => {

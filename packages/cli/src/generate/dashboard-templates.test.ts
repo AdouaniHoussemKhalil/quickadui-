@@ -3,6 +3,7 @@ import { renderDashboardPage } from "./dashboard-templates";
 
 const productRef = { typeName: "Product", endpoint: "products", primaryField: "title" };
 const todoRef = { typeName: "Todo", endpoint: "todos" };
+const arrayRef = { typeName: "Book", endpoint: "books", primaryField: "title", responseShape: "array" as const };
 
 describe("renderDashboardPage — basics", () => {
   it("writes to src/pages/DashboardPage.tsx", () => {
@@ -115,6 +116,51 @@ describe("renderDashboardPage — list widgets", () => {
       widgets: [{ id: "recent-products", type: "list", title: "Recent products", resource: productRef }],
     });
     expect(file.contents).toContain("Nothing to show yet.");
+  });
+});
+
+describe('renderDashboardPage — resource.responseShape: "array"', () => {
+  // Regression coverage for a real bug: before this branch existed,
+  // every widget unconditionally called list<Plural>({ limit }) and read
+  // result["<endpoint>"] / result.total — both are "wrapped"-shape-only.
+  // Against an "array"-shape resource (see resource-templates.ts's own
+  // `endpoints.list.responseShape`), list<Plural>() takes no argument and
+  // resolves straight to T[], so result["<endpoint>"] silently read
+  // `undefined` and the widget crashed at render (`items.map` on
+  // `undefined`), past its own `error` state entirely.
+  it("stat widget: calls list<Plural>() with no argument and reads result.length instead of .total", () => {
+    const file = renderDashboardPage({
+      widgets: [{ id: "books-count", type: "stat", title: "Books", resource: arrayRef }],
+    });
+    expect(file.contents).toContain("listBooks()");
+    expect(file.contents).not.toContain("listBooks({ limit: 1 })");
+    expect(file.contents).toContain("setTotal(result.length);");
+    expect(file.contents).not.toContain("setTotal(result.total);");
+  });
+
+  it("list widget: calls list<Plural>() with no argument and truncates client-side to the configured limit", () => {
+    const file = renderDashboardPage({
+      widgets: [{ id: "recent-books", type: "list", title: "Recent books", resource: arrayRef, limit: 7 }],
+    });
+    expect(file.contents).toContain("listBooks()");
+    expect(file.contents).not.toContain("listBooks({ limit: 7 })");
+    expect(file.contents).toContain("setItems(result.slice(0, 7));");
+    expect(file.contents).not.toContain('setItems(result["books"]);');
+  });
+
+  it("list widget: defaults the client-side slice limit to 5 when unset, same as the wrapped-shape default", () => {
+    const file = renderDashboardPage({
+      widgets: [{ id: "recent-books", type: "list", title: "Recent books", resource: arrayRef }],
+    });
+    expect(file.contents).toContain("setItems(result.slice(0, 5));");
+  });
+
+  it("a resource with no responseShape set still uses the wrapped-shape default (existing behavior unchanged)", () => {
+    const file = renderDashboardPage({
+      widgets: [{ id: "products-count", type: "stat", title: "Products", resource: productRef }],
+    });
+    expect(file.contents).toContain("listProducts({ limit: 1 })");
+    expect(file.contents).toContain("setTotal(result.total);");
   });
 });
 

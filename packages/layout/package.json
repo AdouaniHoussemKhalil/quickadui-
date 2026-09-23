@@ -1,6 +1,6 @@
 {
   "name": "@quickadui/layout",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Layout building blocks — Grid, Flex, Stack, Container, Section, Page Container.",
   "license": "MIT",
   "repository": {

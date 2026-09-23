@@ -92,7 +92,10 @@ export interface ButtonProps extends ComponentProps<"button">, VariantProps<type
  * itself was passed as — you can't usefully click a button whose action
  * is already in flight.
  */
-export function resolveButtonDisabled(isLoading: boolean | undefined, disabled: boolean | undefined): boolean {
+export function resolveButtonDisabled(
+  isLoading: boolean | undefined,
+  disabled: boolean | undefined,
+): boolean {
   return Boolean(isLoading) || Boolean(disabled);
 }
 
@@ -105,7 +108,10 @@ export function resolveButtonDisabled(isLoading: boolean | undefined, disabled: 
  * as `resolveButtonDisabled`, even though (unlike that one) this one
  * still returns JSX rather than a primitive.
  */
-export function resolveButtonIcon(icon: ReactNode | undefined, isLoading: boolean | undefined): ReactNode {
+export function resolveButtonIcon(
+  icon: ReactNode | undefined,
+  isLoading: boolean | undefined,
+): ReactNode {
   if (isLoading) {
     return <Spinner size="sm" className="text-current" />;
   }

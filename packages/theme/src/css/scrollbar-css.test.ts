@@ -6,9 +6,7 @@ describe("generateScrollbarCss", () => {
 
   it("themes the Firefox scrollbar via inherited :root properties", () => {
     expect(css).toContain(":root {");
-    expect(css).toContain(
-      "scrollbar-color: var(--qa-color-accent-9) var(--qa-color-neutral-3);",
-    );
+    expect(css).toContain("scrollbar-color: var(--qa-color-accent-9) var(--qa-color-neutral-3);");
     expect(css).toContain("scrollbar-width: thin;");
   });
 

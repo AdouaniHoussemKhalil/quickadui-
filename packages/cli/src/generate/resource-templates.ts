@@ -15,7 +15,9 @@ import type { FieldSpec, FieldType } from "./field-spec.js";
  * visible alongside the icon; `{ icon, showLabel: false }` drops the
  * text and renders icon-only via `IconButton` instead of `Button`.
  */
-export type ResourceButtonIconSlot = string | { readonly icon: string; readonly showLabel?: boolean };
+export type ResourceButtonIconSlot =
+  | string
+  | { readonly icon: string; readonly showLabel?: boolean };
 
 /**
  * Icons for the five standard buttons this generator always produces —
@@ -38,7 +40,9 @@ interface NormalizedIconSlot {
 }
 
 /** A plain string defaults to `showLabel: true` — the same "icon + visible text" behavior this feature always had, before `showLabel` existed. */
-function normalizeIconSlot(slot: ResourceButtonIconSlot | undefined): NormalizedIconSlot | undefined {
+function normalizeIconSlot(
+  slot: ResourceButtonIconSlot | undefined,
+): NormalizedIconSlot | undefined {
   if (slot === undefined) {
     return undefined;
   }
@@ -128,7 +132,11 @@ function iconJsx(name: string | undefined): string {
  * `import { Button, Spinner } from "@quickadui/core";` exactly.
  */
 function coreImportLine(needsButton: boolean, needsIconButton: boolean): string {
-  const names = [...(needsButton ? ["Button"] : []), ...(needsIconButton ? ["IconButton"] : []), "Spinner"];
+  const names = [
+    ...(needsButton ? ["Button"] : []),
+    ...(needsIconButton ? ["IconButton"] : []),
+    "Spinner",
+  ];
   return `import { ${names.join(", ")} } from "@quickadui/core";`;
 }
 
@@ -144,7 +152,15 @@ function overlaysImportLine(needsToast: boolean, needsModal: boolean): string {
   }
   const names = [
     ...(needsModal
-      ? ["Modal", "ModalClose", "ModalContent", "ModalDescription", "ModalFooter", "ModalHeader", "ModalTitle"]
+      ? [
+          "Modal",
+          "ModalClose",
+          "ModalContent",
+          "ModalDescription",
+          "ModalFooter",
+          "ModalHeader",
+          "ModalTitle",
+        ]
       : []),
     ...(needsToast ? ["toast"] : []),
   ];
@@ -186,7 +202,11 @@ function jsString(value: string): string {
  * `<a>`, so an icon-only render uses `IconButton`'s own `asChild`
  * support the same way.
  */
-function renderCreateButton(endpoint: string, label: string, slot: NormalizedIconSlot | undefined): string {
+function renderCreateButton(
+  endpoint: string,
+  label: string,
+  slot: NormalizedIconSlot | undefined,
+): string {
   const icon = slot !== undefined ? iconJsx(slot.icon) : "";
   if (slot !== undefined && !slot.showLabel) {
     return `        <IconButton asChild variant="solid" aria-label="New ${label}">
@@ -228,7 +248,9 @@ function renderEditButton(endpoint: string, slot: NormalizedIconSlot | undefined
  */
 function renderDeleteButton(slot: NormalizedIconSlot | undefined, confirmDelete: boolean): string {
   const icon = slot !== undefined ? iconJsx(slot.icon) : "";
-  const onClick = confirmDelete ? "() => setPendingDeleteId(item.id)" : "() => handleDelete(item.id)";
+  const onClick = confirmDelete
+    ? "() => setPendingDeleteId(item.id)"
+    : "() => handleDelete(item.id)";
   if (slot !== undefined && !slot.showLabel) {
     return `                    <IconButton
                       variant="ghost"
@@ -422,7 +444,10 @@ interface ResolvedEndpoints {
  * in a configured path is rewritten to the template-literal-ready
  * `${id}` here, once, rather than at every call site below.
  */
-function resolveEndpoints(endpoint: string, overrides: ResourceEndpoints | undefined): ResolvedEndpoints {
+function resolveEndpoints(
+  endpoint: string,
+  overrides: ResourceEndpoints | undefined,
+): ResolvedEndpoints {
   const toTemplate = (path: string): string => path.replace("{id}", "${id}");
   const list = overrides?.list;
   const get = overrides?.get;
@@ -436,14 +461,23 @@ function resolveEndpoints(endpoint: string, overrides: ResourceEndpoints | undef
       responseShape: list?.responseShape ?? "wrapped",
     },
     get: { path: toTemplate(get?.path ?? `${endpoint}/{id}`), method: get?.method ?? "GET" },
-    create: { path: toTemplate(create?.path ?? `${endpoint}/add`), method: create?.method ?? "POST" },
-    update: { path: toTemplate(update?.path ?? `${endpoint}/{id}`), method: update?.method ?? "PUT" },
+    create: {
+      path: toTemplate(create?.path ?? `${endpoint}/add`),
+      method: create?.method ?? "POST",
+    },
+    update: {
+      path: toTemplate(update?.path ?? `${endpoint}/{id}`),
+      method: update?.method ?? "PUT",
+    },
     delete: { path: toTemplate(del?.path ?? `${endpoint}/{id}`), method: del?.method ?? "DELETE" },
   };
 }
 
 /** `""`, or `, { method: "..." }` when `method` isn't the request's natural default — lets a GET/HEAD-shaped call skip the fetch options object entirely, exactly like before per-action method overrides existed. */
-function methodInit(method: ResourceEndpointMethod, naturalDefault: ResourceEndpointMethod): string {
+function methodInit(
+  method: ResourceEndpointMethod,
+  naturalDefault: ResourceEndpointMethod,
+): string {
   return method === naturalDefault ? "" : `, { method: "${method}" }`;
 }
 
@@ -569,12 +603,16 @@ export function renderResourceListPage(options: ResourceTemplateOptions): Scaffo
   const confirmDelete = options.confirmDelete ?? false;
   const confirmDeleteOn = confirmDelete !== false;
   const confirmDeleteMessage =
-    typeof confirmDelete === "string" ? confirmDelete : `Delete this ${label}? This can't be undone.`;
+    typeof confirmDelete === "string"
+      ? confirmDelete
+      : `Delete this ${label}? This can't be undone.`;
 
   const createButtonJsx = renderCreateButton(endpoint, label, createSlot);
   const editButtonJsx = renderEditButton(endpoint, editSlot);
   const deleteButtonJsx = renderDeleteButton(deleteSlot, confirmDeleteOn);
-  const confirmDeleteModalJsx = confirmDeleteOn ? renderConfirmDeleteModal(confirmDeleteMessage) : "";
+  const confirmDeleteModalJsx = confirmDeleteOn
+    ? renderConfirmDeleteModal(confirmDeleteMessage)
+    : "";
   const pendingDeleteIdState = confirmDeleteOn
     ? "\n  const [pendingDeleteId, setPendingDeleteId] = useState<number | undefined>(undefined);"
     : "";
@@ -609,9 +647,12 @@ export function renderResourceListPage(options: ResourceTemplateOptions): Scaffo
   }`;
 
   const needsButton =
-    (createSlot === undefined || createSlot.showLabel) ||
-    (editSlot === undefined || editSlot.showLabel) ||
-    (deleteSlot === undefined || deleteSlot.showLabel);
+    createSlot === undefined ||
+    createSlot.showLabel ||
+    editSlot === undefined ||
+    editSlot.showLabel ||
+    deleteSlot === undefined ||
+    deleteSlot.showLabel;
   const needsIconButton =
     (createSlot !== undefined && !createSlot.showLabel) ||
     (editSlot !== undefined && !editSlot.showLabel) ||
@@ -886,7 +927,9 @@ export function renderResourceFormPage(options: ResourceTemplateOptions): Scaffo
   const buttonIcons = options.buttonIcons ?? {};
 
   const usesCheckbox = fields.some((field) => field.type === "boolean");
-  const defaultValues = fields.map((field) => `  ${field.name}: ${defaultValueFor(field.type)},`).join("\n");
+  const defaultValues = fields
+    .map((field) => `  ${field.name}: ${defaultValueFor(field.type)},`)
+    .join("\n");
   const formFields = fields.map(renderFormFieldJsx).join("\n");
 
   const saveSlot = normalizeIconSlot(buttonIcons.save);
@@ -895,9 +938,14 @@ export function renderResourceFormPage(options: ResourceTemplateOptions): Scaffo
   const saveButtonJsx = renderSaveButton(saveSlot);
   const cancelButtonJsx = renderCancelButton(endpoint, cancelSlot);
 
-  const needsButton = (saveSlot === undefined || saveSlot.showLabel) || (cancelSlot === undefined || cancelSlot.showLabel);
+  const needsButton =
+    saveSlot === undefined ||
+    saveSlot.showLabel ||
+    cancelSlot === undefined ||
+    cancelSlot.showLabel;
   const needsIconButton =
-    (saveSlot !== undefined && !saveSlot.showLabel) || (cancelSlot !== undefined && !cancelSlot.showLabel);
+    (saveSlot !== undefined && !saveSlot.showLabel) ||
+    (cancelSlot !== undefined && !cancelSlot.showLabel);
 
   const iconImport = iconImportLine([saveSlot?.icon, cancelSlot?.icon]);
 

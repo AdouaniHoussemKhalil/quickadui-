@@ -27,7 +27,11 @@ function writeResourcePage(dir: string, kebab: string, pascal: string, endpoint:
     `export function ${pascal}ListPage() {\n  return <a href="#/${endpoint}/new">New</a>;\n}\n`,
     "utf8",
   );
-  writeFileSync(join(featureDir, `${pascal}FormPage.tsx`), `export function ${pascal}FormPage() {}\n`, "utf8");
+  writeFileSync(
+    join(featureDir, `${pascal}FormPage.tsx`),
+    `export function ${pascal}FormPage() {}\n`,
+    "utf8",
+  );
 }
 
 describe("discoverFeatures", () => {
@@ -71,7 +75,11 @@ describe("discoverFeatures", () => {
     const dir = makeProject();
     const featureDir = join(dir, "src", "pages", "widget");
     mkdirSync(featureDir, { recursive: true });
-    writeFileSync(join(featureDir, "WidgetListPage.tsx"), "export function WidgetListPage() { return null; }\n", "utf8");
+    writeFileSync(
+      join(featureDir, "WidgetListPage.tsx"),
+      "export function WidgetListPage() { return null; }\n",
+      "utf8",
+    );
 
     const [feature] = discoverFeatures(dir);
     expect(feature).toMatchObject({ endpoint: "widget" });
@@ -81,8 +89,16 @@ describe("discoverFeatures", () => {
     const dir = makeProject();
     writeResourcePage(dir, "product", "Product", "products");
     mkdirSync(join(dir, "src", "pages"), { recursive: true });
-    writeFileSync(join(dir, "src", "pages", "LoginPage.tsx"), "export function LoginPage() {}\n", "utf8");
-    writeFileSync(join(dir, "src", "pages", "ProfilePage.tsx"), "export function ProfilePage() {}\n", "utf8");
+    writeFileSync(
+      join(dir, "src", "pages", "LoginPage.tsx"),
+      "export function LoginPage() {}\n",
+      "utf8",
+    );
+    writeFileSync(
+      join(dir, "src", "pages", "ProfilePage.tsx"),
+      "export function ProfilePage() {}\n",
+      "utf8",
+    );
 
     const features = discoverFeatures(dir);
     expect(features.map((f) => f.kind)).toEqual(["resource", "login", "profile"]);
@@ -93,7 +109,11 @@ describe("discoverFeatures", () => {
   it("finds only login when there's no ProfilePage.tsx", () => {
     const dir = makeProject();
     mkdirSync(join(dir, "src", "pages"), { recursive: true });
-    writeFileSync(join(dir, "src", "pages", "LoginPage.tsx"), "export function LoginPage() {}\n", "utf8");
+    writeFileSync(
+      join(dir, "src", "pages", "LoginPage.tsx"),
+      "export function LoginPage() {}\n",
+      "utf8",
+    );
 
     expect(discoverFeatures(dir).map((f) => f.kind)).toEqual(["login"]);
   });

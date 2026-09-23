@@ -4,10 +4,10 @@ import { checkRequiredPackages } from "../generate/check-prerequisites.js";
 import { parseFieldSpec } from "../generate/field-spec.js";
 import { renderGenerateResourceNextSteps } from "../generate/render-generate-next-steps.js";
 import {
-  renderResourceFiles,
   type ResourceButtonIcons,
   type ResourceEndpoints,
   type ResourceToasts,
+  renderResourceFiles,
 } from "../generate/resource-templates.js";
 import { writeScaffoldFiles } from "../generate/write-files.js";
 

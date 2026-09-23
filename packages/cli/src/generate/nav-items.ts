@@ -30,7 +30,11 @@ export function defaultNavItems(features: readonly DiscoveredFeature[]): readonl
 /** The inverse of `parseNavItemsSpec` — used to pre-fill the interactive prompt with the auto-detected default, in the same syntax a person would type back. */
 export function formatNavItemsSpec(items: readonly NavItem[]): string {
   return items
-    .map((item) => (item.icon !== undefined ? `${item.label}:${item.href}:${item.icon}` : `${item.label}:${item.href}`))
+    .map((item) =>
+      item.icon !== undefined
+        ? `${item.label}:${item.href}:${item.icon}`
+        : `${item.label}:${item.href}`,
+    )
     .join(",");
 }
 

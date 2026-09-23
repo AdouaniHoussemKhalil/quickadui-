@@ -15,7 +15,11 @@ afterEach(() => {
 
 function makeProject(dependencies: Record<string, string>): string {
   const dir = mkdtempSync(join(tmpdir(), "quickadui-generate-test-"));
-  writeFileSync(join(dir, "package.json"), JSON.stringify({ name: "test-app", dependencies }), "utf8");
+  writeFileSync(
+    join(dir, "package.json"),
+    JSON.stringify({ name: "test-app", dependencies }),
+    "utf8",
+  );
   projectDir = dir;
   return dir;
 }

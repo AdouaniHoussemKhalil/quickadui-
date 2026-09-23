@@ -52,11 +52,17 @@ export function renderAddNextSteps(
     lines.push("");
     if (themeImportLines.length > 0) {
       lines.push("     Without the @quickadui/theme lines, semantic color classes (bg-accent-9,");
-      lines.push("     border-neutral-6, ...) generate no CSS at all — components render with no color.");
+      lines.push(
+        "     border-neutral-6, ...) generate no CSS at all — components render with no color.",
+      );
     }
     if (sourceLines.length > 0) {
-      lines.push("     Without the @source line(s), Tailwind won't see these packages' own classes");
-      lines.push("     once installed into node_modules, and their components will render unstyled.");
+      lines.push(
+        "     Without the @source line(s), Tailwind won't see these packages' own classes",
+      );
+      lines.push(
+        "     once installed into node_modules, and their components will render unstyled.",
+      );
       lines.push("");
       lines.push(
         "     These paths assume your CSS entry point is `src/index.css` (the `quickadui init`",
@@ -99,7 +105,9 @@ export function renderAddNextSteps(
   if (!hasTheme && packages.some((pkg) => pkg.needsSourceDirective)) {
     lines.push("");
     lines.push("Heads up: these components use QuickadUI's semantic color classes, which need");
-    lines.push("@quickadui/theme's generated CSS to render. Run `quickadui add theme` too, then add");
+    lines.push(
+      "@quickadui/theme's generated CSS to render. Run `quickadui add theme` too, then add",
+    );
     lines.push("its two @import lines (same pattern as step 2 above) to your CSS.");
   }
 

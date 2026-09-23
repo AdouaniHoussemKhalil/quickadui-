@@ -22,12 +22,12 @@ import { resolve } from "node:path";
 import type { PackageManager } from "../args.js";
 import { toKebabCase, toNaivePlural, toPascalCase } from "../generate/case.js";
 import type { DashboardWidgetOptions } from "../generate/dashboard-templates.js";
-import { runAdd, type AddResult } from "./add.js";
-import { runGenerateApp, type GenerateAppResult } from "./generate-app.js";
-import { runGenerateAuth, type GenerateAuthResult } from "./generate-auth.js";
-import { runGenerateDashboard, type GenerateDashboardResult } from "./generate-dashboard.js";
-import { runGenerateResource, type GenerateResourceResult } from "./generate-resource.js";
 import { parseQuickaduiConfig, type QuickaduiConfig } from "../quickadui-config.js";
+import { type AddResult, runAdd } from "./add.js";
+import { type GenerateAppResult, runGenerateApp } from "./generate-app.js";
+import { type GenerateAuthResult, runGenerateAuth } from "./generate-auth.js";
+import { type GenerateDashboardResult, runGenerateDashboard } from "./generate-dashboard.js";
+import { type GenerateResourceResult, runGenerateResource } from "./generate-resource.js";
 
 export interface ApplyOptions {
   readonly projectDir: string;
@@ -141,7 +141,9 @@ function requiredPackagesFor(config: QuickaduiConfig): readonly string[] {
   // might already be adding (confirmed in packages.ts: core/data/forms/
   // shell none of them depend on overlays), so it needs its own check.
   const needsOverlays = config.resources.some(
-    (resource) => resource.toasts !== undefined || (resource.confirmDelete !== undefined && resource.confirmDelete !== false),
+    (resource) =>
+      resource.toasts !== undefined ||
+      (resource.confirmDelete !== undefined && resource.confirmDelete !== false),
   );
   if (needsOverlays) {
     packages.add(OVERLAYS_PACKAGE);
@@ -193,7 +195,9 @@ function resolveDashboardWidgets(config: QuickaduiConfig): DashboardWidgetOption
       // a dashboard widget referencing an unknown resource before this
       // ever runs — but keeps this function total instead of silently
       // generating a broken import if that validation is ever loosened.
-      throw new Error(`dashboard widget "${widget.id}" references unknown resource "${widget.resource}".`);
+      throw new Error(
+        `dashboard widget "${widget.id}" references unknown resource "${widget.resource}".`,
+      );
     }
     const typeName = toPascalCase(resourceConfig.name);
     const endpoint = resourceConfig.endpoint ?? toKebabCase(toNaivePlural(typeName));
@@ -226,7 +230,11 @@ function formatItemsSpec(
   items: readonly { readonly label: string; readonly href: string; readonly icon?: string }[],
 ): string {
   return items
-    .map((item) => (item.icon !== undefined ? `${item.label}:${item.href}:${item.icon}` : `${item.label}:${item.href}`))
+    .map((item) =>
+      item.icon !== undefined
+        ? `${item.label}:${item.href}:${item.icon}`
+        : `${item.label}:${item.href}`,
+    )
     .join(",");
 }
 
@@ -236,7 +244,7 @@ function collectWarnings(config: QuickaduiConfig): readonly string[] {
   const anyPerViewShape = config.resources.some((r) => r.views !== undefined);
   if (anyPerViewShape) {
     warnings.push(
-      "resources[].views (per-view fields/actions) was validated but is not yet reflected in generated code — every view currently gets the resource's full flat \"fields\" list, and \"actions\" entries are ignored. Real per-view + per-action codegen is still on the roadmap.",
+      'resources[].views (per-view fields/actions) was validated but is not yet reflected in generated code — every view currently gets the resource\'s full flat "fields" list, and "actions" entries are ignored. Real per-view + per-action codegen is still on the roadmap.',
     );
   }
 
@@ -245,13 +253,13 @@ function collectWarnings(config: QuickaduiConfig): readonly string[] {
     (config.sidebar?.items ?? []).some((i) => i.role !== undefined || i.requiresAuth);
   if (anyRoleOrAuthGating) {
     warnings.push(
-      "\"role\"/\"requiresAuth\" on navbar/sidebar items was validated but isn't enforced yet — every generated nav item is currently visible to everyone, logged in or not.",
+      '"role"/"requiresAuth" on navbar/sidebar items was validated but isn\'t enforced yet — every generated nav item is currently visible to everyone, logged in or not.',
     );
   }
 
   if (config.footer?.content !== undefined) {
     warnings.push(
-      'footer.content was validated but generate app\'s footer text is still hardcoded ("© <year> <project name>") — your custom content isn\'t in the generated file yet.',
+      "footer.content was validated but generate app's footer text is still hardcoded (\"© <year> <project name>\") — your custom content isn't in the generated file yet.",
     );
   }
 
@@ -353,8 +361,10 @@ export async function runApply(options: ApplyOptions): Promise<ApplyResult> {
     });
   }
 
-  const navbarItemsSpec = config.navbar?.items !== undefined ? formatItemsSpec(config.navbar.items) : undefined;
-  const sidebarItemsSpec = config.sidebar?.items !== undefined ? formatItemsSpec(config.sidebar.items) : undefined;
+  const navbarItemsSpec =
+    config.navbar?.items !== undefined ? formatItemsSpec(config.navbar.items) : undefined;
+  const sidebarItemsSpec =
+    config.sidebar?.items !== undefined ? formatItemsSpec(config.sidebar.items) : undefined;
 
   const appResult = await runGenerateApp({
     projectDir,
@@ -368,7 +378,9 @@ export async function runApply(options: ApplyOptions): Promise<ApplyResult> {
     defaultTheme: config.theme?.default,
     defaultColors: config.theme?.colors,
     needsToaster: needsToaster(config),
-    ...(config.dashboard?.enabled ? { dashboardRoute: config.dashboard.route ?? DEFAULT_DASHBOARD_ROUTE } : {}),
+    ...(config.dashboard?.enabled
+      ? { dashboardRoute: config.dashboard.route ?? DEFAULT_DASHBOARD_ROUTE }
+      : {}),
     ...(config.navbar?.brand !== undefined ? { navbarBrand: config.navbar.brand } : {}),
     ...(config.navbar?.logo !== undefined ? { navbarLogo: config.navbar.logo } : {}),
     ...(config.sidebar?.brand !== undefined ? { sidebarBrand: config.sidebar.brand } : {}),

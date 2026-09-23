@@ -22,7 +22,10 @@ export interface NavGroup {
  */
 export const nav: NavGroup[] = [
   { label: "Introduction", pages: [{ slug: "introduction", label: "Introduction" }] },
-  { label: "Getting started", pages: [{ slug: "getting-started", label: "Create your first project" }] },
+  {
+    label: "Getting started",
+    pages: [{ slug: "getting-started", label: "Create your first project" }],
+  },
   { label: "Tokens", pages: [{ slug: "tokens", label: "Overview" }] },
   { label: "Theme", pages: [{ slug: "theme", label: "Overview" }] },
   { label: "Primitives", pages: [{ slug: "primitives", label: "Overview" }] },

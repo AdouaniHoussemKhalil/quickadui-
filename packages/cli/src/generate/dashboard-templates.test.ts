@@ -3,7 +3,12 @@ import { renderDashboardPage } from "./dashboard-templates";
 
 const productRef = { typeName: "Product", endpoint: "products", primaryField: "title" };
 const todoRef = { typeName: "Todo", endpoint: "todos" };
-const arrayRef = { typeName: "Book", endpoint: "books", primaryField: "title", responseShape: "array" as const };
+const arrayRef = {
+  typeName: "Book",
+  endpoint: "books",
+  primaryField: "title",
+  responseShape: "array" as const,
+};
 
 describe("renderDashboardPage — basics", () => {
   it("writes to src/pages/DashboardPage.tsx", () => {
@@ -39,7 +44,15 @@ describe("renderDashboardPage — stat widgets", () => {
 
   it("passes the widget's icon through to StatCard's icon prop and imports it", () => {
     const file = renderDashboardPage({
-      widgets: [{ id: "products-count", type: "stat", title: "Products", resource: productRef, icon: "Settings" }],
+      widgets: [
+        {
+          id: "products-count",
+          type: "stat",
+          title: "Products",
+          resource: productRef,
+          icon: "Settings",
+        },
+      ],
     });
     expect(file.contents).toContain(
       '<StatCard label={"Products"} value={total} icon={<SettingsIcon size={16} aria-hidden />} />',
@@ -67,23 +80,35 @@ describe("renderDashboardPage — stat widgets", () => {
 describe("renderDashboardPage — list widgets", () => {
   it("fetches with the configured limit and reads the endpoint's own array key", () => {
     const file = renderDashboardPage({
-      widgets: [{ id: "recent-products", type: "list", title: "Recent products", resource: productRef, limit: 7 }],
+      widgets: [
+        {
+          id: "recent-products",
+          type: "list",
+          title: "Recent products",
+          resource: productRef,
+          limit: 7,
+        },
+      ],
     });
     expect(file.contents).toContain("listProducts({ limit: 7 })");
     expect(file.contents).toContain('setItems(result["products"]);');
-    expect(file.contents).toContain("import type { Product } from \"../schemas/product.schema\";");
+    expect(file.contents).toContain('import type { Product } from "../schemas/product.schema";');
   });
 
   it("defaults limit to 5 when unset", () => {
     const file = renderDashboardPage({
-      widgets: [{ id: "recent-products", type: "list", title: "Recent products", resource: productRef }],
+      widgets: [
+        { id: "recent-products", type: "list", title: "Recent products", resource: productRef },
+      ],
     });
     expect(file.contents).toContain("listProducts({ limit: 5 })");
   });
 
   it("renders each row using the resource's primaryField", () => {
     const file = renderDashboardPage({
-      widgets: [{ id: "recent-products", type: "list", title: "Recent products", resource: productRef }],
+      widgets: [
+        { id: "recent-products", type: "list", title: "Recent products", resource: productRef },
+      ],
     });
     expect(file.contents).toContain("{String(item.title)}");
   });
@@ -92,19 +117,30 @@ describe("renderDashboardPage — list widgets", () => {
     const file = renderDashboardPage({
       widgets: [{ id: "recent-todos", type: "list", title: "Recent todos", resource: todoRef }],
     });
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting on a literal generated-code snippet, not a template interpolation in this file.
     expect(file.contents).toContain("{`#${item.id}`}");
   });
 
   it("sets the Widget's title to a plain string prop when there's no icon, with dragging enabled", () => {
     const file = renderDashboardPage({
-      widgets: [{ id: "recent-products", type: "list", title: "Recent products", resource: productRef }],
+      widgets: [
+        { id: "recent-products", type: "list", title: "Recent products", resource: productRef },
+      ],
     });
     expect(file.contents).toContain('<Widget id={"recent-products"} title={"Recent products"}>');
   });
 
   it("combines the icon and title into one JSX expression when icon is set", () => {
     const file = renderDashboardPage({
-      widgets: [{ id: "recent-products", type: "list", title: "Recent products", resource: productRef, icon: "Clock" }],
+      widgets: [
+        {
+          id: "recent-products",
+          type: "list",
+          title: "Recent products",
+          resource: productRef,
+          icon: "Clock",
+        },
+      ],
     });
     expect(file.contents).toContain(
       '<Widget id={"recent-products"} title={<span className="flex items-center gap-2"><ClockIcon size={16} aria-hidden />{"Recent products"}</span>}>',
@@ -113,7 +149,9 @@ describe("renderDashboardPage — list widgets", () => {
 
   it("shows an empty-state message when items.length is 0, distinct from the loading/error states", () => {
     const file = renderDashboardPage({
-      widgets: [{ id: "recent-products", type: "list", title: "Recent products", resource: productRef }],
+      widgets: [
+        { id: "recent-products", type: "list", title: "Recent products", resource: productRef },
+      ],
     });
     expect(file.contents).toContain("Nothing to show yet.");
   });
@@ -140,7 +178,9 @@ describe('renderDashboardPage — resource.responseShape: "array"', () => {
 
   it("list widget: calls list<Plural>() with no argument and truncates client-side to the configured limit", () => {
     const file = renderDashboardPage({
-      widgets: [{ id: "recent-books", type: "list", title: "Recent books", resource: arrayRef, limit: 7 }],
+      widgets: [
+        { id: "recent-books", type: "list", title: "Recent books", resource: arrayRef, limit: 7 },
+      ],
     });
     expect(file.contents).toContain("listBooks()");
     expect(file.contents).not.toContain("listBooks({ limit: 7 })");
@@ -174,7 +214,9 @@ describe("renderDashboardPage — grid wiring", () => {
       ],
     });
     expect(file.contents).toContain("<WidgetGrid items={order} onReorder={setOrder}>");
-    expect(file.contents).toContain("const [order, setOrder] = useState<string[]>(loadWidgetOrder);");
+    expect(file.contents).toContain(
+      "const [order, setOrder] = useState<string[]>(loadWidgetOrder);",
+    );
     expect(file.contents).toContain('const DEFAULT_WIDGET_ORDER = ["a", "b", "c"];');
   });
 
@@ -183,7 +225,9 @@ describe("renderDashboardPage — grid wiring", () => {
       columns: 2,
       widgets: [{ id: "a", type: "stat", title: "A", resource: productRef }],
     });
-    expect(withColumns.contents).toContain("<WidgetGrid items={order} onReorder={setOrder} columns={2}>");
+    expect(withColumns.contents).toContain(
+      "<WidgetGrid items={order} onReorder={setOrder} columns={2}>",
+    );
 
     const withoutColumns = renderDashboardPage({
       widgets: [{ id: "a", type: "stat", title: "A", resource: productRef }],
@@ -199,8 +243,12 @@ describe("renderDashboardPage — grid wiring", () => {
         { id: "recent-products", type: "list", title: "Recent", resource: productRef },
       ],
     });
-    expect(file.contents).toContain('"products-count": <ProductsCountWidget key={"products-count"} />,');
-    expect(file.contents).toContain('"recent-products": <RecentProductsWidget key={"recent-products"} />,');
+    expect(file.contents).toContain(
+      '"products-count": <ProductsCountWidget key={"products-count"} />,',
+    );
+    expect(file.contents).toContain(
+      '"recent-products": <RecentProductsWidget key={"recent-products"} />,',
+    );
     expect(file.contents).toContain("{order.map((id) => widgetElements[id])}");
   });
 
@@ -208,10 +256,14 @@ describe("renderDashboardPage — grid wiring", () => {
     const file = renderDashboardPage({
       widgets: [{ id: "products-count", type: "stat", title: "Products", resource: productRef }],
     });
-    expect(file.contents).toContain('const WIDGET_ORDER_STORAGE_KEY = "quickadui-dashboard-widget-order";');
+    expect(file.contents).toContain(
+      'const WIDGET_ORDER_STORAGE_KEY = "quickadui-dashboard-widget-order";',
+    );
     expect(file.contents).toContain("function loadWidgetOrder(): string[] {");
     expect(file.contents).toContain("window.localStorage.getItem(WIDGET_ORDER_STORAGE_KEY)");
-    expect(file.contents).toContain("window.localStorage.setItem(WIDGET_ORDER_STORAGE_KEY, JSON.stringify(order));");
+    expect(file.contents).toContain(
+      "window.localStorage.setItem(WIDGET_ORDER_STORAGE_KEY, JSON.stringify(order));",
+    );
     expect(file.contents).toContain("return DEFAULT_WIDGET_ORDER;");
   });
 

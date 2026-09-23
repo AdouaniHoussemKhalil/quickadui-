@@ -77,8 +77,21 @@ describe("parseQuickaduiConfig — valid configs", () => {
         route: "#/dashboard",
         columns: 2,
         widgets: [
-          { id: "product-count", type: "stat", title: "Products", resource: "product", metric: "count", icon: "Package" },
-          { id: "recent-products", type: "list", title: "Recent products", resource: "product", limit: 5 },
+          {
+            id: "product-count",
+            type: "stat",
+            title: "Products",
+            resource: "product",
+            metric: "count",
+            icon: "Package",
+          },
+          {
+            id: "recent-products",
+            type: "list",
+            title: "Recent products",
+            resource: "product",
+            limit: 5,
+          },
         ],
       },
     };
@@ -156,11 +169,11 @@ describe("parseQuickaduiConfig — top-level structure errors", () => {
     expect(() => parseQuickaduiConfig([1, 2, 3])).toThrow(/expected a JSON object/);
   });
 
-  it("throws when \"resources\" is missing", () => {
+  it('throws when "resources" is missing', () => {
     expect(() => parseQuickaduiConfig({})).toThrow(/"resources"/);
   });
 
-  it("throws when \"resources\" isn't an array", () => {
+  it('throws when "resources" isn\'t an array', () => {
     expect(() => parseQuickaduiConfig({ resources: "product" })).toThrow(/"resources"/);
   });
 
@@ -239,7 +252,11 @@ describe("parseQuickaduiConfig — resource buttonIcons", () => {
       ],
     };
     const config = parseQuickaduiConfig(raw);
-    expect(config.resources[0]?.buttonIcons).toEqual({ create: "Plus", delete: "Trash", save: "Check" });
+    expect(config.resources[0]?.buttonIcons).toEqual({
+      create: "Plus",
+      delete: "Trash",
+      save: "Check",
+    });
   });
 
   it("omits buttonIcons entirely when the config doesn't set it — today's default, every button stays text-only", () => {
@@ -249,14 +266,18 @@ describe("parseQuickaduiConfig — resource buttonIcons", () => {
 
   it("throws when buttonIcons isn't an object", () => {
     const raw = {
-      resources: [{ name: "product", fields: [{ name: "title", type: "string" }], buttonIcons: "Plus" }],
+      resources: [
+        { name: "product", fields: [{ name: "title", type: "string" }], buttonIcons: "Plus" },
+      ],
     };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.buttonIcons/);
   });
 
   it("throws when one buttonIcons slot isn't a string or an object", () => {
     const raw = {
-      resources: [{ name: "product", fields: [{ name: "title", type: "string" }], buttonIcons: { edit: 42 } }],
+      resources: [
+        { name: "product", fields: [{ name: "title", type: "string" }], buttonIcons: { edit: 42 } },
+      ],
     };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.buttonIcons\.edit/);
   });
@@ -272,7 +293,9 @@ describe("parseQuickaduiConfig — resource buttonIcons", () => {
       ],
     };
     const config = parseQuickaduiConfig(raw);
-    expect(config.resources[0]?.buttonIcons).toEqual({ delete: { icon: "Trash", showLabel: false } });
+    expect(config.resources[0]?.buttonIcons).toEqual({
+      delete: { icon: "Trash", showLabel: false },
+    });
   });
 
   it("parses a buttonIcons slot as an object without showLabel — same as a plain string, icon + visible text", () => {
@@ -289,7 +312,7 @@ describe("parseQuickaduiConfig — resource buttonIcons", () => {
     expect(config.resources[0]?.buttonIcons).toEqual({ save: { icon: "Check" } });
   });
 
-  it("throws when a buttonIcons slot object is missing its \"icon\" key", () => {
+  it('throws when a buttonIcons slot object is missing its "icon" key', () => {
     const raw = {
       resources: [
         {
@@ -312,7 +335,9 @@ describe("parseQuickaduiConfig — resource buttonIcons", () => {
         },
       ],
     };
-    expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.buttonIcons\.delete\.showLabel/);
+    expect(() => parseQuickaduiConfig(raw)).toThrow(
+      /resources\[0\]\.buttonIcons\.delete\.showLabel/,
+    );
   });
 });
 
@@ -364,7 +389,9 @@ describe("parseQuickaduiConfig — resource endpoints", () => {
 
   it("throws when endpoints isn't an object", () => {
     const raw = {
-      resources: [{ name: "book", fields: [{ name: "title", type: "string" }], endpoints: "books" }],
+      resources: [
+        { name: "book", fields: [{ name: "title", type: "string" }], endpoints: "books" },
+      ],
     };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.endpoints/);
   });
@@ -372,7 +399,11 @@ describe("parseQuickaduiConfig — resource endpoints", () => {
   it("throws when one action isn't an object", () => {
     const raw = {
       resources: [
-        { name: "book", fields: [{ name: "title", type: "string" }], endpoints: { create: "books" } },
+        {
+          name: "book",
+          fields: [{ name: "title", type: "string" }],
+          endpoints: { create: "books" },
+        },
       ],
     };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.endpoints\.create/);
@@ -392,7 +423,7 @@ describe("parseQuickaduiConfig — resource endpoints", () => {
   });
 
   it.each(["get", "update", "delete"])(
-    "throws when %s's path is missing the required \"{id}\" placeholder",
+    'throws when %s\'s path is missing the required "{id}" placeholder',
     (action) => {
       const raw = {
         resources: [
@@ -409,20 +440,23 @@ describe("parseQuickaduiConfig — resource endpoints", () => {
     },
   );
 
-  it.each(["list", "create"])("doesn't require an \"{id}\" placeholder in %s's path — there's no id in scope yet", (action) => {
-    const raw = {
-      resources: [
-        {
-          name: "book",
-          fields: [{ name: "title", type: "string" }],
-          endpoints: { [action]: { path: "books" } },
-        },
-      ],
-    };
-    expect(() => parseQuickaduiConfig(raw)).not.toThrow();
-  });
+  it.each(["list", "create"])(
+    "doesn't require an \"{id}\" placeholder in %s's path — there's no id in scope yet",
+    (action) => {
+      const raw = {
+        resources: [
+          {
+            name: "book",
+            fields: [{ name: "title", type: "string" }],
+            endpoints: { [action]: { path: "books" } },
+          },
+        ],
+      };
+      expect(() => parseQuickaduiConfig(raw)).not.toThrow();
+    },
+  );
 
-  it("throws when list.responseShape isn't \"wrapped\" or \"array\"", () => {
+  it('throws when list.responseShape isn\'t "wrapped" or "array"', () => {
     const raw = {
       resources: [
         {
@@ -432,7 +466,9 @@ describe("parseQuickaduiConfig — resource endpoints", () => {
         },
       ],
     };
-    expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.endpoints\.list\.responseShape/);
+    expect(() => parseQuickaduiConfig(raw)).toThrow(
+      /resources\[0\]\.endpoints\.list\.responseShape/,
+    );
   });
 });
 
@@ -463,14 +499,16 @@ describe("parseQuickaduiConfig — view errors", () => {
     expect(() => parseQuickaduiConfig(raw)).toThrow(/views\.list\.fields/);
   });
 
-  it("throws when \"views\" isn't an object", () => {
-    const raw = { resources: [{ name: "product", fields: [{ name: "title", type: "string" }], views: "list" }] };
+  it('throws when "views" isn\'t an object', () => {
+    const raw = {
+      resources: [{ name: "product", fields: [{ name: "title", type: "string" }], views: "list" }],
+    };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.views/);
   });
 });
 
 describe("parseQuickaduiConfig — action errors", () => {
-  it("throws when a \"navigate\" action has no \"to\"", () => {
+  it('throws when a "navigate" action has no "to"', () => {
     const raw = {
       resources: [
         {
@@ -503,11 +541,18 @@ describe("parseQuickaduiConfig — action errors", () => {
         {
           name: "product",
           fields: [{ name: "title", type: "string" }],
-          views: { list: { fields: ["title"], actions: [{ label: "Delete", kind: "delete", role: ["superadmin"] }] } },
+          views: {
+            list: {
+              fields: ["title"],
+              actions: [{ label: "Delete", kind: "delete", role: ["superadmin"] }],
+            },
+          },
         },
       ],
     };
-    expect(() => parseQuickaduiConfig(raw)).toThrow(/role "superadmin" isn't declared in "auth.roles"/);
+    expect(() => parseQuickaduiConfig(raw)).toThrow(
+      /role "superadmin" isn't declared in "auth.roles"/,
+    );
   });
 
   it("throws when an action declares a role but auth.roles is unset entirely", () => {
@@ -516,7 +561,12 @@ describe("parseQuickaduiConfig — action errors", () => {
         {
           name: "product",
           fields: [{ name: "title", type: "string" }],
-          views: { list: { fields: ["title"], actions: [{ label: "Delete", kind: "delete", role: ["admin"] }] } },
+          views: {
+            list: {
+              fields: ["title"],
+              actions: [{ label: "Delete", kind: "delete", role: ["admin"] }],
+            },
+          },
         },
       ],
     };
@@ -539,13 +589,19 @@ describe("parseQuickaduiConfig — action errors", () => {
 
 describe("parseQuickaduiConfig — auth errors", () => {
   it("throws when auth.enabled is missing", () => {
-    expect(() => parseQuickaduiConfig({ auth: {}, resources: [{ name: "p", fields: [{ name: "n", type: "string" }] }] })).toThrow(
-      /auth\.enabled/,
-    );
+    expect(() =>
+      parseQuickaduiConfig({
+        auth: {},
+        resources: [{ name: "p", fields: [{ name: "n", type: "string" }] }],
+      }),
+    ).toThrow(/auth\.enabled/);
   });
 
   it("throws when auth.roles isn't an array of strings", () => {
-    const raw = { auth: { enabled: true, roles: [1, 2] }, resources: [{ name: "p", fields: [{ name: "n", type: "string" }] }] };
+    const raw = {
+      auth: { enabled: true, roles: [1, 2] },
+      resources: [{ name: "p", fields: [{ name: "n", type: "string" }] }],
+    };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/auth\.roles/);
   });
 });
@@ -568,7 +624,10 @@ describe("parseQuickaduiConfig — nav errors", () => {
   });
 
   it("throws when navbar.enabled is missing", () => {
-    const raw = { resources: [{ name: "p", fields: [{ name: "n", type: "string" }] }], navbar: { brand: "X" } };
+    const raw = {
+      resources: [{ name: "p", fields: [{ name: "n", type: "string" }] }],
+      navbar: { brand: "X" },
+    };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/navbar\.enabled/);
   });
 
@@ -642,7 +701,10 @@ describe("parseQuickaduiConfig — dashboard errors", () => {
   });
 
   it("throws when dashboard.enabled is missing", () => {
-    const raw = { resources: [{ name: "product", fields: [{ name: "title", type: "string" }] }], dashboard: {} };
+    const raw = {
+      resources: [{ name: "product", fields: [{ name: "title", type: "string" }] }],
+      dashboard: {},
+    };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/dashboard\.enabled/);
   });
 
@@ -677,17 +739,26 @@ describe("parseQuickaduiConfig — dashboard errors", () => {
 
 describe("parseQuickaduiConfig — theme/footer/project errors", () => {
   it("throws on an unknown theme.default value", () => {
-    const raw = { theme: { default: "sepia" }, resources: [{ name: "p", fields: [{ name: "n", type: "string" }] }] };
+    const raw = {
+      theme: { default: "sepia" },
+      resources: [{ name: "p", fields: [{ name: "n", type: "string" }] }],
+    };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/theme\.default/);
   });
 
   it("throws when footer.enabled is missing", () => {
-    const raw = { resources: [{ name: "p", fields: [{ name: "n", type: "string" }] }], footer: { content: "x" } };
+    const raw = {
+      resources: [{ name: "p", fields: [{ name: "n", type: "string" }] }],
+      footer: { content: "x" },
+    };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/footer\.enabled/);
   });
 
   it("throws when project isn't an object", () => {
-    const raw = { project: "My Shop", resources: [{ name: "p", fields: [{ name: "n", type: "string" }] }] };
+    const raw = {
+      project: "My Shop",
+      resources: [{ name: "p", fields: [{ name: "n", type: "string" }] }],
+    };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/project/);
   });
 });
@@ -765,7 +836,11 @@ describe("parseQuickaduiConfig — resource toasts", () => {
   it("accepts a partial toasts object — just one key is enough to opt in", () => {
     const raw = {
       resources: [
-        { name: "product", fields: [{ name: "title", type: "string" }], toasts: { deleteSuccess: "Gone." } },
+        {
+          name: "product",
+          fields: [{ name: "title", type: "string" }],
+          toasts: { deleteSuccess: "Gone." },
+        },
       ],
     };
     const config = parseQuickaduiConfig(raw);
@@ -779,7 +854,9 @@ describe("parseQuickaduiConfig — resource toasts", () => {
 
   it("throws when toasts isn't an object", () => {
     const raw = {
-      resources: [{ name: "product", fields: [{ name: "title", type: "string" }], toasts: "yes please" }],
+      resources: [
+        { name: "product", fields: [{ name: "title", type: "string" }], toasts: "yes please" },
+      ],
     };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.toasts/);
   });
@@ -787,7 +864,11 @@ describe("parseQuickaduiConfig — resource toasts", () => {
   it("throws when a toast message isn't a string", () => {
     const raw = {
       resources: [
-        { name: "product", fields: [{ name: "title", type: "string" }], toasts: { createSuccess: 42 } },
+        {
+          name: "product",
+          fields: [{ name: "title", type: "string" }],
+          toasts: { createSuccess: 42 },
+        },
       ],
     };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.toasts\.createSuccess/);
@@ -797,7 +878,9 @@ describe("parseQuickaduiConfig — resource toasts", () => {
 describe("parseQuickaduiConfig — resource confirmDelete", () => {
   it("accepts true", () => {
     const raw = {
-      resources: [{ name: "product", fields: [{ name: "title", type: "string" }], confirmDelete: true }],
+      resources: [
+        { name: "product", fields: [{ name: "title", type: "string" }], confirmDelete: true },
+      ],
     };
     const config = parseQuickaduiConfig(raw);
     expect(config.resources[0]?.confirmDelete).toBe(true);
@@ -824,14 +907,18 @@ describe("parseQuickaduiConfig — resource confirmDelete", () => {
 
   it("throws when confirmDelete is neither a boolean nor a string", () => {
     const raw = {
-      resources: [{ name: "product", fields: [{ name: "title", type: "string" }], confirmDelete: 42 }],
+      resources: [
+        { name: "product", fields: [{ name: "title", type: "string" }], confirmDelete: 42 },
+      ],
     };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.confirmDelete/);
   });
 
   it("throws when confirmDelete is an empty string", () => {
     const raw = {
-      resources: [{ name: "product", fields: [{ name: "title", type: "string" }], confirmDelete: "" }],
+      resources: [
+        { name: "product", fields: [{ name: "title", type: "string" }], confirmDelete: "" },
+      ],
     };
     expect(() => parseQuickaduiConfig(raw)).toThrow(/resources\[0\]\.confirmDelete/);
   });

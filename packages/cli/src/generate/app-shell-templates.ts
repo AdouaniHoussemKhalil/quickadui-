@@ -123,13 +123,21 @@ function buildImportLines(options: AppShellTemplateOptions): string {
       shellNames.push("Navbar", "NavbarActions", "NavbarBrand", "NavbarContent");
     }
     if (sidebar) {
-      shellNames.push("Sidebar", "SidebarContent", "SidebarGroup", "SidebarHeader", "SidebarNavItem");
+      shellNames.push(
+        "Sidebar",
+        "SidebarContent",
+        "SidebarGroup",
+        "SidebarHeader",
+        "SidebarNavItem",
+      );
     }
     if (navbar && sidebar) {
       shellNames.push("SidebarTrigger");
     }
     shellNames.sort();
-    lines.push(`import {\n${shellNames.map((name) => `  ${name},`).join("\n")}\n} from "@quickadui/shell";`);
+    lines.push(
+      `import {\n${shellNames.map((name) => `  ${name},`).join("\n")}\n} from "@quickadui/shell";`,
+    );
   }
 
   if (iconNames.length > 0) {
@@ -164,7 +172,10 @@ function buildImportLines(options: AppShellTemplateOptions): string {
   return lines.join("\n");
 }
 
-function buildRouterCases(features: readonly DiscoveredFeature[], dashboardRoute: string | undefined): string {
+function buildRouterCases(
+  features: readonly DiscoveredFeature[],
+  dashboardRoute: string | undefined,
+): string {
   const cases: string[] = [];
 
   if (dashboardRoute !== undefined) {
@@ -219,7 +230,8 @@ function buildNavButtonsJsx(items: readonly NavItem[]): string {
 function buildSidebarItemsJsx(items: readonly NavItem[]): string {
   return items
     .map((item) => {
-      const iconProp = item.icon !== undefined ? ` icon={<${item.icon}Icon size={16} aria-hidden />}` : "";
+      const iconProp =
+        item.icon !== undefined ? ` icon={<${item.icon}Icon size={16} aria-hidden />}` : "";
       return `          <SidebarNavItem key="${item.href}" href="${item.href}" active={hash === "${item.href}"}${iconProp}>
             ${item.label}
           </SidebarNavItem>`;
@@ -257,10 +269,17 @@ function buildThemeProviderOpenTag(options: AppShellTemplateOptions): string {
 }
 
 export function renderApp(options: AppShellTemplateOptions): RenderedApp {
-  const { projectName, navbar, sidebar, footer, navbarItems, sidebarItems, hasAuth, features } = options;
+  const { projectName, navbar, sidebar, footer, navbarItems, sidebarItems, hasAuth, features } =
+    options;
   const usesShell = navbar || sidebar || footer;
-  const navbarBrandChildren = renderBrandChildren(options.navbarBrand ?? projectName, options.navbarLogo);
-  const sidebarBrandChildren = renderBrandChildren(options.sidebarBrand ?? projectName, options.sidebarLogo);
+  const navbarBrandChildren = renderBrandChildren(
+    options.navbarBrand ?? projectName,
+    options.navbarLogo,
+  );
+  const sidebarBrandChildren = renderBrandChildren(
+    options.sidebarBrand ?? projectName,
+    options.sidebarLogo,
+  );
   const routerCases = buildRouterCases(features, options.dashboardRoute);
   const themeProviderOpenTag = buildThemeProviderOpenTag(options);
   const toasterJsx = options.needsToaster ? "\n      <Toaster />" : "";
@@ -404,8 +423,8 @@ function Router({ hash }: { hash: string }) {
 ${routerCases ? `${routerCases}\n` : ""}  return <HomePage />;
 }
 ${appNavbarFn}${appSidebarFn}${appFooterFn}${
-      hasAuth
-        ? `
+  hasAuth
+    ? `
 /**
  * Shows a centered Spinner in place of \`children\` while AuthProvider
  * runs its initial "am I already signed in" check (useAuth().loading),
@@ -425,8 +444,8 @@ function AuthGate({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 `
-        : ""
-    }
+    : ""
+}
 export function App() {
   const hash = useHashRoute();
   const content = ${content};

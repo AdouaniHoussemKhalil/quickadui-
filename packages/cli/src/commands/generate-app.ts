@@ -6,10 +6,19 @@
 
 import { existsSync, readFileSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
-import { renderApp, type AppShellThemeColors, type AppShellThemeMode } from "../generate/app-shell-templates.js";
+import {
+  type AppShellThemeColors,
+  type AppShellThemeMode,
+  renderApp,
+} from "../generate/app-shell-templates.js";
 import { checkRequiredPackages } from "../generate/check-prerequisites.js";
 import { discoverFeatures } from "../generate/discover-features.js";
-import { defaultNavItems, formatNavItemsSpec, type NavItem, parseNavItemsSpec } from "../generate/nav-items.js";
+import {
+  defaultNavItems,
+  formatNavItemsSpec,
+  type NavItem,
+  parseNavItemsSpec,
+} from "../generate/nav-items.js";
 import { createPrompter } from "../generate/prompts.js";
 import { renderGenerateAppNextSteps } from "../generate/render-generate-next-steps.js";
 import { writeScaffoldFiles } from "../generate/write-files.js";
@@ -87,7 +96,9 @@ export async function runGenerateApp(options: GenerateAppOptions): Promise<Gener
   }
 
   const features = discoverFeatures(projectDir);
-  const hasAuth = features.some((feature) => feature.kind === "login" || feature.kind === "profile");
+  const hasAuth = features.some(
+    (feature) => feature.kind === "login" || feature.kind === "profile",
+  );
   // When a dashboard route is set, put it first in the auto-derived
   // default — same treatment `defaultNavItems` already gives every
   // resource/auth page, so a config (or an interactive `generate app`
@@ -108,7 +119,9 @@ export async function runGenerateApp(options: GenerateAppOptions): Promise<Gener
   let navbarItems: readonly NavItem[] | undefined =
     options.navbarItemsSpec !== undefined ? parseNavItemsSpec(options.navbarItemsSpec) : undefined;
   let sidebarItems: readonly NavItem[] | undefined =
-    options.sidebarItemsSpec !== undefined ? parseNavItemsSpec(options.sidebarItemsSpec) : undefined;
+    options.sidebarItemsSpec !== undefined
+      ? parseNavItemsSpec(options.sidebarItemsSpec)
+      : undefined;
 
   const somethingUnset = navbar === undefined || sidebar === undefined || footer === undefined;
 
@@ -119,7 +132,10 @@ export async function runGenerateApp(options: GenerateAppOptions): Promise<Gener
         navbar = await prompter.confirm("Add a Navbar?", true);
       }
       if (navbar && navbarItems === undefined) {
-        const answer = await prompter.text("Navbar items (Label:href,...)", formatNavItemsSpec(defaultItems));
+        const answer = await prompter.text(
+          "Navbar items (Label:href,...)",
+          formatNavItemsSpec(defaultItems),
+        );
         navbarItems = parseNavItemsSpec(answer);
       }
 

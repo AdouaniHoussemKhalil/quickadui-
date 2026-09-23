@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  Collapsible as CollapsiblePrimitive,
   CollapsibleContent as CollapsibleContentPrimitive,
+  Collapsible as CollapsiblePrimitive,
   CollapsibleTrigger as CollapsibleTriggerPrimitive,
 } from "@quickadui/primitives";
 import { cn } from "@quickadui/utils";

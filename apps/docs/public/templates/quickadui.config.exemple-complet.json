@@ -40,10 +40,7 @@
     {
       "name": "todo",
       "endpoint": "todos",
-      "fields": [
-        { "name": "todo", "type": "string" },
-        { "name": "completed", "type": "boolean" }
-      ],
+      "fields": [{ "name": "todo", "type": "string" }, { "name": "completed", "type": "boolean" }],
       "toasts": {},
       "confirmDelete": true
     }
@@ -73,9 +70,21 @@
     "route": "#/",
     "columns": 3,
     "widgets": [
-      { "id": "product-count", "type": "stat", "title": "Products", "resource": "product", "icon": "Settings" },
+      {
+        "id": "product-count",
+        "type": "stat",
+        "title": "Products",
+        "resource": "product",
+        "icon": "Settings"
+      },
       { "id": "todo-count", "type": "stat", "title": "Todos", "resource": "todo", "icon": "Check" },
-      { "id": "recent-todos", "type": "list", "title": "Recent todos", "resource": "todo", "limit": 5 }
+      {
+        "id": "recent-todos",
+        "type": "list",
+        "title": "Recent todos",
+        "resource": "todo",
+        "limit": 5
+      }
     ]
   }
 }

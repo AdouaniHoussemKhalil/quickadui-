@@ -1,6 +1,9 @@
 import { resolve } from "node:path";
 import { checkRequiredPackages } from "../generate/check-prerequisites.js";
-import { renderDashboardPage, type DashboardWidgetOptions } from "../generate/dashboard-templates.js";
+import {
+  type DashboardWidgetOptions,
+  renderDashboardPage,
+} from "../generate/dashboard-templates.js";
 import { renderGenerateDashboardNextSteps } from "../generate/render-generate-next-steps.js";
 import { writeScaffoldFiles } from "../generate/write-files.js";
 
@@ -57,6 +60,9 @@ export function runGenerateDashboard(options: GenerateDashboardOptions): Generat
 
   return {
     filesWritten,
-    nextSteps: renderGenerateDashboardNextSteps({ widgetCount: options.widgets.length, filesWritten }),
+    nextSteps: renderGenerateDashboardNextSteps({
+      widgetCount: options.widgets.length,
+      filesWritten,
+    }),
   };
 }

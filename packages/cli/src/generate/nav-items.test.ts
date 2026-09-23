@@ -22,7 +22,9 @@ describe("parseNavItemsSpec", () => {
   });
 
   it("lowercases and dashes a multi-word guessed href", () => {
-    expect(parseNavItemsSpec("Release Notes")).toEqual([{ label: "Release Notes", href: "#/release-notes" }]);
+    expect(parseNavItemsSpec("Release Notes")).toEqual([
+      { label: "Release Notes", href: "#/release-notes" },
+    ]);
   });
 
   it("skips blank entries from trailing/doubled commas", () => {
@@ -45,7 +47,9 @@ describe("parseNavItemsSpec", () => {
   });
 
   it("trims whitespace around an icon segment", () => {
-    expect(parseNavItemsSpec(" Home : #/ : Home ")).toEqual([{ label: "Home", href: "#/", icon: "Home" }]);
+    expect(parseNavItemsSpec(" Home : #/ : Home ")).toEqual([
+      { label: "Home", href: "#/", icon: "Home" },
+    ]);
   });
 
   it("treats a trailing empty icon segment the same as omitting it", () => {
@@ -81,22 +85,42 @@ describe("formatNavItemsSpec", () => {
 describe("defaultNavItems", () => {
   it("turns a resource feature into a Label/#/endpoint item", () => {
     const features: readonly DiscoveredFeature[] = [
-      { kind: "resource", pascal: "Product", camel: "product", kebab: "product", endpoint: "products", label: "Products" },
+      {
+        kind: "resource",
+        pascal: "Product",
+        camel: "product",
+        kebab: "product",
+        endpoint: "products",
+        label: "Products",
+      },
     ];
     expect(defaultNavItems(features)).toEqual([{ label: "Products", href: "#/products" }]);
   });
 
   it("passes an auth feature's own label/href straight through", () => {
-    const features: readonly DiscoveredFeature[] = [{ kind: "login", label: "Login", href: "#/login" }];
+    const features: readonly DiscoveredFeature[] = [
+      { kind: "login", label: "Login", href: "#/login" },
+    ];
     expect(defaultNavItems(features)).toEqual([{ label: "Login", href: "#/login" }]);
   });
 
   it("preserves feature order", () => {
     const features: readonly DiscoveredFeature[] = [
-      { kind: "resource", pascal: "Product", camel: "product", kebab: "product", endpoint: "products", label: "Products" },
+      {
+        kind: "resource",
+        pascal: "Product",
+        camel: "product",
+        kebab: "product",
+        endpoint: "products",
+        label: "Products",
+      },
       { kind: "login", label: "Login", href: "#/login" },
       { kind: "profile", label: "Profile", href: "#/profile" },
     ];
-    expect(defaultNavItems(features).map((item) => item.label)).toEqual(["Products", "Login", "Profile"]);
+    expect(defaultNavItems(features).map((item) => item.label)).toEqual([
+      "Products",
+      "Login",
+      "Profile",
+    ]);
   });
 });

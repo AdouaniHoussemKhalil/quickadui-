@@ -21,7 +21,11 @@ afterEach(() => {
 /** A project directory that already has `quickadui init` behind it — just enough of a package.json for `runAdd` to read and rewrite, matching `check-prerequisites.test.ts`'s own fixture shape. */
 function makeInitializedProject(): string {
   const dir = mkdtempSync(join(tmpdir(), "quickadui-apply-test-project-"));
-  writeFileSync(join(dir, "package.json"), JSON.stringify({ name: "test-app", dependencies: {} }), "utf8");
+  writeFileSync(
+    join(dir, "package.json"),
+    JSON.stringify({ name: "test-app", dependencies: {} }),
+    "utf8",
+  );
   projectDir = dir;
   return dir;
 }
@@ -53,7 +57,12 @@ describe("runApply — happy path", () => {
     const dir = makeInitializedProject();
     const configPath = writeConfigFile(minimalConfig());
 
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
 
     const installedNames = result.addResult.installedPackages.map((pkg) => pkg.name);
     expect(installedNames).toContain("@quickadui/core");
@@ -76,7 +85,12 @@ describe("runApply — happy path", () => {
     const dir = makeInitializedProject();
     const configPath = writeConfigFile({ ...minimalConfig(), auth: { enabled: true } });
 
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
 
     expect(result.authResult).toBeDefined();
     expect(result.authResult?.filesWritten.length).toBeGreaterThan(0);
@@ -94,7 +108,9 @@ describe("runApply — happy path", () => {
       packageManager: "npm",
       force: false,
     });
-    expect(withDefaultShell.addResult.installedPackages.map((p) => p.name)).toContain("@quickadui/shell");
+    expect(withDefaultShell.addResult.installedPackages.map((p) => p.name)).toContain(
+      "@quickadui/shell",
+    );
 
     const dirNone = makeInitializedProject();
     const withoutShell = await runApply({
@@ -108,7 +124,9 @@ describe("runApply — happy path", () => {
       packageManager: "npm",
       force: false,
     });
-    expect(withoutShell.addResult.installedPackages.map((p) => p.name)).not.toContain("@quickadui/shell");
+    expect(withoutShell.addResult.installedPackages.map((p) => p.name)).not.toContain(
+      "@quickadui/shell",
+    );
   });
 
   it("passes custom navbar items through to generate app", async () => {
@@ -118,7 +136,12 @@ describe("runApply — happy path", () => {
       navbar: { enabled: true, items: [{ label: "Home", href: "#/" }] },
     });
 
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
     expect(result.appResult.filesWritten).toContain("src/App.tsx");
   });
 
@@ -129,7 +152,12 @@ describe("runApply — happy path", () => {
       navbar: { enabled: true, items: [{ label: "Home", href: "#/", icon: "Home" }] },
     });
 
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
     const appTsx = readFileSync(join(dir, "src", "App.tsx"), "utf8");
     expect(appTsx).toContain('import {\n  HomeIcon,\n} from "@quickadui/icons";');
     expect(appTsx).toContain("<HomeIcon size={16} aria-hidden />Home");
@@ -148,14 +176,25 @@ describe("runApply — happy path", () => {
       ],
     });
 
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
     expect(result.resourceResults[0]?.result.filesWritten.length).toBeGreaterThan(0);
 
-    const listPage = readFileSync(join(dir, "src", "pages", "product", "ProductListPage.tsx"), "utf8");
+    const listPage = readFileSync(
+      join(dir, "src", "pages", "product", "ProductListPage.tsx"),
+      "utf8",
+    );
     expect(listPage).toContain("<PlusIcon size={16} aria-hidden />New product");
     expect(listPage).toContain("icon={<TrashIcon size={16} aria-hidden />}");
 
-    const formPage = readFileSync(join(dir, "src", "pages", "product", "ProductFormPage.tsx"), "utf8");
+    const formPage = readFileSync(
+      join(dir, "src", "pages", "product", "ProductFormPage.tsx"),
+      "utf8",
+    );
     expect(formPage).toContain("icon={<CheckIcon size={16} aria-hidden />}");
   });
 
@@ -176,7 +215,12 @@ describe("runApply — happy path", () => {
       sidebar: { enabled: false },
       footer: { enabled: false },
     });
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
     expect(result.addResult.installedPackages.map((p) => p.name)).not.toContain("@quickadui/icons");
   });
 });
@@ -193,7 +237,12 @@ describe("runApply — warnings for validated-but-not-yet-generated sections", (
         },
       ],
     });
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
     expect(result.warnings.some((w) => w.includes("resources[].views"))).toBe(true);
   });
 
@@ -204,21 +253,39 @@ describe("runApply — warnings for validated-but-not-yet-generated sections", (
       auth: { enabled: true, roles: ["admin"] },
       navbar: { enabled: true, items: [{ label: "Admin", href: "#/admin", role: ["admin"] }] },
     });
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
     expect(result.warnings.some((w) => w.includes("requiresAuth"))).toBe(true);
   });
 
   it("warns about footer.content", async () => {
     const dir = makeInitializedProject();
-    const configPath = writeConfigFile({ ...minimalConfig(), footer: { enabled: true, content: "Hi" } });
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const configPath = writeConfigFile({
+      ...minimalConfig(),
+      footer: { enabled: true, content: "Hi" },
+    });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
     expect(result.warnings.some((w) => w.includes("footer.content"))).toBe(true);
   });
 
   it("has no warnings for a config that only uses generated-today features", async () => {
     const dir = makeInitializedProject();
     const configPath = writeConfigFile(minimalConfig());
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
     expect(result.warnings).toHaveLength(0);
   });
 });
@@ -230,10 +297,17 @@ describe("runApply — theme", () => {
       ...minimalConfig(),
       theme: { default: "dark", colors: { accent: "#2563EB" } },
     });
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
 
     const appTsx = readFileSync(join(dir, "src", "App.tsx"), "utf8");
-    expect(appTsx).toContain('<ThemeProvider\n      defaultTheme="dark"\n      defaultColors={{ accent: "#2563EB" }}\n    >');
+    expect(appTsx).toContain(
+      '<ThemeProvider\n      defaultTheme="dark"\n      defaultColors={{ accent: "#2563EB" }}\n    >',
+    );
     expect(result.warnings.some((w) => w.includes("theme.default"))).toBe(false);
   });
 
@@ -261,11 +335,19 @@ describe("runApply — toasts", () => {
         },
       ],
     });
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
 
     expect(result.addResult.installedPackages.map((p) => p.name)).toContain("@quickadui/overlays");
 
-    const listPage = readFileSync(join(dir, "src", "pages", "product", "ProductListPage.tsx"), "utf8");
+    const listPage = readFileSync(
+      join(dir, "src", "pages", "product", "ProductListPage.tsx"),
+      "utf8",
+    );
     expect(listPage).toContain('import { toast } from "@quickadui/overlays";');
     expect(listPage).toContain('toast({ title: "Product removed.", variant: "success" });');
 
@@ -277,9 +359,16 @@ describe("runApply — toasts", () => {
   it("doesn't install @quickadui/overlays or mount <Toaster /> when no resource has toasts", async () => {
     const dir = makeInitializedProject();
     const configPath = writeConfigFile(minimalConfig());
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
 
-    expect(result.addResult.installedPackages.map((p) => p.name)).not.toContain("@quickadui/overlays");
+    expect(result.addResult.installedPackages.map((p) => p.name)).not.toContain(
+      "@quickadui/overlays",
+    );
     const appTsx = readFileSync(join(dir, "src", "App.tsx"), "utf8");
     expect(appTsx).not.toContain("Toaster");
   });
@@ -297,10 +386,18 @@ describe("runApply — confirmDelete", () => {
         },
       ],
     });
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
 
     expect(result.addResult.installedPackages.map((p) => p.name)).toContain("@quickadui/overlays");
-    const listPage = readFileSync(join(dir, "src", "pages", "product", "ProductListPage.tsx"), "utf8");
+    const listPage = readFileSync(
+      join(dir, "src", "pages", "product", "ProductListPage.tsx"),
+      "utf8",
+    );
     expect(listPage).toContain("<Modal");
     expect(listPage).toContain("setPendingDeleteId(item.id)");
   });
@@ -318,7 +415,10 @@ describe("runApply — confirmDelete", () => {
     });
     await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
 
-    const listPage = readFileSync(join(dir, "src", "pages", "product", "ProductListPage.tsx"), "utf8");
+    const listPage = readFileSync(
+      join(dir, "src", "pages", "product", "ProductListPage.tsx"),
+      "utf8",
+    );
     expect(listPage).toContain("Really delete this product?");
   });
 
@@ -334,9 +434,16 @@ describe("runApply — confirmDelete", () => {
         },
       ],
     });
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
 
-    const overlaysCount = result.addResult.installedPackages.filter((p) => p.name === "@quickadui/overlays").length;
+    const overlaysCount = result.addResult.installedPackages.filter(
+      (p) => p.name === "@quickadui/overlays",
+    ).length;
     expect(overlaysCount).toBe(1);
   });
 });
@@ -345,19 +452,33 @@ describe("runApply — dashboard", () => {
   it("generates nothing dashboard-related, and dashboardResult stays undefined, when dashboard is unset", async () => {
     const dir = makeInitializedProject();
     const configPath = writeConfigFile(minimalConfig());
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
 
     expect(result.dashboardResult).toBeUndefined();
-    expect(result.resourceResults[0]?.result.filesWritten).not.toContain("src/pages/DashboardPage.tsx");
+    expect(result.resourceResults[0]?.result.filesWritten).not.toContain(
+      "src/pages/DashboardPage.tsx",
+    );
     const appTsx = readFileSync(join(dir, "src", "App.tsx"), "utf8");
     expect(appTsx).not.toContain("DashboardPage");
-    expect(result.addResult.installedPackages.map((p) => p.name)).not.toContain("@quickadui/charts");
+    expect(result.addResult.installedPackages.map((p) => p.name)).not.toContain(
+      "@quickadui/charts",
+    );
   });
 
   it("generates a placeholder DashboardPage, with no shell/charts installed, when enabled with no widgets", async () => {
     const dir = makeInitializedProject();
     const configPath = writeConfigFile({ ...minimalConfig(), dashboard: { enabled: true } });
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
 
     expect(result.dashboardResult).toBeDefined();
     expect(result.dashboardResult?.filesWritten).toContain("src/pages/DashboardPage.tsx");
@@ -378,7 +499,12 @@ describe("runApply — dashboard", () => {
         widgets: [{ id: "products-count", type: "stat", title: "Products", resource: "product" }],
       },
     });
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
 
     const installedNames = result.addResult.installedPackages.map((p) => p.name);
     expect(installedNames).toContain("@quickadui/shell");
@@ -404,10 +530,17 @@ describe("runApply — dashboard", () => {
       ],
       dashboard: {
         enabled: true,
-        widgets: [{ id: "recent-products", type: "list", title: "Recent products", resource: "product" }],
+        widgets: [
+          { id: "recent-products", type: "list", title: "Recent products", resource: "product" },
+        ],
       },
     });
-    const result = await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
+    const result = await runApply({
+      projectDir: dir,
+      configPath,
+      packageManager: "npm",
+      force: false,
+    });
 
     const installedNames = result.addResult.installedPackages.map((p) => p.name);
     expect(installedNames).toContain("@quickadui/shell");
@@ -421,11 +554,17 @@ describe("runApply — dashboard", () => {
     const dir = makeInitializedProject();
     const configPath = writeConfigFile({
       resources: [
-        { name: "category", endpoint: "product-categories", fields: [{ name: "name", type: "string" }] },
+        {
+          name: "category",
+          endpoint: "product-categories",
+          fields: [{ name: "name", type: "string" }],
+        },
       ],
       dashboard: {
         enabled: true,
-        widgets: [{ id: "categories-count", type: "stat", title: "Categories", resource: "category" }],
+        widgets: [
+          { id: "categories-count", type: "stat", title: "Categories", resource: "category" },
+        ],
       },
     });
     await runApply({ projectDir: dir, configPath, packageManager: "npm", force: false });
@@ -440,7 +579,7 @@ describe("runApply — dashboard", () => {
     expect(dashboardTsx).toContain('import { listCategories } from "../api/category.api";');
   });
 
-  it('threads a resource\'s endpoints.list.responseShape: "array" through to its dashboard widgets, matching the generated api client\'s actual list<Plural>() signature', async () => {
+  it("threads a resource's endpoints.list.responseShape: \"array\" through to its dashboard widgets, matching the generated api client's actual list<Plural>() signature", async () => {
     // Regression test: dashboard widgets used to unconditionally assume
     // the "wrapped" DummyJSON-style list shape (list<Plural>({ limit })
     // returning { total, "<endpoint>": T[] }). Against a resource
@@ -565,9 +704,14 @@ describe("runApply — dashboard", () => {
 describe("runApply — error paths", () => {
   it("throws a clear error when the config file doesn't exist", async () => {
     const dir = makeInitializedProject();
-    await expect(runApply({ projectDir: dir, configPath: "/no/such/file.json", packageManager: "npm", force: false })).rejects.toThrow(
-      /No config file found/,
-    );
+    await expect(
+      runApply({
+        projectDir: dir,
+        configPath: "/no/such/file.json",
+        packageManager: "npm",
+        force: false,
+      }),
+    ).rejects.toThrow(/No config file found/);
   });
 
   it("throws a clear error when the config file isn't valid JSON", async () => {
@@ -576,25 +720,25 @@ describe("runApply — error paths", () => {
     configDir = cfgDir;
     const path = join(cfgDir, "bad.json");
     writeFileSync(path, "{ not json", "utf8");
-    await expect(runApply({ projectDir: dir, configPath: path, packageManager: "npm", force: false })).rejects.toThrow(
-      /isn't valid JSON/,
-    );
+    await expect(
+      runApply({ projectDir: dir, configPath: path, packageManager: "npm", force: false }),
+    ).rejects.toThrow(/isn't valid JSON/);
   });
 
   it("throws parseQuickaduiConfig's own error when the config is structurally invalid", async () => {
     const dir = makeInitializedProject();
     const configPath = writeConfigFile({ resources: "not an array" });
-    await expect(runApply({ projectDir: dir, configPath, packageManager: "npm", force: false })).rejects.toThrow(
-      /Invalid quickadui config/,
-    );
+    await expect(
+      runApply({ projectDir: dir, configPath, packageManager: "npm", force: false }),
+    ).rejects.toThrow(/Invalid quickadui config/);
   });
 
   it("throws when the project hasn't been initialized (no package.json)", async () => {
     const dir = mkdtempSync(join(tmpdir(), "quickadui-apply-test-project-"));
     projectDir = dir;
     const configPath = writeConfigFile(minimalConfig());
-    await expect(runApply({ projectDir: dir, configPath, packageManager: "npm", force: false })).rejects.toThrow(
-      /No package\.json found/,
-    );
+    await expect(
+      runApply({ projectDir: dir, configPath, packageManager: "npm", force: false }),
+    ).rejects.toThrow(/No package\.json found/);
   });
 });

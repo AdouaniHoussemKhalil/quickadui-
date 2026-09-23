@@ -36,7 +36,15 @@ describe("getPasswordStrength", () => {
     const rules = [
       { id: "min4", label: "At least 4 characters", test: (value: string) => value.length >= 4 },
     ];
-    expect(getPasswordStrength("abc", rules)).toMatchObject({ score: 0, total: 1, label: "Too weak" });
-    expect(getPasswordStrength("abcd", rules)).toMatchObject({ score: 1, total: 1, label: "Strong" });
+    expect(getPasswordStrength("abc", rules)).toMatchObject({
+      score: 0,
+      total: 1,
+      label: "Too weak",
+    });
+    expect(getPasswordStrength("abcd", rules)).toMatchObject({
+      score: 1,
+      total: 1,
+      label: "Strong",
+    });
   });
 });

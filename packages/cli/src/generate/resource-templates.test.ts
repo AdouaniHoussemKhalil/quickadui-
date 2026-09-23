@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
+  type ResourceTemplateOptions,
   renderResourceApi,
   renderResourceFiles,
   renderResourceFormPage,
   renderResourceListPage,
   renderResourceSchema,
-  type ResourceTemplateOptions,
 } from "./resource-templates";
 
 const options: ResourceTemplateOptions = {
@@ -73,7 +73,7 @@ describe("renderResourceApi", () => {
 describe("renderResourceApi — endpoints overrides", () => {
   it("overrides just create's path, e.g. a real REST backend with no DummyJSON-style /add suffix", () => {
     const file = renderResourceApi({ ...options, endpoints: { create: { path: "products" } } });
-    expect(file.contents).toContain("/products`, {\n    method: \"POST\",");
+    expect(file.contents).toContain('/products`, {\n    method: "POST",');
     expect(file.contents).not.toContain("/products/add");
     // Every other action keeps its own default, untouched by the create override.
     expect(file.contents).toContain("/products?limit=");
@@ -87,24 +87,31 @@ describe("renderResourceApi — endpoints overrides", () => {
     expect(file.contents).not.toContain('method: "PUT"');
   });
 
-  it("substitutes a configured \"{id}\" placeholder with the generated function's own \"${id}\" template hole", () => {
-    const file = renderResourceApi({ ...options, endpoints: { get: { path: "products/{id}/details" } } });
+  it('substitutes a configured "{id}" placeholder with the generated function\'s own "${id}" template hole', () => {
+    const file = renderResourceApi({
+      ...options,
+      endpoints: { get: { path: "products/{id}/details" } },
+    });
     expect(file.contents).toContain("fetch(`${API_BASE}/products/${id}/details`)");
   });
 
-  it("defaults list's responseShape to \"wrapped\" — a DummyJSON-shaped interface with total/skip/limit and server-side pagination params", () => {
+  it('defaults list\'s responseShape to "wrapped" — a DummyJSON-shaped interface with total/skip/limit and server-side pagination params', () => {
     const file = renderResourceApi(options);
     expect(file.contents).toContain("export interface ProductsListResult {");
     expect(file.contents).toContain('readonly "products": readonly Product[];');
-    expect(file.contents).toContain("export async function listProducts(options: ListProductsOptions = {}):");
+    expect(file.contents).toContain(
+      "export async function listProducts(options: ListProductsOptions = {}):",
+    );
     expect(file.contents).toContain("?limit=${limit}&skip=${skip}");
   });
 
-  it("switches to a plain array type/response and drops pagination params when responseShape is \"array\"", () => {
+  it('switches to a plain array type/response and drops pagination params when responseShape is "array"', () => {
     const file = renderResourceApi({ ...options, endpoints: { list: { responseShape: "array" } } });
     expect(file.contents).toContain("export type ProductsListResult = readonly Product[];");
     expect(file.contents).not.toContain("export interface ProductsListResult");
-    expect(file.contents).toContain("export async function listProducts(): Promise<ProductsListResult> {");
+    expect(file.contents).toContain(
+      "export async function listProducts(): Promise<ProductsListResult> {",
+    );
     expect(file.contents).not.toContain("?limit=");
     expect(file.contents).not.toContain("ListProductsOptions");
   });
@@ -147,7 +154,9 @@ describe("renderResourceListPage", () => {
 
   it("wires the Delete button's isLoading to a per-row deletingId, cleared in a finally", () => {
     const file = renderResourceListPage(options);
-    expect(file.contents).toContain("const [deletingId, setDeletingId] = useState<number | undefined>(undefined);");
+    expect(file.contents).toContain(
+      "const [deletingId, setDeletingId] = useState<number | undefined>(undefined);",
+    );
     expect(file.contents).toContain("isLoading={deletingId === item.id}");
     expect(file.contents).toContain(`async function handleDelete(id: number) {
     setDeletingId(id);
@@ -172,9 +181,13 @@ describe("renderResourceListPage", () => {
     expect(file.contents).toContain("PAGINATION_ELLIPSIS,");
     expect(file.contents).toContain("PaginationLink,");
     expect(file.contents).toContain("PaginationEllipsis,");
-    expect(file.contents).toContain("const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));");
+    expect(file.contents).toContain(
+      "const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));",
+    );
     expect(file.contents).toContain("const currentPage = Math.floor(skip / PAGE_SIZE) + 1;");
-    expect(file.contents).toContain("{getPaginationRange(currentPage, totalPages).map((page, index) =>");
+    expect(file.contents).toContain(
+      "{getPaginationRange(currentPage, totalPages).map((page, index) =>",
+    );
     expect(file.contents).toContain("page === PAGINATION_ELLIPSIS ? (");
     expect(file.contents).toContain("isActive={page === currentPage}");
     expect(file.contents).toContain("onClick={() => setSkip((page - 1) * PAGE_SIZE)}");
@@ -207,7 +220,10 @@ describe("renderResourceListPage", () => {
   });
 
   it("imports exactly the icons actually used, deduplicated and sorted, and nothing when unused", () => {
-    const withIcons = renderResourceListPage({ ...options, buttonIcons: { create: "Plus", delete: "Plus" } });
+    const withIcons = renderResourceListPage({
+      ...options,
+      buttonIcons: { create: "Plus", delete: "Plus" },
+    });
     expect(withIcons.contents).toContain('import { PlusIcon } from "@quickadui/icons";');
 
     const withoutIcons = renderResourceListPage(options);
@@ -244,7 +260,7 @@ describe("renderResourceListPage", () => {
     expect(file.contents).toContain('aria-label="Delete"');
     expect(file.contents).toContain("disabled={deletingId === item.id}");
     expect(file.contents).toContain(
-      "{deletingId === item.id ? <Spinner size=\"sm\" /> : <TrashIcon size={16} aria-hidden />}",
+      '{deletingId === item.id ? <Spinner size="sm" /> : <TrashIcon size={16} aria-hidden />}',
     );
     expect(file.contents).not.toContain(">\n                      Delete\n");
   });
@@ -267,7 +283,9 @@ describe("renderResourceListPage", () => {
       ...options,
       buttonIcons: { create: { icon: "Plus", showLabel: false } },
     });
-    expect(file.contents).toContain('import { Button, IconButton, Spinner } from "@quickadui/core";');
+    expect(file.contents).toContain(
+      'import { Button, IconButton, Spinner } from "@quickadui/core";',
+    );
   });
 
   it("a plain string still means icon + visible text, same as before showLabel existed", () => {
@@ -301,7 +319,9 @@ describe("renderResourceListPage — toasts", () => {
     expect(file.contents).toContain('import { toast } from "@quickadui/overlays";');
     expect(file.contents).toContain('toast({ title: "Product removed.", variant: "success" });');
     expect(file.contents).toContain('title: "Could not remove product.",');
-    expect(file.contents).toContain("description: cause instanceof Error ? cause.message : String(cause),");
+    expect(file.contents).toContain(
+      "description: cause instanceof Error ? cause.message : String(cause),",
+    );
     expect(file.contents).toContain('variant: "danger",');
   });
 
@@ -373,8 +393,11 @@ describe("renderResourceListPage — endpoints.list.responseShape", () => {
     expect(file.contents).not.toContain(".slice(skip, skip + PAGE_SIZE)");
   });
 
-  it("fetches once and paginates client-side when responseShape is \"array\"", () => {
-    const file = renderResourceListPage({ ...options, endpoints: { list: { responseShape: "array" } } });
+  it('fetches once and paginates client-side when responseShape is "array"', () => {
+    const file = renderResourceListPage({
+      ...options,
+      endpoints: { list: { responseShape: "array" } },
+    });
     expect(file.contents).toContain("listProducts()\n      .then((result) => {");
     expect(file.contents).toContain("setItems(result);");
     expect(file.contents).not.toContain('setItems(result["products"]);');
@@ -387,9 +410,14 @@ describe("renderResourceListPage — endpoints.list.responseShape", () => {
 
   it("still renders the same pagination JSX either way — only the state/effect section differs", () => {
     const wrapped = renderResourceListPage(options);
-    const array = renderResourceListPage({ ...options, endpoints: { list: { responseShape: "array" } } });
+    const array = renderResourceListPage({
+      ...options,
+      endpoints: { list: { responseShape: "array" } },
+    });
     for (const file of [wrapped, array]) {
-      expect(file.contents).toContain("const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));");
+      expect(file.contents).toContain(
+        "const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));",
+      );
       expect(file.contents).toContain("const currentPage = Math.floor(skip / PAGE_SIZE) + 1;");
       expect(file.contents).toContain("{pagedItems.map((item) => (");
       expect(file.contents).toContain("disabled={skip + PAGE_SIZE >= total}");
@@ -425,7 +453,9 @@ describe("renderResourceFormPage", () => {
   it("wires the submit Button's isLoading to form.formState.isSubmitting", () => {
     const file = renderResourceFormPage(options);
     expect(file.contents).toContain('import { Button, Spinner } from "@quickadui/core";');
-    expect(file.contents).toContain("<Button type=\"submit\" isLoading={form.formState.isSubmitting}>");
+    expect(file.contents).toContain(
+      '<Button type="submit" isLoading={form.formState.isSubmitting}>',
+    );
     expect(file.contents).not.toContain("disabled={form.formState.isSubmitting}");
   });
 
@@ -451,7 +481,9 @@ describe("renderResourceFormPage", () => {
 
   it("puts the cancel icon before the label inside Cancel's <a> (asChild, so Button's icon prop is a no-op)", () => {
     const file = renderResourceFormPage({ ...options, buttonIcons: { cancel: "Close" } });
-    expect(file.contents).toContain('<a href="#/products"><CloseIcon size={16} aria-hidden />Cancel</a>');
+    expect(file.contents).toContain(
+      '<a href="#/products"><CloseIcon size={16} aria-hidden />Cancel</a>',
+    );
   });
 
   it("renders an icon-only submit button via IconButton with a manual Spinner swap when save's showLabel is false", () => {
@@ -480,7 +512,10 @@ describe("renderResourceFormPage", () => {
   it("drops the Button import and adds IconButton when both Save and Cancel are icon-only", () => {
     const file = renderResourceFormPage({
       ...options,
-      buttonIcons: { save: { icon: "Check", showLabel: false }, cancel: { icon: "Close", showLabel: false } },
+      buttonIcons: {
+        save: { icon: "Check", showLabel: false },
+        cancel: { icon: "Close", showLabel: false },
+      },
     });
     expect(file.contents).toContain('import { IconButton, Spinner } from "@quickadui/core";');
     expect(file.contents).not.toContain("import { Button,");

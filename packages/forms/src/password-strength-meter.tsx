@@ -85,7 +85,9 @@ export function PasswordStrengthMeter({
               ) : (
                 <CloseIcon size={14} className="text-neutral-8" />
               )}
-              <span className={rule.passed ? "text-neutral-11" : "text-neutral-9"}>{rule.label}</span>
+              <span className={rule.passed ? "text-neutral-11" : "text-neutral-9"}>
+                {rule.label}
+              </span>
             </li>
           ))}
         </ul>

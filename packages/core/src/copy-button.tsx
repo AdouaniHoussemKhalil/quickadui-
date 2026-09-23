@@ -5,7 +5,8 @@ import { cn } from "@quickadui/utils";
 import { useState } from "react";
 import { IconButton, type IconButtonProps } from "./icon-button";
 
-export interface CopyButtonProps extends Omit<IconButtonProps, "aria-label" | "children" | "onClick"> {
+export interface CopyButtonProps
+  extends Omit<IconButtonProps, "aria-label" | "children" | "onClick"> {
   /** The text copied to the clipboard when clicked. */
   value: string;
   /** How long the check-mark confirmation shows before reverting to the copy icon, in ms. Default: `1500`. */

@@ -53,8 +53,12 @@ describe("renderApp", () => {
     expect(withoutAuth.contents).not.toContain("AuthProvider");
 
     const withAuth = renderApp({ ...baseOptions, hasAuth: true });
-    expect(withAuth.contents).toContain('import { AuthProvider, useAuth } from "./auth/AuthProvider";');
-    expect(withAuth.contents).toContain("<AuthProvider>\n        <AuthGate>{content}</AuthGate>\n      </AuthProvider>");
+    expect(withAuth.contents).toContain(
+      'import { AuthProvider, useAuth } from "./auth/AuthProvider";',
+    );
+    expect(withAuth.contents).toContain(
+      "<AuthProvider>\n        <AuthGate>{content}</AuthGate>\n      </AuthProvider>",
+    );
   });
 
   it("gates content behind an AuthGate (spinner while useAuth().loading) only when hasAuth is true", () => {
@@ -63,15 +67,23 @@ describe("renderApp", () => {
     expect(withoutAuth.contents).not.toContain("Spinner");
 
     const withAuth = renderApp({ ...baseOptions, hasAuth: true });
-    expect(withAuth.contents).toContain("function AuthGate({ children }: { children: ReactNode }) {");
+    expect(withAuth.contents).toContain(
+      "function AuthGate({ children }: { children: ReactNode }) {",
+    );
     expect(withAuth.contents).toContain("const { loading } = useAuth();");
     expect(withAuth.contents).toContain('import { Button, Spinner } from "@quickadui/core";');
     expect(withAuth.contents).toContain('<Spinner size="lg" label="Loading" />');
-    expect(withAuth.contents).toContain('import { type ReactNode, useEffect, useState } from "react";');
+    expect(withAuth.contents).toContain(
+      'import { type ReactNode, useEffect, useState } from "react";',
+    );
   });
 
   it("includes Navbar-related imports and an AppNavbar function only when navbar is true", () => {
-    const withNavbar = renderApp({ ...baseOptions, navbar: true, navbarItems: [{ label: "Home", href: "#/" }] });
+    const withNavbar = renderApp({
+      ...baseOptions,
+      navbar: true,
+      navbarItems: [{ label: "Home", href: "#/" }],
+    });
     expect(withNavbar.contents).toContain("Navbar,");
     expect(withNavbar.contents).toContain("NavbarBrand,");
     expect(withNavbar.contents).toContain("NavbarContent,");
@@ -120,8 +132,12 @@ describe("renderApp", () => {
 
   it("generates list/new/edit router cases for a resource feature, importing both its pages", () => {
     const { contents } = renderApp({ ...baseOptions, features: [productFeature] });
-    expect(contents).toContain('import { ProductListPage } from "./pages/product/ProductListPage";');
-    expect(contents).toContain('import { ProductFormPage } from "./pages/product/ProductFormPage";');
+    expect(contents).toContain(
+      'import { ProductListPage } from "./pages/product/ProductListPage";',
+    );
+    expect(contents).toContain(
+      'import { ProductFormPage } from "./pages/product/ProductFormPage";',
+    );
     expect(contents).toContain('if (hash === "#/products") {');
     expect(contents).toContain('if (hash === "#/products/new") {');
     expect(contents).toContain('hash.startsWith("#/products/") && hash.endsWith("/edit")');
@@ -338,7 +354,9 @@ describe("renderApp — navbar/sidebar brand and logo", () => {
       sidebarLogo: "https://example.com/logo.png",
     });
     expect(contents).toContain('<img src={"/logo.svg"} alt={"my-app"} className="h-6 w-auto" />');
-    expect(contents).toContain('<img src={"https://example.com/logo.png"} alt={"My Shop"} className="h-6 w-auto" />');
+    expect(contents).toContain(
+      '<img src={"https://example.com/logo.png"} alt={"My Shop"} className="h-6 w-auto" />',
+    );
   });
 
   it("escapes a brand/project name containing quotes safely", () => {

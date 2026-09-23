@@ -94,7 +94,9 @@ function widgetFunctionName(id: string): string {
 
 /** One `import { XIcon, YIcon } from "@quickadui/icons";` line, or `""` when no widget sets `icon` — mirrors `resource-templates.ts`'s own `iconImportLine`, duplicated rather than imported since these two template modules are deliberately independent of each other. */
 function iconImportLine(widgets: readonly DashboardWidgetOptions[]): string {
-  const names = [...new Set(widgets.map((w) => w.icon).filter((name): name is string => name !== undefined))].sort();
+  const names = [
+    ...new Set(widgets.map((w) => w.icon).filter((name): name is string => name !== undefined)),
+  ].sort();
   if (names.length === 0) {
     return "";
   }
@@ -172,6 +174,7 @@ function renderListWidget(widget: DashboardWidgetOptions): string {
   const titleProp = icon
     ? `{<span className="flex items-center gap-2">${icon}{${jsString(widget.title)}}</span>}`
     : `{${jsString(widget.title)}}`;
+  // biome-ignore lint/suspicious/noTemplateCurlyInString: the else-branch string is literal generated-code text (`#${item.id}`), not a template interpolation in this file.
   const rowLabel = primaryField !== undefined ? `String(item.${primaryField})` : "`#${item.id}`";
   // "array"-shaped resources' list<Plural>() takes no argument and
   // resolves straight to T[] — there's no server-side `limit` to ask
@@ -313,10 +316,15 @@ export function renderDashboardPage(options: DashboardTemplateOptions): Scaffold
     .join("\n");
   const schemaImportLines = [...new Set(listWidgets.map((w) => w.resource.typeName))]
     .sort()
-    .map((typeName) => `import type { ${typeName} } from "../schemas/${toKebabCase(typeName)}.schema";`)
+    .map(
+      (typeName) =>
+        `import type { ${typeName} } from "../schemas/${toKebabCase(typeName)}.schema";`,
+    )
     .join("\n");
 
-  const widgetFns = widgets.map((w) => (w.type === "stat" ? renderStatWidget(w) : renderListWidget(w))).join("\n\n");
+  const widgetFns = widgets
+    .map((w) => (w.type === "stat" ? renderStatWidget(w) : renderListWidget(w)))
+    .join("\n\n");
 
   const gridItems = widgets.map((w) => JSON.stringify(w.id)).join(", ");
   const gridColumnsProp = columns !== undefined ? ` columns={${columns}}` : "";

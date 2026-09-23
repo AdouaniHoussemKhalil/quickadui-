@@ -32,7 +32,9 @@ export function renderGenerateResourceNextSteps(options: GenerateResourceNextSte
     `     pages — a router, or a simple hash switch. The generated pages link to` +
       ` "#/${endpoint}/new"`,
   );
-  lines.push(`     and "#/${endpoint}/:id/edit"; match those in your own routing (or edit the links).`);
+  lines.push(
+    `     and "#/${endpoint}/:id/edit"; match those in your own routing (or edit the links).`,
+  );
 
   if (apiBase === DUMMYJSON_API_BASE) {
     lines.push(
@@ -45,7 +47,9 @@ export function renderGenerateResourceNextSteps(options: GenerateResourceNextSte
       `     a refresh. Regenerate with --api-base <your-api> once you have a real backend for ${kebab}.`,
     );
   } else {
-    lines.push(`  2. Pointed at ${apiBase} — double check its REST shape matches what was generated`);
+    lines.push(
+      `  2. Pointed at ${apiBase} — double check its REST shape matches what was generated`,
+    );
     lines.push(`     (GET/POST .../add/PUT/DELETE .../${endpoint}). If it differs, set`);
     lines.push(`     resources[].endpoints in your quickadui.config.json and regenerate via`);
     lines.push(`     \`quickadui apply\` (see packages/cli/README.md) instead of hand-editing`);
@@ -70,16 +74,28 @@ export function renderGenerateAuthNextSteps(options: GenerateAuthNextStepsOption
   }
   lines.push("");
   lines.push("Next steps:");
-  lines.push("  1. Wrap your app in <AuthProvider> once, near the root (src/main.tsx or src/App.tsx).");
-  lines.push("  2. Render <LoginPage /> for signed-out visitors and <ProfilePage /> for a profile route —");
+  lines.push(
+    "  1. Wrap your app in <AuthProvider> once, near the root (src/main.tsx or src/App.tsx).",
+  );
+  lines.push(
+    "  2. Render <LoginPage /> for signed-out visitors and <ProfilePage /> for a profile route —",
+  );
   lines.push("     both read/write auth state via useAuth() from src/auth/AuthProvider.");
 
   if (apiBase === DUMMYJSON_API_BASE) {
-    lines.push('  3. Try signing in with the demo account: username "emilys", password "emilyspass"');
-    lines.push("     (any user at https://dummyjson.com/users works). No sign-up page is generated —");
-    lines.push("     DummyJSON's /users/add doesn't persist a real account, so it wouldn't be a real one.");
+    lines.push(
+      '  3. Try signing in with the demo account: username "emilys", password "emilyspass"',
+    );
+    lines.push(
+      "     (any user at https://dummyjson.com/users works). No sign-up page is generated —",
+    );
+    lines.push(
+      "     DummyJSON's /users/add doesn't persist a real account, so it wouldn't be a real one.",
+    );
   } else {
-    lines.push(`  3. Pointed at ${apiBase} — double check its /auth/login and /auth/me match what was`);
+    lines.push(
+      `  3. Pointed at ${apiBase} — double check its /auth/login and /auth/me match what was`,
+    );
     lines.push("     generated and adjust src/auth/auth-client.ts if not.");
   }
 
@@ -115,7 +131,7 @@ export function renderGenerateAppNextSteps(options: GenerateAppNextStepsOptions)
   lines.push(
     featureCount > 0
       ? `${featureCount} already-generated page${featureCount === 1 ? "" : "s"} — re-run \`quickadui generate app --force\` any`
-      : "nothing yet (no \`generate resource\`/\`generate auth\` output found) — re-run this any",
+      : "nothing yet (no `generate resource`/`generate auth` output found) — re-run this any",
   );
   lines.push("time after generating more resources or auth, to pick up their pages too.");
   lines.push("");
@@ -134,7 +150,9 @@ export function renderGenerateAppNextSteps(options: GenerateAppNextStepsOptions)
     "     (`quickadui add theme` prints these same two lines — already done if you added theme",
   );
   lines.push("     through that, rather than getting it transitively.)");
-  lines.push("  2. `npm run dev` and toggle the theme button — light/dark/system should all visibly differ.");
+  lines.push(
+    "  2. `npm run dev` and toggle the theme button — light/dark/system should all visibly differ.",
+  );
 
   return lines.join("\n");
 }
@@ -144,7 +162,9 @@ export interface GenerateDashboardNextStepsOptions {
   readonly filesWritten: readonly string[];
 }
 
-export function renderGenerateDashboardNextSteps(options: GenerateDashboardNextStepsOptions): string {
+export function renderGenerateDashboardNextSteps(
+  options: GenerateDashboardNextStepsOptions,
+): string {
   const { widgetCount, filesWritten } = options;
 
   const lines: string[] = [];
@@ -156,9 +176,11 @@ export function renderGenerateDashboardNextSteps(options: GenerateDashboardNextS
 
   if (widgetCount === 0) {
     lines.push(
-      'src/pages/DashboardPage.tsx has no widgets yet — it just prints a placeholder. Add entries to',
+      "src/pages/DashboardPage.tsx has no widgets yet — it just prints a placeholder. Add entries to",
     );
-    lines.push('"dashboard.widgets" in your quickadui config and re-run `quickadui apply` to fill it in.');
+    lines.push(
+      '"dashboard.widgets" in your quickadui config and re-run `quickadui apply` to fill it in.',
+    );
   } else {
     lines.push(
       `src/pages/DashboardPage.tsx now renders ${widgetCount} widget${widgetCount === 1 ? "" : "s"} in a`,
@@ -170,7 +192,7 @@ export function renderGenerateDashboardNextSteps(options: GenerateDashboardNextS
     lines.push("");
     lines.push("Next steps:");
     lines.push(
-      '  1. Render <DashboardPage /> from wherever your app renders pages — `quickadui generate app`',
+      "  1. Render <DashboardPage /> from wherever your app renders pages — `quickadui generate app`",
     );
     lines.push(
       '     (or `quickadui apply`, which calls it for you) wires it to "dashboard.route" automatically',

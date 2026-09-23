@@ -26,7 +26,13 @@ const FIELD_TYPES: readonly FieldType[] = ["string", "number", "boolean"];
 const ACTION_KINDS: readonly ActionKind[] = ["navigate", "submit", "delete", "custom"];
 const DASHBOARD_WIDGET_TYPES: readonly DashboardWidgetType[] = ["stat", "list"];
 const DASHBOARD_COLUMNS = [1, 2, 3, 4] as const;
-const RESOURCE_ENDPOINT_METHODS: readonly ResourceEndpointMethod[] = ["GET", "POST", "PUT", "PATCH", "DELETE"];
+const RESOURCE_ENDPOINT_METHODS: readonly ResourceEndpointMethod[] = [
+  "GET",
+  "POST",
+  "PUT",
+  "PATCH",
+  "DELETE",
+];
 const RESOURCE_LIST_RESPONSE_SHAPES = ["wrapped", "array"] as const;
 
 export interface QuickaduiConfigProject {
@@ -37,7 +43,13 @@ export interface QuickaduiConfigProject {
 
 export type ColorFamily = "accent" | "neutral" | "success" | "warning" | "danger";
 
-const COLOR_FAMILIES: readonly ColorFamily[] = ["accent", "neutral", "success", "warning", "danger"];
+const COLOR_FAMILIES: readonly ColorFamily[] = [
+  "accent",
+  "neutral",
+  "success",
+  "warning",
+  "danger",
+];
 
 /**
  * Brand color overrides, one `#RRGGBB` hex seed per family — matches
@@ -160,7 +172,9 @@ export interface QuickaduiConfigResourceButtonIconConfig {
   readonly showLabel?: boolean;
 }
 
-export type QuickaduiConfigResourceButtonIconSlot = string | QuickaduiConfigResourceButtonIconConfig;
+export type QuickaduiConfigResourceButtonIconSlot =
+  | string
+  | QuickaduiConfigResourceButtonIconConfig;
 
 /**
  * Icons for the five standard buttons `generate resource` always
@@ -398,7 +412,10 @@ function expectBoolean(value: unknown, path: string): boolean {
 
 function expectOneOf<T extends string>(value: unknown, allowed: readonly T[], path: string): T {
   if (typeof value !== "string" || !(allowed as readonly string[]).includes(value)) {
-    fail(path, `expected one of ${allowed.map((v) => `"${v}"`).join(", ")}, got ${JSON.stringify(value)}.`);
+    fail(
+      path,
+      `expected one of ${allowed.map((v) => `"${v}"`).join(", ")}, got ${JSON.stringify(value)}.`,
+    );
   }
   return value as T;
 }
@@ -415,7 +432,10 @@ function expectHexColor(value: unknown, path: string): string {
 
 function parseThemeColors(raw: unknown, path: string): QuickaduiConfigThemeColors {
   if (!isPlainObject(raw)) {
-    fail(path, "expected an object with optional \"accent\"/\"neutral\"/\"success\"/\"warning\"/\"danger\" keys, each a \"#RRGGBB\" hex color.");
+    fail(
+      path,
+      'expected an object with optional "accent"/"neutral"/"success"/"warning"/"danger" keys, each a "#RRGGBB" hex color.',
+    );
   }
   const result: Record<string, string> = {};
   for (const family of COLOR_FAMILIES) {
@@ -428,7 +448,7 @@ function parseThemeColors(raw: unknown, path: string): QuickaduiConfigThemeColor
 
 function parseField(raw: unknown, path: string): QuickaduiConfigField {
   if (!isPlainObject(raw)) {
-    fail(path, "expected an object with \"name\" and \"type\".");
+    fail(path, 'expected an object with "name" and "type".');
   }
   const name = expectString(raw.name, `${path}.name`);
   const type = expectOneOf(raw.type, FIELD_TYPES, `${path}.type`);
@@ -436,9 +456,13 @@ function parseField(raw: unknown, path: string): QuickaduiConfigField {
   return label === undefined ? { name, type } : { name, type, label };
 }
 
-function parseAction(raw: unknown, path: string, knownRoles: readonly string[] | undefined): QuickaduiConfigAction {
+function parseAction(
+  raw: unknown,
+  path: string,
+  knownRoles: readonly string[] | undefined,
+): QuickaduiConfigAction {
   if (!isPlainObject(raw)) {
-    fail(path, "expected an object with \"label\" and \"kind\".");
+    fail(path, 'expected an object with "label" and "kind".');
   }
   const label = expectString(raw.label, `${path}.label`);
   const kind = expectOneOf(raw.kind, ACTION_KINDS, `${path}.kind`);
@@ -449,8 +473,12 @@ function parseAction(raw: unknown, path: string, knownRoles: readonly string[] |
 
   const icon = raw.icon === undefined ? undefined : expectString(raw.icon, `${path}.icon`);
   const to = raw.to === undefined ? undefined : expectString(raw.to, `${path}.to`);
-  const requiresAuth = raw.requiresAuth === undefined ? undefined : expectBoolean(raw.requiresAuth, `${path}.requiresAuth`);
-  const confirm = raw.confirm === undefined ? undefined : expectBoolean(raw.confirm, `${path}.confirm`);
+  const requiresAuth =
+    raw.requiresAuth === undefined
+      ? undefined
+      : expectBoolean(raw.requiresAuth, `${path}.requiresAuth`);
+  const confirm =
+    raw.confirm === undefined ? undefined : expectBoolean(raw.confirm, `${path}.confirm`);
 
   let role: readonly string[] | undefined;
   if (raw.role !== undefined) {
@@ -486,7 +514,7 @@ function parseView(
   knownRoles: readonly string[] | undefined,
 ): QuickaduiConfigView {
   if (!isPlainObject(raw)) {
-    fail(path, "expected an object with a \"fields\" array.");
+    fail(path, 'expected an object with a "fields" array.');
   }
   if (!isStringArray(raw.fields)) {
     fail(`${path}.fields`, `expected an array of field names, got ${JSON.stringify(raw.fields)}.`);
@@ -499,13 +527,18 @@ function parseView(
       );
     }
   }
-  const requiresAuth = raw.requiresAuth === undefined ? undefined : expectBoolean(raw.requiresAuth, `${path}.requiresAuth`);
+  const requiresAuth =
+    raw.requiresAuth === undefined
+      ? undefined
+      : expectBoolean(raw.requiresAuth, `${path}.requiresAuth`);
   let actions: readonly QuickaduiConfigAction[] | undefined;
   if (raw.actions !== undefined) {
     if (!Array.isArray(raw.actions)) {
       fail(`${path}.actions`, `expected an array, got ${JSON.stringify(raw.actions)}.`);
     }
-    actions = raw.actions.map((entry, i) => parseAction(entry, `${path}.actions[${i}]`, knownRoles));
+    actions = raw.actions.map((entry, i) =>
+      parseAction(entry, `${path}.actions[${i}]`, knownRoles),
+    );
   }
   return {
     fields: raw.fields,
@@ -520,7 +553,8 @@ function parseButtonIconSlot(raw: unknown, path: string): QuickaduiConfigResourc
   }
   if (isPlainObject(raw)) {
     const icon = expectString(raw.icon, `${path}.icon`);
-    const showLabel = raw.showLabel === undefined ? undefined : expectBoolean(raw.showLabel, `${path}.showLabel`);
+    const showLabel =
+      raw.showLabel === undefined ? undefined : expectBoolean(raw.showLabel, `${path}.showLabel`);
     return showLabel !== undefined ? { icon, showLabel } : { icon };
   }
   fail(
@@ -531,13 +565,16 @@ function parseButtonIconSlot(raw: unknown, path: string): QuickaduiConfigResourc
 
 function parseResourceButtonIcons(raw: unknown, path: string): QuickaduiConfigResourceButtonIcons {
   if (!isPlainObject(raw)) {
-    fail(path, "expected an object with optional \"create\"/\"edit\"/\"delete\"/\"save\"/\"cancel\" keys.");
+    fail(path, 'expected an object with optional "create"/"edit"/"delete"/"save"/"cancel" keys.');
   }
-  const create = raw.create === undefined ? undefined : parseButtonIconSlot(raw.create, `${path}.create`);
+  const create =
+    raw.create === undefined ? undefined : parseButtonIconSlot(raw.create, `${path}.create`);
   const edit = raw.edit === undefined ? undefined : parseButtonIconSlot(raw.edit, `${path}.edit`);
-  const del = raw.delete === undefined ? undefined : parseButtonIconSlot(raw.delete, `${path}.delete`);
+  const del =
+    raw.delete === undefined ? undefined : parseButtonIconSlot(raw.delete, `${path}.delete`);
   const save = raw.save === undefined ? undefined : parseButtonIconSlot(raw.save, `${path}.save`);
-  const cancel = raw.cancel === undefined ? undefined : parseButtonIconSlot(raw.cancel, `${path}.cancel`);
+  const cancel =
+    raw.cancel === undefined ? undefined : parseButtonIconSlot(raw.cancel, `${path}.cancel`);
   return {
     ...(create !== undefined ? { create } : {}),
     ...(edit !== undefined ? { edit } : {}),
@@ -551,10 +588,17 @@ function parseResourceToasts(raw: unknown, path: string): QuickaduiConfigResourc
   if (!isPlainObject(raw)) {
     fail(
       path,
-      "expected an object with optional \"createSuccess\"/\"createError\"/\"updateSuccess\"/\"updateError\"/\"deleteSuccess\"/\"deleteError\" string keys.",
+      'expected an object with optional "createSuccess"/"createError"/"updateSuccess"/"updateError"/"deleteSuccess"/"deleteError" string keys.',
     );
   }
-  const keys = ["createSuccess", "createError", "updateSuccess", "updateError", "deleteSuccess", "deleteError"] as const;
+  const keys = [
+    "createSuccess",
+    "createError",
+    "updateSuccess",
+    "updateError",
+    "deleteSuccess",
+    "deleteError",
+  ] as const;
   const result: Record<string, string> = {};
   for (const key of keys) {
     if (raw[key] !== undefined) {
@@ -580,22 +624,31 @@ function parseResourceEndpointAction(
   requiresId: boolean,
 ): QuickaduiConfigResourceEndpointAction {
   if (!isPlainObject(raw)) {
-    fail(path, "expected an object with optional \"path\"/\"method\" keys.");
+    fail(path, 'expected an object with optional "path"/"method" keys.');
   }
   const rawPath = raw.path === undefined ? undefined : expectString(raw.path, `${path}.path`);
   if (rawPath !== undefined && requiresId && !rawPath.includes("{id}")) {
-    fail(`${path}.path`, `must include a literal "{id}" placeholder for this action, got ${JSON.stringify(rawPath)}.`);
+    fail(
+      `${path}.path`,
+      `must include a literal "{id}" placeholder for this action, got ${JSON.stringify(rawPath)}.`,
+    );
   }
-  const method = raw.method === undefined ? undefined : expectOneOf(raw.method, RESOURCE_ENDPOINT_METHODS, `${path}.method`);
+  const method =
+    raw.method === undefined
+      ? undefined
+      : expectOneOf(raw.method, RESOURCE_ENDPOINT_METHODS, `${path}.method`);
   return {
     ...(rawPath !== undefined ? { path: rawPath } : {}),
     ...(method !== undefined ? { method } : {}),
   };
 }
 
-function parseResourceListEndpoint(raw: unknown, path: string): QuickaduiConfigResourceListEndpoint {
+function parseResourceListEndpoint(
+  raw: unknown,
+  path: string,
+): QuickaduiConfigResourceListEndpoint {
   if (!isPlainObject(raw)) {
-    fail(path, "expected an object with optional \"path\"/\"method\"/\"responseShape\" keys.");
+    fail(path, 'expected an object with optional "path"/"method"/"responseShape" keys.');
   }
   const action = parseResourceEndpointAction(raw, path, false);
   const responseShape =
@@ -610,13 +663,24 @@ function parseResourceListEndpoint(raw: unknown, path: string): QuickaduiConfigR
 
 function parseResourceEndpoints(raw: unknown, path: string): QuickaduiConfigResourceEndpoints {
   if (!isPlainObject(raw)) {
-    fail(path, "expected an object with optional \"list\"/\"get\"/\"create\"/\"update\"/\"delete\" keys.");
+    fail(path, 'expected an object with optional "list"/"get"/"create"/"update"/"delete" keys.');
   }
-  const list = raw.list === undefined ? undefined : parseResourceListEndpoint(raw.list, `${path}.list`);
-  const get = raw.get === undefined ? undefined : parseResourceEndpointAction(raw.get, `${path}.get`, true);
-  const create = raw.create === undefined ? undefined : parseResourceEndpointAction(raw.create, `${path}.create`, false);
-  const update = raw.update === undefined ? undefined : parseResourceEndpointAction(raw.update, `${path}.update`, true);
-  const del = raw.delete === undefined ? undefined : parseResourceEndpointAction(raw.delete, `${path}.delete`, true);
+  const list =
+    raw.list === undefined ? undefined : parseResourceListEndpoint(raw.list, `${path}.list`);
+  const get =
+    raw.get === undefined ? undefined : parseResourceEndpointAction(raw.get, `${path}.get`, true);
+  const create =
+    raw.create === undefined
+      ? undefined
+      : parseResourceEndpointAction(raw.create, `${path}.create`, false);
+  const update =
+    raw.update === undefined
+      ? undefined
+      : parseResourceEndpointAction(raw.update, `${path}.update`, true);
+  const del =
+    raw.delete === undefined
+      ? undefined
+      : parseResourceEndpointAction(raw.delete, `${path}.delete`, true);
   return {
     ...(list !== undefined ? { list } : {}),
     ...(get !== undefined ? { get } : {}),
@@ -626,14 +690,23 @@ function parseResourceEndpoints(raw: unknown, path: string): QuickaduiConfigReso
   };
 }
 
-function parseResource(raw: unknown, path: string, knownRoles: readonly string[] | undefined): QuickaduiConfigResource {
+function parseResource(
+  raw: unknown,
+  path: string,
+  knownRoles: readonly string[] | undefined,
+): QuickaduiConfigResource {
   if (!isPlainObject(raw)) {
-    fail(path, "expected an object with \"name\" and \"fields\".");
+    fail(path, 'expected an object with "name" and "fields".');
   }
   const name = expectString(raw.name, `${path}.name`);
-  const endpoint = raw.endpoint === undefined ? undefined : expectString(raw.endpoint, `${path}.endpoint`);
-  const apiBase = raw.apiBase === undefined ? undefined : expectString(raw.apiBase, `${path}.apiBase`);
-  const endpoints = raw.endpoints === undefined ? undefined : parseResourceEndpoints(raw.endpoints, `${path}.endpoints`);
+  const endpoint =
+    raw.endpoint === undefined ? undefined : expectString(raw.endpoint, `${path}.endpoint`);
+  const apiBase =
+    raw.apiBase === undefined ? undefined : expectString(raw.apiBase, `${path}.apiBase`);
+  const endpoints =
+    raw.endpoints === undefined
+      ? undefined
+      : parseResourceEndpoints(raw.endpoints, `${path}.endpoints`);
 
   if (!Array.isArray(raw.fields) || raw.fields.length === 0) {
     fail(`${path}.fields`, "expected a non-empty array of fields.");
@@ -651,11 +724,20 @@ function parseResource(raw: unknown, path: string, knownRoles: readonly string[]
   let views: QuickaduiConfigResourceViews | undefined;
   if (raw.views !== undefined) {
     if (!isPlainObject(raw.views)) {
-      fail(`${path}.views`, "expected an object with optional \"list\"/\"create\"/\"update\" keys.");
+      fail(`${path}.views`, 'expected an object with optional "list"/"create"/"update" keys.');
     }
-    const list = raw.views.list === undefined ? undefined : parseView(raw.views.list, `${path}.views.list`, fieldNames, knownRoles);
-    const create = raw.views.create === undefined ? undefined : parseView(raw.views.create, `${path}.views.create`, fieldNames, knownRoles);
-    const update = raw.views.update === undefined ? undefined : parseView(raw.views.update, `${path}.views.update`, fieldNames, knownRoles);
+    const list =
+      raw.views.list === undefined
+        ? undefined
+        : parseView(raw.views.list, `${path}.views.list`, fieldNames, knownRoles);
+    const create =
+      raw.views.create === undefined
+        ? undefined
+        : parseView(raw.views.create, `${path}.views.create`, fieldNames, knownRoles);
+    const update =
+      raw.views.update === undefined
+        ? undefined
+        : parseView(raw.views.update, `${path}.views.update`, fieldNames, knownRoles);
     views = {
       ...(list !== undefined ? { list } : {}),
       ...(create !== undefined ? { create } : {}),
@@ -664,10 +746,15 @@ function parseResource(raw: unknown, path: string, knownRoles: readonly string[]
   }
 
   const buttonIcons =
-    raw.buttonIcons === undefined ? undefined : parseResourceButtonIcons(raw.buttonIcons, `${path}.buttonIcons`);
-  const toasts = raw.toasts === undefined ? undefined : parseResourceToasts(raw.toasts, `${path}.toasts`);
+    raw.buttonIcons === undefined
+      ? undefined
+      : parseResourceButtonIcons(raw.buttonIcons, `${path}.buttonIcons`);
+  const toasts =
+    raw.toasts === undefined ? undefined : parseResourceToasts(raw.toasts, `${path}.toasts`);
   const confirmDelete =
-    raw.confirmDelete === undefined ? undefined : parseConfirmDelete(raw.confirmDelete, `${path}.confirmDelete`);
+    raw.confirmDelete === undefined
+      ? undefined
+      : parseConfirmDelete(raw.confirmDelete, `${path}.confirmDelete`);
 
   return {
     name,
@@ -682,13 +769,20 @@ function parseResource(raw: unknown, path: string, knownRoles: readonly string[]
   };
 }
 
-function parseNavItem(raw: unknown, path: string, knownRoles: readonly string[] | undefined): QuickaduiConfigNavItem {
+function parseNavItem(
+  raw: unknown,
+  path: string,
+  knownRoles: readonly string[] | undefined,
+): QuickaduiConfigNavItem {
   if (!isPlainObject(raw)) {
-    fail(path, "expected an object with \"label\" and \"href\".");
+    fail(path, 'expected an object with "label" and "href".');
   }
   const label = expectString(raw.label, `${path}.label`);
   const href = expectString(raw.href, `${path}.href`);
-  const requiresAuth = raw.requiresAuth === undefined ? undefined : expectBoolean(raw.requiresAuth, `${path}.requiresAuth`);
+  const requiresAuth =
+    raw.requiresAuth === undefined
+      ? undefined
+      : expectBoolean(raw.requiresAuth, `${path}.requiresAuth`);
   const icon = raw.icon === undefined ? undefined : expectString(raw.icon, `${path}.icon`);
   let role: readonly string[] | undefined;
   if (raw.role !== undefined) {
@@ -711,9 +805,13 @@ function parseNavItem(raw: unknown, path: string, knownRoles: readonly string[] 
   };
 }
 
-function parseNav(raw: unknown, path: string, knownRoles: readonly string[] | undefined): QuickaduiConfigNav {
+function parseNav(
+  raw: unknown,
+  path: string,
+  knownRoles: readonly string[] | undefined,
+): QuickaduiConfigNav {
   if (!isPlainObject(raw)) {
-    fail(path, "expected an object with at least \"enabled\".");
+    fail(path, 'expected an object with at least "enabled".');
   }
   const enabled = expectBoolean(raw.enabled, `${path}.enabled`);
   const brand = raw.brand === undefined ? undefined : expectString(raw.brand, `${path}.brand`);
@@ -733,9 +831,13 @@ function parseNav(raw: unknown, path: string, knownRoles: readonly string[] | un
   };
 }
 
-function parseDashboardWidget(raw: unknown, path: string, resourceNames: readonly string[]): QuickaduiConfigDashboardWidget {
+function parseDashboardWidget(
+  raw: unknown,
+  path: string,
+  resourceNames: readonly string[],
+): QuickaduiConfigDashboardWidget {
   if (!isPlainObject(raw)) {
-    fail(path, "expected an object with \"id\", \"type\", \"title\", \"resource\".");
+    fail(path, 'expected an object with "id", "type", "title", "resource".');
   }
   const id = expectString(raw.id, `${path}.id`);
   const type = expectOneOf(raw.type, DASHBOARD_WIDGET_TYPES, `${path}.type`);
@@ -748,7 +850,10 @@ function parseDashboardWidget(raw: unknown, path: string, resourceNames: readonl
     );
   }
   const icon = raw.icon === undefined ? undefined : expectString(raw.icon, `${path}.icon`);
-  const metric = raw.metric === undefined ? undefined : expectOneOf(raw.metric, ["count"] as const, `${path}.metric`);
+  const metric =
+    raw.metric === undefined
+      ? undefined
+      : expectOneOf(raw.metric, ["count"] as const, `${path}.metric`);
   let limit: number | undefined;
   if (raw.limit !== undefined) {
     if (typeof raw.limit !== "number" || !Number.isInteger(raw.limit) || raw.limit <= 0) {
@@ -789,10 +894,18 @@ export function parseQuickaduiConfig(raw: unknown): QuickaduiConfig {
           if (!isPlainObject(raw.project)) {
             fail("project", "expected an object.");
           }
-          const name = raw.project.name === undefined ? undefined : expectString(raw.project.name, "project.name");
+          const name =
+            raw.project.name === undefined
+              ? undefined
+              : expectString(raw.project.name, "project.name");
           const apiBase =
-            raw.project.apiBase === undefined ? undefined : expectString(raw.project.apiBase, "project.apiBase");
-          return { ...(name !== undefined ? { name } : {}), ...(apiBase !== undefined ? { apiBase } : {}) };
+            raw.project.apiBase === undefined
+              ? undefined
+              : expectString(raw.project.apiBase, "project.apiBase");
+          return {
+            ...(name !== undefined ? { name } : {}),
+            ...(apiBase !== undefined ? { apiBase } : {}),
+          };
         })();
 
   const theme =
@@ -803,9 +916,13 @@ export function parseQuickaduiConfig(raw: unknown): QuickaduiConfig {
             fail("theme", "expected an object.");
           }
           const defaultMode =
-            raw.theme.default === undefined ? undefined : expectOneOf(raw.theme.default, THEME_MODES, "theme.default");
+            raw.theme.default === undefined
+              ? undefined
+              : expectOneOf(raw.theme.default, THEME_MODES, "theme.default");
           const colors =
-            raw.theme.colors === undefined ? undefined : parseThemeColors(raw.theme.colors, "theme.colors");
+            raw.theme.colors === undefined
+              ? undefined
+              : parseThemeColors(raw.theme.colors, "theme.colors");
           return {
             ...(defaultMode !== undefined ? { default: defaultMode } : {}),
             ...(colors !== undefined ? { colors } : {}),
@@ -816,11 +933,15 @@ export function parseQuickaduiConfig(raw: unknown): QuickaduiConfig {
   let knownRoles: readonly string[] | undefined;
   if (raw.auth !== undefined) {
     if (!isPlainObject(raw.auth)) {
-      fail("auth", "expected an object with at least \"enabled\".");
+      fail("auth", 'expected an object with at least "enabled".');
     }
     const enabled = expectBoolean(raw.auth.enabled, "auth.enabled");
-    const apiBase = raw.auth.apiBase === undefined ? undefined : expectString(raw.auth.apiBase, "auth.apiBase");
-    const roleField = raw.auth.roleField === undefined ? undefined : expectString(raw.auth.roleField, "auth.roleField");
+    const apiBase =
+      raw.auth.apiBase === undefined ? undefined : expectString(raw.auth.apiBase, "auth.apiBase");
+    const roleField =
+      raw.auth.roleField === undefined
+        ? undefined
+        : expectString(raw.auth.roleField, "auth.roleField");
     if (raw.auth.roles !== undefined) {
       if (!isStringArray(raw.auth.roles)) {
         fail("auth.roles", `expected an array of strings, got ${JSON.stringify(raw.auth.roles)}.`);
@@ -838,7 +959,9 @@ export function parseQuickaduiConfig(raw: unknown): QuickaduiConfig {
   if (!Array.isArray(raw.resources)) {
     fail("resources", `expected a non-empty array, got ${JSON.stringify(raw.resources)}.`);
   }
-  const resources = raw.resources.map((entry, i) => parseResource(entry, `resources[${i}]`, knownRoles));
+  const resources = raw.resources.map((entry, i) =>
+    parseResource(entry, `resources[${i}]`, knownRoles),
+  );
   const resourceNames = resources.map((r) => r.name);
   const seenResourceNames = new Set<string>();
   for (const name of resourceNames) {
@@ -849,36 +972,49 @@ export function parseQuickaduiConfig(raw: unknown): QuickaduiConfig {
   }
 
   const navbar = raw.navbar === undefined ? undefined : parseNav(raw.navbar, "navbar", knownRoles);
-  const sidebar = raw.sidebar === undefined ? undefined : parseNav(raw.sidebar, "sidebar", knownRoles);
+  const sidebar =
+    raw.sidebar === undefined ? undefined : parseNav(raw.sidebar, "sidebar", knownRoles);
 
   let footer: QuickaduiConfigFooter | undefined;
   if (raw.footer !== undefined) {
     if (!isPlainObject(raw.footer)) {
-      fail("footer", "expected an object with at least \"enabled\".");
+      fail("footer", 'expected an object with at least "enabled".');
     }
     const enabled = expectBoolean(raw.footer.enabled, "footer.enabled");
-    const content = raw.footer.content === undefined ? undefined : expectString(raw.footer.content, "footer.content");
+    const content =
+      raw.footer.content === undefined
+        ? undefined
+        : expectString(raw.footer.content, "footer.content");
     footer = { enabled, ...(content !== undefined ? { content } : {}) };
   }
 
   let dashboard: QuickaduiConfigDashboard | undefined;
   if (raw.dashboard !== undefined) {
     if (!isPlainObject(raw.dashboard)) {
-      fail("dashboard", "expected an object with at least \"enabled\".");
+      fail("dashboard", 'expected an object with at least "enabled".');
     }
     const enabled = expectBoolean(raw.dashboard.enabled, "dashboard.enabled");
-    const route = raw.dashboard.route === undefined ? undefined : expectString(raw.dashboard.route, "dashboard.route");
+    const route =
+      raw.dashboard.route === undefined
+        ? undefined
+        : expectString(raw.dashboard.route, "dashboard.route");
     let columns: (typeof DASHBOARD_COLUMNS)[number] | undefined;
     if (raw.dashboard.columns !== undefined) {
       if (!(DASHBOARD_COLUMNS as readonly unknown[]).includes(raw.dashboard.columns)) {
-        fail("dashboard.columns", `expected one of ${DASHBOARD_COLUMNS.join(", ")}, got ${JSON.stringify(raw.dashboard.columns)}.`);
+        fail(
+          "dashboard.columns",
+          `expected one of ${DASHBOARD_COLUMNS.join(", ")}, got ${JSON.stringify(raw.dashboard.columns)}.`,
+        );
       }
       columns = raw.dashboard.columns as (typeof DASHBOARD_COLUMNS)[number];
     }
     let widgets: readonly QuickaduiConfigDashboardWidget[] | undefined;
     if (raw.dashboard.widgets !== undefined) {
       if (!Array.isArray(raw.dashboard.widgets)) {
-        fail("dashboard.widgets", `expected an array, got ${JSON.stringify(raw.dashboard.widgets)}.`);
+        fail(
+          "dashboard.widgets",
+          `expected an array, got ${JSON.stringify(raw.dashboard.widgets)}.`,
+        );
       }
       widgets = raw.dashboard.widgets.map((entry, i) =>
         parseDashboardWidget(entry, `dashboard.widgets[${i}]`, resourceNames),
@@ -891,7 +1027,10 @@ export function parseQuickaduiConfig(raw: unknown): QuickaduiConfig {
       const seenWidgetIds = new Set<string>();
       for (const widget of widgets) {
         if (seenWidgetIds.has(widget.id)) {
-          fail("dashboard.widgets", `duplicate widget id ${JSON.stringify(widget.id)} — every widget needs a unique "id".`);
+          fail(
+            "dashboard.widgets",
+            `duplicate widget id ${JSON.stringify(widget.id)} — every widget needs a unique "id".`,
+          );
         }
         seenWidgetIds.add(widget.id);
       }

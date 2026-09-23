@@ -11,7 +11,10 @@ import type { ScaffoldFile } from "../templates.js";
  * regenerate, not append (every generated file says so in its own header
  * comment).
  */
-export function writeScaffoldFiles(projectDir: string, files: readonly ScaffoldFile[]): readonly string[] {
+export function writeScaffoldFiles(
+  projectDir: string,
+  files: readonly ScaffoldFile[],
+): readonly string[] {
   const filesWritten: string[] = [];
   for (const file of files) {
     const absolutePath = join(projectDir, file.path);

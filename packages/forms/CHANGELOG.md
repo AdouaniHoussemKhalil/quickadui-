@@ -1,5 +1,12 @@
 # @quickadui/forms
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [a721705]
+  - @quickadui/icons@0.2.0
+
 ## 0.2.0
 
 ### Minor Changes

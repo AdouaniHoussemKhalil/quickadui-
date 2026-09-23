@@ -1,6 +1,6 @@
 {
   "name": "@quickadui/data",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Table, Pagination, Timeline, Tree View, Stepper, and a drag-and-drop-sortable SortableList/SortableItem pair — data-display, reordering, and multi-step navigation components. Tabs/Accordion ship in @quickadui/core instead; a sortable/filterable Data Grid is out of scope for now (see README).",
   "license": "MIT",
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "@quickadui/forms",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Form field components (Input, Textarea, Select, Checkbox, Switch, RadioGroup, Label) plus a React Hook Form + Zod bindings layer (Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage).",
   "license": "MIT",
   "repository": {

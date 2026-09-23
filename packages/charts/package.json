@@ -1,6 +1,6 @@
 {
   "name": "@quickadui/charts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Ready-to-use dashboard stat/chart components — StatCard, Sparkline, BarChart, LineChart, DonutChart — hand-rolled SVG, zero chart-library dependency. Pairs with @quickadui/shell's Widget/WidgetGrid but doesn't depend on it.",
   "license": "MIT",
   "repository": {

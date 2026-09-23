@@ -9,10 +9,16 @@
 // and isn't something an external project adds at runtime, so it's
 // deliberately left out of this registry.
 //
-// All of these packages are published to npm as of 2026-09-17, at
-// version 0.1.0 (verified against registry.npmjs.org, not assumed), so
-// the version range recorded here is `^0.1.0`. Update it here again
-// whenever a new minor/major ships.
+// Every version range below was verified against the real npm registry,
+// not assumed. As of 2026-09-23, `core`/`data`/`forms`/`primitives`/`theme`
+// are at 0.2.0 (new components: Collapsible, CopyButton/CopyField,
+// SortableList, PasswordInput, Input startIcon/endIcon, scrollbar.css) and
+// `layout`/`overlays` are at 0.1.1 (patch bump from their internal
+// dependency on the packages above, per `updateInternalDependencies:
+// "patch"` in .changeset/config.json). Everything else is still at 0.1.0,
+// the original 2026-09-17 release. Update this file again whenever a new
+// minor/major ships — a stale range here silently installs old code even
+// once npm itself is current.
 
 export interface ExternalDependency {
   readonly name: string;
@@ -79,7 +85,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/theme",
-    version: "^0.1.0",
+    version: "^0.2.0",
     description: "ThemeProvider, the CSS-variable engine, and the Tailwind v4 @theme integration.",
     quickaduiDependencies: ["@quickadui/tokens"],
     externalDependencies: [],
@@ -96,7 +102,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/primitives",
-    version: "^0.1.0",
+    version: "^0.2.0",
     description: "Unstyled behavior primitives. The only package that imports Radix UI directly.",
     quickaduiDependencies: [],
     externalDependencies: [{ name: "radix-ui", range: "^1.6.0" }],
@@ -104,7 +110,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/core",
-    version: "^0.1.0",
+    version: "^0.2.0",
     description:
       "Core components — Button, IconButton, Card, Badge, Avatar, Alert, Spinner, Skeleton, Typography.",
     quickaduiDependencies: ["@quickadui/primitives", "@quickadui/utils"],
@@ -113,7 +119,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/layout",
-    version: "^0.1.0",
+    version: "^0.1.1",
     description: "Layout building blocks — Grid, Flex, Stack, Container, Section, Page Container.",
     quickaduiDependencies: ["@quickadui/theme", "@quickadui/utils"],
     externalDependencies: [
@@ -125,7 +131,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/overlays",
-    version: "^0.1.0",
+    version: "^0.1.1",
     description: "Modal, Drawer — Context Menu and Toast/Notification land incrementally.",
     quickaduiDependencies: [
       "@quickadui/icons",
@@ -138,7 +144,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/data",
-    version: "^0.1.0",
+    version: "^0.2.0",
     description: "Table, Pagination, Timeline, Tree View, and Stepper.",
     quickaduiDependencies: ["@quickadui/icons", "@quickadui/theme", "@quickadui/utils"],
     externalDependencies: [{ name: "class-variance-authority", range: "^0.7.0" }],
@@ -146,7 +152,7 @@ export const QUICKADUI_PACKAGES: readonly QuickaduiPackageDefinition[] = [
   },
   {
     name: "@quickadui/forms",
-    version: "^0.1.0",
+    version: "^0.2.0",
     description: "Form field components plus a React Hook Form + Zod bindings layer.",
     quickaduiDependencies: [
       "@quickadui/icons",

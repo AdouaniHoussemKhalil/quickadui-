@@ -1,6 +1,6 @@
 {
   "name": "create-quickadui",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "create-quickadui — scaffolds a Vite + React + Tailwind v4 project (`quickadui init`) and installs QuickadUI packages into it (`quickadui add`). Editing an existing project's CSS is left to the person (see README) — narrower than the original framework-detection scope in Blueprint §4/§9.",
   "license": "MIT",
   "repository": {

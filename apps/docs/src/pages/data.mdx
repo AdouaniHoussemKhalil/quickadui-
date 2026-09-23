@@ -6,6 +6,8 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
+  SortableItem,
+  SortableList,
   Stepper,
   StepperDescription,
   StepperIndicator,
@@ -29,14 +31,26 @@ import {
   TreeView,
   TreeViewItem,
 } from "@quickadui/data";
+import { useState } from "react";
 import { Example } from "../components/Example";
 import { PropsTable } from "../components/PropsTable";
+
+export function SortableListDemo() {
+  const [items, setItems] = useState(["a", "b", "c"]);
+  return (
+    <SortableList items={items} onReorder={setItems}>
+      <SortableItem id="a">Design review</SortableItem>
+      <SortableItem id="b">Ship the changelog</SortableItem>
+      <SortableItem id="c">Reply to support tickets</SortableItem>
+    </SortableList>
+  );
+}
 
 # Data
 
 `@quickadui/data` covers the components a real screen full of records
-tends to need: tables, pagination, multi-step flows, timelines, and tree
-views.
+tends to need: tables, pagination, multi-step flows, timelines, tree
+views, and a draggable sortable list.
 
 ## Table
 
@@ -280,5 +294,44 @@ item in a timeline omits it, same as the example above.
     { name: "expandedIds", type: "ReadonlySet<string>", description: "Controlled expanded-node-id set — pass with onExpandedIdsChange." },
     { name: "selectedId", type: "string", description: "Controlled selected node id." },
     { name: "onSelect", type: "(id: string) => void", description: "Called when a node row is clicked or activated with Enter/Space." },
+  ]}
+/>
+
+## SortableList
+
+<Example
+  code={`function SortableListDemo() {
+  const [items, setItems] = useState(["a", "b", "c"]);
+  return (
+    <SortableList items={items} onReorder={setItems}>
+      <SortableItem id="a">Design review</SortableItem>
+      <SortableItem id="b">Ship the changelog</SortableItem>
+      <SortableItem id="c">Reply to support tickets</SortableItem>
+    </SortableList>
+  );
+}`}
+>
+  <SortableListDemo />
+</Example>
+
+Draggable with the mouse/pointer and the keyboard (via `@dnd-kit`) — the
+same machinery `@quickadui/shell`'s `WidgetGrid` uses for a 2D grid of
+dashboard widgets, here specialized for a single-column list: a
+reorderable settings list, a priority-ranked list, a Kanban column, ...
+Drag a row below to reorder it; the new order is just local `useState` in
+this demo. Omitting `onReorder` renders a plain, non-draggable list
+instead, with no `DndContext` mounted at all.
+
+<PropsTable
+  rows={[
+    { name: "items", type: "string[]", description: "Ordered item ids — must match each SortableItem child's id, in the same order they're rendered." },
+    { name: "onReorder", type: "(items: string[]) => void", description: "Called with the reordered id array once a drag completes. Omit for a plain, non-draggable list." },
+  ]}
+/>
+
+<PropsTable
+  rows={[
+    { name: "id", type: "string", description: "SortableItem only, required — must match this item's entry in its SortableList's items array." },
+    { name: "disableDrag", type: "boolean", default: "false", description: "SortableItem only — hides the drag handle and disables dragging for just this item." },
   ]}
 />

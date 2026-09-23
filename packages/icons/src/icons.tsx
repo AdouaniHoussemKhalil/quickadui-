@@ -12,6 +12,7 @@ import {
   CircleCheck,
   CircleX,
   Clock,
+  Copy,
   Eye,
   EyeOff,
   GripVertical,
@@ -72,6 +73,11 @@ export function CheckIcon(props: IconProps) {
 
 export function CloseIcon(props: IconProps) {
   return <X {...props} />;
+}
+
+/** `@quickadui/core`'s `CopyButton`/`CopyField` clipboard-copy affordance. */
+export function CopyIcon(props: IconProps) {
+  return <Copy {...props} />;
 }
 
 export function CircleIcon(props: IconProps) {
@@ -158,7 +164,7 @@ export function LoaderIcon(props: IconProps) {
   return <LoaderCircle {...props} />;
 }
 
-/** A vertical grip/handle glyph — `@quickadui/shell`'s `Widget` drag handle, or anywhere else a draggable-item affordance is needed. */
+/** A vertical grip/handle glyph — `@quickadui/shell`'s `Widget` and `@quickadui/data`'s `SortableItem` drag handles, or anywhere else a draggable-item affordance is needed. */
 export function GripVerticalIcon(props: IconProps) {
   return <GripVertical {...props} />;
 }

@@ -10,6 +10,7 @@ export {
   CircleIcon,
   ClockIcon,
   CloseIcon,
+  CopyIcon,
   ErrorIcon,
   EyeIcon,
   EyeOffIcon,

@@ -1,4 +1,17 @@
-import { Accordion, AccordionContent, AccordionHeader, AccordionItem, AccordionTrigger, Tabs, TabsContent, TabsList, TabsTrigger } from "@quickadui/primitives";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionHeader,
+  AccordionItem,
+  AccordionTrigger,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@quickadui/primitives";
 import { Example } from "../components/Example";
 import { PropsTable } from "../components/PropsTable";
 
@@ -71,6 +84,30 @@ button into:
   </Tabs>
 </Example>
 
+Like `Accordion` above, `Collapsible` renders no chrome of its own — the
+example below adds its own minimal classes by hand, the same way a
+consumer building directly on `primitives` is expected to:
+
+<Example
+  code={`<Collapsible>
+  <CollapsibleTrigger className="flex w-full items-center justify-between py-3 text-sm font-medium">
+    Is it unstyled too?
+  </CollapsibleTrigger>
+  <CollapsibleContent className="pb-3 text-sm">
+    Yes — same as Accordion, just a single panel with no grouping.
+  </CollapsibleContent>
+</Collapsible>`}
+>
+  <Collapsible className="w-full max-w-sm">
+    <CollapsibleTrigger className="flex w-full items-center justify-between py-3 text-sm font-medium">
+      Is it unstyled too?
+    </CollapsibleTrigger>
+    <CollapsibleContent className="pb-3 text-sm text-neutral-11">
+      Yes — same as Accordion, just a single panel with no grouping.
+    </CollapsibleContent>
+  </Collapsible>
+</Example>
+
 ## All exported parts
 
 <PropsTable
@@ -78,6 +115,7 @@ button into:
     { name: "Accordion, AccordionItem, AccordionHeader, AccordionTrigger, AccordionContent", type: "component", description: "Collapsible sections. Every part gets a data-slot." },
     { name: "AvatarRoot, AvatarImage, AvatarFallback", type: "component", description: "Image with a fallback for load failure/no image." },
     { name: "CheckboxRoot, CheckboxIndicator", type: "component", description: "Tri-state (checked/unchecked/indeterminate) checkbox." },
+    { name: "Collapsible, CollapsibleTrigger, CollapsibleContent", type: "component", description: "A single expand/collapse panel — the building block Accordion composes many of, standalone with no grouping." },
     { name: "ContextMenu*", type: "component", description: "Right-click menu — same part set as DropdownMenu." },
     { name: "Dialog, DialogTrigger, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogDescription, DialogClose", type: "component", description: "Modal dialog. Unstyled — default styling and composition is @quickadui/overlays' job." },
     { name: "DropdownMenu*", type: "component", description: "Menu triggered from a button, with items, checkboxes, radios, and submenus." },

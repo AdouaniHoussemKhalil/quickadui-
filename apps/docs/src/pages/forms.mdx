@@ -2,6 +2,7 @@ import {
   Checkbox,
   Input,
   Label,
+  PasswordInput,
   RadioGroup,
   RadioGroupItem,
   Select,
@@ -44,6 +45,36 @@ a later pass of this page.
     { name: "state", type: '"default" | "error"', default: '"default"', description: "Validation state styling." },
   ]}
 />
+
+## Password input
+
+<Example
+  code={`<PasswordInput placeholder="Enter a password" showStrength />`}
+>
+  <PasswordInput placeholder="Enter a password" showStrength className="w-full max-w-sm" />
+</Example>
+
+A plain `Input` with a trailing eye/eye-off toggle to reveal the value,
+plus an optional live strength meter (`showStrength`) below it — a
+segmented bar plus a per-rule checklist (length, uppercase, lowercase,
+number, symbol) that updates on every keystroke. Built on a hand-rolled
+rule checker (`getPasswordStrength`, re-exported from this package)
+rather than a third-party scoring library — no extra dependency to
+install, and every rule maps to something the user can see and fix while
+typing, unlike an opaque entropy estimate.
+
+<PropsTable
+  rows={[
+    { name: "showStrength", type: "boolean", default: "false", description: "Renders a PasswordStrengthMeter below the field, reading this same input's live value." },
+    { name: "strengthRules", type: "PasswordRule[]", default: "defaultPasswordRules", description: "Custom rule set forwarded to the strength meter — a different minimum length, requiring a symbol, etc." },
+  ]}
+/>
+
+`PasswordStrengthMeter` (the bar + checklist alone) and
+`getPasswordStrength` (the pure scoring function both are built on) are
+also exported separately — render the meter standalone next to a
+"confirm password" field, or call `getPasswordStrength` directly for
+server-side validation.
 
 ## Textarea
 

@@ -17,6 +17,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  CopyButton,
+  CopyField,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -277,6 +282,38 @@ fails to load — always give it initials or an icon, never leave it empty.
 let that one item close too); `type="multiple"` allows several open at
 once. Both come straight from the underlying Radix Accordion.
 
+## Collapsible
+
+A single expand/collapse panel — reach for this instead of `Accordion`
+when there's only one panel and no grouping to manage.
+
+<Example
+  code={`<Collapsible>
+  <CollapsibleTrigger>What's different from Accordion?</CollapsibleTrigger>
+  <CollapsibleContent>
+    Accordion groups several of these panels with only-one-open-at-a-time
+    semantics; Collapsible is just one standalone panel.
+  </CollapsibleContent>
+</Collapsible>`}
+>
+  <Collapsible className="w-full">
+    <CollapsibleTrigger>What's different from Accordion?</CollapsibleTrigger>
+    <CollapsibleContent>
+      Accordion groups several of these panels with only-one-open-at-a-time
+      semantics; Collapsible is just one standalone panel.
+    </CollapsibleContent>
+  </Collapsible>
+</Example>
+
+<PropsTable
+  rows={[
+    { name: "defaultOpen", type: "boolean", default: "false", description: "Uncontrolled starting state." },
+    { name: "open", type: "boolean", description: "Controlled open state — pair with onOpenChange." },
+    { name: "onOpenChange", type: "(open: boolean) => void", description: "Called when the panel is toggled." },
+    { name: "disabled", type: "boolean", default: "false", description: "Disables the trigger." },
+  ]}
+/>
+
 ## Typography
 
 <Example
@@ -322,6 +359,56 @@ there's no visible text for a screen reader to fall back on without one.
     { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Diameter of the square button." },
     { name: "asChild", type: "boolean", default: "false", description: "Merge these props onto the single child instead of rendering a <button>." },
     { name: "aria-label", type: "string", description: "Required — the only accessible name an icon-only button has." },
+  ]}
+/>
+
+## CopyButton
+
+An icon button that copies `value` to the clipboard and swaps to a check
+mark for a second and a half as confirmation, then reverts. Built on
+`IconButton` — its own `aria-label` is set internally (it switches between
+"Copy" and "Copied"), so it isn't a prop here.
+
+<Example
+  code={`<CopyButton value="npm install @quickadui/core" />`}
+>
+  <CopyButton value="npm install @quickadui/core" />
+</Example>
+
+Falls back to a hidden-textarea + `execCommand("copy")` trick when
+`navigator.clipboard` isn't available (an insecure context, or an older
+browser); if that also fails too, nothing throws — the icon just never
+flips to a check mark.
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string", description: "The text copied to the clipboard when clicked." },
+    { name: "resetAfter", type: "number", default: "1500", description: "How long the check mark shows before reverting, in ms." },
+    { name: "onCopy", type: "(value: string) => void", description: "Called after a successful copy." },
+    { name: "variant", type: '"solid" | "soft" | "outline" | "ghost"', default: '"ghost"', description: "Same IconButton variants — CopyButton is built on IconButton." },
+    { name: "size", type: '"sm" | "md" | "lg"', default: '"sm"', description: "Diameter — defaults smaller than IconButton's own default md, for inline use." },
+  ]}
+/>
+
+## CopyField
+
+The "text to copy, with a copy icon" pattern — a bordered, monospace field
+with a `CopyButton` on its trailing edge, for an API key, an invite link,
+or a command someone needs to paste elsewhere.
+
+<Example
+  code={`<CopyField value="npm install @quickadui/core" />`}
+>
+  <CopyField value="npm install @quickadui/core" className="w-full max-w-sm" />
+</Example>
+
+For a copy affordance elsewhere (a table cell, a code block's corner) that
+doesn't need the bordered field chrome, use `CopyButton` directly instead.
+
+<PropsTable
+  rows={[
+    { name: "value", type: "string", description: "The text shown and copied." },
+    { name: "copyButtonProps", type: 'Omit<CopyButtonProps, "value">', description: "Forwarded to the embedded CopyButton — resetAfter, onCopy, etc." },
   ]}
 />
 

@@ -1,7 +1,7 @@
 {
   "name": "@quickadui/core",
   "version": "0.1.0",
-  "description": "Core components — Button, IconButton, Card, Badge, Avatar, Alert, Spinner, Skeleton, Typography.",
+  "description": "Core components — Button, IconButton, Card, Badge, Avatar, Alert, Spinner, Skeleton, Typography, Collapsible, CopyButton/CopyField.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -62,6 +62,7 @@
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
+    "@quickadui/icons": "workspace:*",
     "@quickadui/primitives": "workspace:*",
     "@quickadui/utils": "workspace:*"
   }

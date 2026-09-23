@@ -7,6 +7,7 @@ export {
 } from "./accordion";
 export { AvatarFallback, AvatarImage, AvatarRoot } from "./avatar";
 export { CheckboxIndicator, CheckboxRoot } from "./checkbox";
+export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 export {
   ContextMenu,
   ContextMenuCheckboxItem,

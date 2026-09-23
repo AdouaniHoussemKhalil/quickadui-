@@ -14,6 +14,8 @@ export {
   PAGINATION_ELLIPSIS,
   type PaginationRangeItem,
 } from "./pagination-range";
+export { SortableItem, type SortableItemProps } from "./sortable-item";
+export { SortableList, type SortableListProps } from "./sortable-list";
 export {
   getStepStatus,
   Stepper,

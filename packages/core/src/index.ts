@@ -4,6 +4,9 @@ export { Avatar, AvatarFallback, AvatarImage, type AvatarProps, avatarVariants }
 export { Badge, type BadgeProps, badgeVariants } from "./badge";
 export { Button, type ButtonProps, buttonVariants } from "./button";
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
+export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
+export { CopyButton, type CopyButtonProps, copyToClipboard } from "./copy-button";
+export { CopyField, type CopyFieldProps } from "./copy-field";
 export {
   DropdownMenu,
   DropdownMenuCheckboxItem,

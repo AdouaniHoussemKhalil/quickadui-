@@ -21,6 +21,16 @@ export {
 } from "./form";
 export { Input, type InputProps, inputVariants } from "./input";
 export { Label } from "./label";
+export { PasswordInput, type PasswordInputProps } from "./password-input";
+export {
+  defaultPasswordRules,
+  getPasswordStrength,
+  type PasswordRule,
+  type PasswordRuleResult,
+  type PasswordStrength,
+  type PasswordStrengthLabel,
+} from "./password-strength";
+export { PasswordStrengthMeter, type PasswordStrengthMeterProps } from "./password-strength-meter";
 export { RadioGroup, RadioGroupItem } from "./radio-group";
 export {
   Select,

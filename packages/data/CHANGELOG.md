@@ -1,5 +1,16 @@
 # @quickadui/data
 
+## 0.2.0
+
+### Minor Changes
+
+- f568ca6: Add `SortableList` and `SortableItem` for drag-and-drop reordering of list items.
+
+### Patch Changes
+
+- Updated dependencies [f568ca6]
+  - @quickadui/theme@0.2.0
+
 ## 0.1.0
 
 ### Minor Changes

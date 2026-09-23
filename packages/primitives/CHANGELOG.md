@@ -1,5 +1,11 @@
 # @quickadui/primitives
 
+## 0.2.0
+
+### Minor Changes
+
+- f568ca6: Add a headless `Collapsible` primitive (controlled/uncontrolled open state, ARIA-correct trigger/content wiring) for building custom expand/collapse UI on top of.
+
 ## 0.1.0
 
 ### Minor Changes

@@ -3,34 +3,34 @@ import { Example } from "../components/Example";
 
 # QuickadUI
 
-A complete frontend ecosystem for building React applications — components,
-layouts, theming, hooks, icons, animation, and a CLI, all under one
-`@quickadui/*` namespace. This site documents every visual package plus
-`theme` — `utils`/`hooks` (non-visual utilities) and `config`/`cli`
-(tooling) are out of scope here, documented elsewhere.
+QuickadUI is a complete frontend ecosystem for building React admin and
+dashboard apps: styled components (buttons, forms, tables, charts...),
+page layout, light/dark theming with an accent-color picker, icons,
+animation, and a CLI that can scaffold a whole app for you. Everything
+lives under a single `@quickadui/*` namespace and is built on
+[Radix UI](https://www.radix-ui.com) primitives, so components come with
+keyboard navigation, focus management, and ARIA wiring out of the box.
 
-<Badge variant="soft">Hand-written pages</Badge>
+Every example on this site renders the real, built `@quickadui/*`
+packages — nothing here is a mockup.
 
-## What's here, and what isn't yet
+<Example
+  code={`import { Button } from "@quickadui/core";
 
-`apps/docs` is a real, running Vite + MDX site with navigation, a layout,
-and one hand-written page per covered package: `tokens`, `theme`,
-`primitives`, `core`, `layout`, `forms`, `data`, `overlays`, `shell`,
-`charts`, `animation`, and `icons`. Every example on these pages renders
-the real, built `@quickadui/*` packages — this site dogfoods itself the
-same way `apps/playground` does.
+<Button variant="solid">Get started</Button>`}
+>
+  <Button variant="solid">Get started</Button>
+</Example>
 
-Two things are deliberately **not** built yet, and every prop table below
-is hand-written because of it:
+## Where to start
 
-- **Generated prop tables.** Parsing real TypeScript source into prop
-  tables automatically is planned (see `ARCHITECTURE.md`, §10), but this
-  pass proves out the site's structure first with hand-written tables.
-- **Live Sandpack playgrounds.** Examples here render live but aren't
-  editable in the browser yet.
-
-Later rounds also add versioning per published major and a guides layer
-("Migrating from Chakra/MUI/Mantine"). None of that is in this build.
+- **Starting a new project?** [Create your first project](#create-your-first-project)
+  walks through the `quickadui` CLI step by step: scaffolding, the config
+  file, the most common setup scenarios, and a CSS gotcha almost everyone
+  hits once.
+- **Adding QuickadUI to an existing project?** Install the packages below,
+  wrap your app in `ThemeProvider`, and start importing components from
+  whichever package covers what you're building.
 
 ## Install
 
@@ -42,21 +42,17 @@ Wrap your app in `ThemeProvider` (from `@quickadui/theme`) and import its
 generated CSS once, alongside Tailwind v4 itself — see this site's own
 `src/main.tsx` and `src/index.css` for a working example of both.
 
-<Example
-  code={`import { Button } from "@quickadui/core";
+## What's inside
 
-<Button variant="solid">Get started</Button>`}
->
-  <Button variant="solid">Get started</Button>
-</Example>
+Twelve packages, each documented on its own page.
 
-## Where to go next
+### Foundations
 
 <div className="grid gap-4 sm:grid-cols-2">
   <Card>
     <CardHeader>
       <CardTitle>Tokens</CardTitle>
-      <CardDescription>Color, space, type, and motion — the source of truth every other package builds on.</CardDescription>
+      <CardDescription>Color, spacing, type, and motion — the single source of truth every other package builds on.</CardDescription>
     </CardHeader>
     <CardContent>
       <Button asChild variant="outline" size="sm">
@@ -64,6 +60,33 @@ generated CSS once, alongside Tailwind v4 itself — see this site's own
       </Button>
     </CardContent>
   </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Theme</CardTitle>
+      <CardDescription>Runtime light/dark mode and accent-color switching — no rebuild needed.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button asChild variant="outline" size="sm">
+        <a href="#theme">View theme</a>
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Primitives</CardTitle>
+      <CardDescription>Unstyled Radix UI building blocks — the layer everything above it is built on.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button asChild variant="outline" size="sm">
+        <a href="#primitives">View primitives</a>
+      </Button>
+    </CardContent>
+  </Card>
+</div>
+
+### Components
+
+<div className="grid gap-4 sm:grid-cols-2">
   <Card>
     <CardHeader>
       <CardTitle>Core</CardTitle>
@@ -75,4 +98,108 @@ generated CSS once, alongside Tailwind v4 itself — see this site's own
       </Button>
     </CardContent>
   </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Forms</CardTitle>
+      <CardDescription>Inputs, checkboxes, switches, selects — plus a Form layer wired to react-hook-form and zod.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button asChild variant="outline" size="sm">
+        <a href="#forms">View forms</a>
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Layout</CardTitle>
+      <CardDescription>Centering, spacing, and arranging things on a page: Container, Flex, Stack, Grid, Section.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button asChild variant="outline" size="sm">
+        <a href="#layout">View layout</a>
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Data</CardTitle>
+      <CardDescription>Tables, pagination, multi-step flows, timelines, and tree views.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button asChild variant="outline" size="sm">
+        <a href="#data">View data</a>
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Overlays</CardTitle>
+      <CardDescription>UI that floats above the page — modal, drawer, toast, context menu.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button asChild variant="outline" size="sm">
+        <a href="#overlays">View overlays</a>
+      </Button>
+    </CardContent>
+  </Card>
 </div>
+
+### Dashboards & extras
+
+<div className="grid gap-4 sm:grid-cols-2">
+  <Card>
+    <CardHeader>
+      <CardTitle>Shell</CardTitle>
+      <CardDescription>The admin/dashboard app frame — navbar, collapsible sidebar, and draggable widgets.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button asChild variant="outline" size="sm">
+        <a href="#shell">View shell</a>
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Charts</CardTitle>
+      <CardDescription>Dashboard-style charts — grouped bars, lines, donuts, sparklines, and metric tiles.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button asChild variant="outline" size="sm">
+        <a href="#charts">View charts</a>
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Animation</CardTitle>
+      <CardDescription>A ready-to-use wrapper around Motion for React, plus its full API re-exported.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button asChild variant="outline" size="sm">
+        <a href="#animation">View animation</a>
+      </Button>
+    </CardContent>
+  </Card>
+  <Card>
+    <CardHeader>
+      <CardTitle>Icons</CardTitle>
+      <CardDescription>A curated set of Lucide icons under stable QuickadUI names.</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <Button asChild variant="outline" size="sm">
+        <a href="#icons">View icons</a>
+      </Button>
+    </CardContent>
+  </Card>
+</div>
+
+## About these docs
+
+<Badge variant="soft">Hand-written pages</Badge>
+
+Every prop table on this site is currently hand-written rather than
+generated from the real TypeScript source — that's planned (see
+`ARCHITECTURE.md`, §10), but this pass proves out the site's structure
+first. Examples render live but aren't editable in the browser yet. If
+anything here ever looks out of date next to the actual component source,
+the source wins.

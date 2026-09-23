@@ -384,7 +384,7 @@ flips to a check mark.
   rows={[
     { name: "value", type: "string", description: "The text copied to the clipboard when clicked." },
     { name: "resetAfter", type: "number", default: "1500", description: "How long the check mark shows before reverting, in ms." },
-    { name: "onCopy", type: "(value: string) => void", description: "Called after a successful copy." },
+    { name: "onCopied", type: "(value: string) => void", description: "Called after a successful copy. Named onCopied, not onCopy, since onCopy is already the native DOM clipboard event inherited from the underlying button." },
     { name: "variant", type: '"solid" | "soft" | "outline" | "ghost"', default: '"ghost"', description: "Same IconButton variants — CopyButton is built on IconButton." },
     { name: "size", type: '"sm" | "md" | "lg"', default: '"sm"', description: "Diameter — defaults smaller than IconButton's own default md, for inline use." },
   ]}
@@ -408,7 +408,7 @@ doesn't need the bordered field chrome, use `CopyButton` directly instead.
 <PropsTable
   rows={[
     { name: "value", type: "string", description: "The text shown and copied." },
-    { name: "copyButtonProps", type: 'Omit<CopyButtonProps, "value">', description: "Forwarded to the embedded CopyButton — resetAfter, onCopy, etc." },
+    { name: "copyButtonProps", type: 'Omit<CopyButtonProps, "value">', description: "Forwarded to the embedded CopyButton — resetAfter, onCopied, etc." },
   ]}
 />
 

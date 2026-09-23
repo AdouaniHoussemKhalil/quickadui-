@@ -10,8 +10,13 @@ export interface CopyButtonProps extends Omit<IconButtonProps, "aria-label" | "c
   value: string;
   /** How long the check-mark confirmation shows before reverting to the copy icon, in ms. Default: `1500`. */
   resetAfter?: number;
-  /** Called after a successful copy. */
-  onCopy?: (value: string) => void;
+  /**
+   * Called after a successful copy. Named `onCopied` (not `onCopy`) because
+   * `onCopy` is already the native DOM clipboard event
+   * (`ClipboardEventHandler`) inherited from the underlying `<button>` —
+   * reusing that name would collide with an incompatible signature.
+   */
+  onCopied?: (value: string) => void;
 }
 
 /**
@@ -25,7 +30,7 @@ export interface CopyButtonProps extends Omit<IconButtonProps, "aria-label" | "c
 export function CopyButton({
   value,
   resetAfter = 1500,
-  onCopy,
+  onCopied,
   variant = "ghost",
   size = "sm",
   className,
@@ -39,7 +44,7 @@ export function CopyButton({
       return;
     }
     setCopied(true);
-    onCopy?.(value);
+    onCopied?.(value);
     window.setTimeout(() => setCopied(false), resetAfter);
   }
 

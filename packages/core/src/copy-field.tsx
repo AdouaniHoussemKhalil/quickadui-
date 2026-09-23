@@ -7,7 +7,7 @@ import { CopyButton, type CopyButtonProps } from "./copy-button";
 export interface CopyFieldProps extends Omit<ComponentProps<"div">, "onCopy"> {
   /** The text shown and copied. */
   value: string;
-  /** Forwarded to the embedded CopyButton — resetAfter, onCopy, etc. */
+  /** Forwarded to the embedded CopyButton — resetAfter, onCopied, etc. */
   copyButtonProps?: Omit<CopyButtonProps, "value"> | undefined;
 }
 

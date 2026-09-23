@@ -1,3 +1,4 @@
+import { ChevronLeftIcon, ChevronRightIcon } from "@quickadui/icons";
 import { describe, expect, it } from "vitest";
 import { PaginationNext, PaginationPrevious, paginationLinkVariants } from "./pagination";
 
@@ -27,8 +28,13 @@ describe("PaginationPrevious", () => {
     const element = PaginationPrevious({}) as {
       props: { children: unknown; className: string; "aria-label": string };
     };
-    const icon = element.props.children as { type: { iconName?: string } };
-    expect(icon.type.iconName).toBe("ChevronLeftIcon");
+    const icon = element.props.children as { type: unknown };
+    // Compared by direct function reference, not a `.iconName` static —
+    // the icon components (@quickadui/icons) are plain function
+    // components with no such metadata attached; the reference itself is
+    // both the simplest and the most robust check (unaffected by any
+    // future minification of `.name`, unlike a string comparison would be).
+    expect(icon.type).toBe(ChevronLeftIcon);
     // The whole point of this fix: no hardcoded English word as a
     // *visible* child — only the icon element is rendered.
     expect(typeof element.props.children).not.toBe("string");
@@ -55,8 +61,8 @@ describe("PaginationNext", () => {
     const element = PaginationNext({}) as {
       props: { children: unknown; className: string };
     };
-    const icon = element.props.children as { type: { iconName?: string } };
-    expect(icon.type.iconName).toBe("ChevronRightIcon");
+    const icon = element.props.children as { type: unknown };
+    expect(icon.type).toBe(ChevronRightIcon);
     expect(typeof element.props.children).not.toBe("string");
   });
 

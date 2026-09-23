@@ -1,14 +1,16 @@
 "use client";
 
 import { EyeIcon, EyeOffIcon } from "@quickadui/icons";
-import { cn } from "@quickadui/utils";
 import { type ChangeEvent, useState } from "react";
 import { Input, type InputProps } from "./input";
 import type { PasswordRule } from "./password-strength";
 import { PasswordStrengthMeter } from "./password-strength-meter";
 
-export interface PasswordInputProps extends Omit<InputProps, "type"> {
-  /** Renders a PasswordStrengthMeter below the field, reading this same input's live value. Default: false. */
+export interface PasswordInputProps extends Omit<InputProps, "type" | "endIcon"> {
+  /**
+   * Renders a PasswordStrengthMeter below the field, reading this same
+   * input's live value. Default: false.
+   */
   showStrength?: boolean;
   /** Forwarded to PasswordStrengthMeter's rules prop when showStrength is true. */
   strengthRules?: PasswordRule[] | undefined;
@@ -22,6 +24,10 @@ export interface PasswordInputProps extends Omit<InputProps, "type"> {
  * `@quickadui/data`'s `TreeView` uses) — pass `value`/`onChange` to
  * control it instead; either way `showStrength` reads from the field's
  * real current value, so the meter updates on every keystroke.
+ *
+ * The toggle is just `Input`'s own `endIcon` slot with a real button
+ * inside — sized automatically to match whatever `inputSize` you pass,
+ * the same as any other `endIcon`.
  */
 export function PasswordInput({
   showStrength = false,
@@ -46,24 +52,24 @@ export function PasswordInput({
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="relative">
-        <Input
-          type={visible ? "text" : "password"}
-          className={cn("pr-10", className)}
-          defaultValue={defaultValue}
-          value={value}
-          onChange={handleChange}
-          {...props}
-        />
-        <button
-          type="button"
-          aria-label={visible ? "Hide password" : "Show password"}
-          onClick={() => setVisible((prev) => !prev)}
-          className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-neutral-9 hover:text-neutral-11"
-        >
-          {visible ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
-        </button>
-      </div>
+      <Input
+        type={visible ? "text" : "password"}
+        className={className}
+        defaultValue={defaultValue}
+        value={value}
+        onChange={handleChange}
+        endIcon={
+          <button
+            type="button"
+            aria-label={visible ? "Hide password" : "Show password"}
+            onClick={() => setVisible((prev) => !prev)}
+            className="flex h-full w-full items-center justify-center text-neutral-9 hover:text-neutral-11"
+          >
+            {visible ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
+          </button>
+        }
+        {...props}
+      />
       {showStrength && <PasswordStrengthMeter value={currentValue} rules={strengthRules} />}
     </div>
   );

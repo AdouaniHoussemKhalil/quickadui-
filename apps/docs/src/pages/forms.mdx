@@ -1,3 +1,4 @@
+import { CopyButton } from "@quickadui/core";
 import {
   Checkbox,
   Input,
@@ -16,6 +17,7 @@ import {
   Switch,
   Textarea,
 } from "@quickadui/forms";
+import { SearchIcon, UserIcon } from "@quickadui/icons";
 import { Example } from "../components/Example";
 import { PropsTable } from "../components/PropsTable";
 
@@ -43,8 +45,38 @@ a later pass of this page.
   rows={[
     { name: "inputSize", type: '"sm" | "md" | "lg"', default: '"md"', description: 'Named inputSize, not size — the native <input> element already has its own size attribute (visible character width).' },
     { name: "state", type: '"default" | "error"', default: '"default"', description: "Validation state styling." },
+    { name: "startIcon", type: "ReactNode", description: "Rendered inside the input's left edge (a search icon, a currency symbol, ...). Reserves left padding automatically, sized to match inputSize." },
+    { name: "endIcon", type: "ReactNode", description: "Rendered inside the input's right edge (a status icon, a unit label, an embedded CopyButton, ...). Reserves right padding automatically, sized to match inputSize." },
   ]}
 />
+
+### Icons
+
+<Example
+  code={`<Input startIcon={<SearchIcon size={16} />} placeholder="Search..." />
+<Input endIcon={<UserIcon size={16} />} placeholder="Username" />
+<Input
+  readOnly
+  value="npm install @quickadui/core"
+  endIcon={<CopyButton value="npm install @quickadui/core" size="sm" variant="ghost" />}
+/>`}
+>
+  <Input startIcon={<SearchIcon size={16} />} placeholder="Search..." />
+  <Input endIcon={<UserIcon size={16} />} placeholder="Username" />
+  <Input
+    readOnly
+    value="npm install @quickadui/core"
+    endIcon={<CopyButton value="npm install @quickadui/core" size="sm" variant="ghost" />}
+  />
+</Example>
+
+`startIcon`/`endIcon` accept any `ReactNode`, not just an icon component — the
+last example above embeds a whole `CopyButton`. The slot isn't
+click-through: a plain decorative icon just sits there same as always, but
+an interactive child (a button) stays fully clickable, unlike a naive
+`pointer-events-none` overlay would allow. `PasswordInput`'s reveal toggle
+(below) is built the same way — it's just `Input`'s own `endIcon` slot with
+a button inside.
 
 ## Password input
 

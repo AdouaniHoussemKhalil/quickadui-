@@ -14,6 +14,106 @@ whatever REST-shaped URL you point it at (a free demo API by default).
 Node 22+ and one of npm/pnpm/yarn. No QuickadUI account, API key, or
 network access beyond your own package manager registry is needed.
 
+## Quick Start
+
+Copy-paste version of the steps below, for either path. The detailed
+walkthrough with explanations starts right after.
+
+### 1. Create a new project
+
+```sh
+npx create-quickadui init my-app
+cd my-app
+```
+
+From here, pick one of the two paths below.
+
+### Option 1 — Start from scratch
+
+**2. Install the QuickadUI packages**
+
+```sh
+npx create-quickadui add tokens utils hooks theme icons primitives core layout overlays data forms shell charts animation
+```
+
+You don't have to install everything at once — add only what you need,
+e.g. `npx create-quickadui add theme core`. Adding a package automatically
+pulls in whatever QuickadUI packages it depends on.
+
+**3. Configure Tailwind CSS**
+
+`add` never touches `src/index.css` — it only prints the exact lines to
+paste, in your terminal, right after installing (see [step
+2](#2-dont-skip-this-wire-up-your-css) below for why). Open
+`src/index.css` and replace its content with (trim the `@source` lines
+down to the packages you actually installed):
+
+```css
+@import "tailwindcss";
+
+@import "@quickadui/theme/tokens.css";
+@import "@quickadui/theme/tailwind-theme.css";
+
+@source "../node_modules/@quickadui/core";
+@source "../node_modules/@quickadui/forms";
+@source "../node_modules/@quickadui/data";
+@source "../node_modules/@quickadui/layout";
+@source "../node_modules/@quickadui/overlays";
+@source "../node_modules/@quickadui/shell";
+@source "../node_modules/@quickadui/charts";
+@source "../node_modules/@quickadui/primitives";
+
+@layer base {
+  body {
+    @apply bg-neutral-1 text-neutral-12;
+  }
+}
+```
+
+**4. Install project dependencies, then start the dev server**
+
+```sh
+npm install
+npm run dev
+```
+
+### Option 2 — Use a starter config
+
+**2. Download a config file**
+
+Grab one of the two ready-to-edit files under [Download a starter
+config](#download-a-starter-config) below — the starter (one resource,
+minimal) or the full example (every section turned on).
+
+**3. Rename it**
+
+The downloaded file is named `quickadui.config.starter.json` or
+`quickadui.config.exemple-complet.json` — rename it to
+`quickadui.config.json` in your project root, the exact name `apply`
+expects next.
+
+**4. Apply the configuration**
+
+```sh
+npx create-quickadui apply quickadui.config.json --force
+```
+
+**5. Configure Tailwind CSS**
+
+Just like `add`, `apply` never touches `src/index.css` either — it prints
+the exact `@import`/`@source` lines you need at the end of its output,
+matching whatever packages your config actually pulled in. Paste those
+in, same pattern as Option 1's step 3 above.
+
+**6. Install project dependencies, then start the dev server**
+
+```sh
+npm install
+npm run dev
+```
+
+Re-run `apply --force` any time you change the config file to regenerate.
+
 ## 1. Scaffold a project
 
 ```sh

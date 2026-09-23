@@ -14,7 +14,11 @@ of their own beyond what their variant props ask for.
 Centers content and caps its width — the outermost wrapper for a page's
 content.
 
-<Example>
+<Example
+  code={`<Container maxWidth="sm">
+  <div>max-w-3xl, centered</div>
+</Container>`}
+>
   <Container maxWidth="sm" className="border border-dashed border-neutral-6">
     <div className="rounded-md bg-accent-3 p-4 text-center text-sm text-accent-11">
       max-w-3xl, centered
@@ -32,7 +36,13 @@ content.
 
 The general-purpose flexbox primitive `Stack` and `Grid` build on top of.
 
-<Example>
+<Example
+  code={`<Flex gap="sm">
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>
+</Flex>`}
+>
   <Flex gap="sm">
     <div className="rounded-md bg-accent-3 p-3 text-sm text-accent-11">1</div>
     <div className="rounded-md bg-accent-3 p-3 text-sm text-accent-11">2</div>
@@ -57,7 +67,13 @@ Sugar over `Flex`, defaulting to a vertical stack (`direction="column"`,
 `gap="md"`) instead of `Flex`'s horizontal, gap-less defaults — the common
 case of "these things, spaced out, one under the other."
 
-<Example>
+<Example
+  code={`<Stack gap="sm">
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>
+</Stack>`}
+>
   <Stack gap="sm" className="max-w-xs">
     <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">1</div>
     <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">2</div>
@@ -79,7 +95,16 @@ case of "these things, spaced out, one under the other."
 to exist ahead of time for Tailwind to generate them, so an arbitrary count
 outside this set needs `className` directly (e.g. `grid-cols-[7]`) instead.
 
-<Example>
+<Example
+  code={`<Grid columns="3" gap="sm">
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>
+  <div>4</div>
+  <div>5</div>
+  <div>6</div>
+</Grid>`}
+>
   <Grid columns="3" gap="sm">
     <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">1</div>
     <div className="rounded-md bg-accent-3 p-3 text-center text-sm text-accent-11">2</div>
@@ -104,7 +129,11 @@ built out of (hero, features, footer, ...). Renders a real `<section>`, not
 a `<div>`; wrap it in `Container` for horizontal centering, they're
 independent concerns.
 
-<Example>
+<Example
+  code={`<Section spacing="sm">
+  <div>py-8 of vertical rhythm</div>
+</Section>`}
+>
   <Section spacing="sm" className="border-y border-dashed border-neutral-6">
     <div className="text-center text-sm text-neutral-11">py-8 of vertical rhythm</div>
   </Section>

@@ -20,6 +20,7 @@ import {
   UserIcon,
   WarningIcon,
 } from "@quickadui/icons";
+import { Example } from "../components/Example";
 import { PropsTable } from "../components/PropsTable";
 
 export const iconEntries = [
@@ -53,6 +54,25 @@ glyphs — a consumer never imports `lucide-react` directly. This list grows
 incrementally as components need new icons; it isn't meant to cover all of
 Lucide, just what QuickadUI's own components use plus a handful of
 generically useful ones.
+
+## Usage
+
+Every icon is a plain SVG component — import the one you need by name and
+size it like any other element:
+
+<Example
+  code={`<SearchIcon size={20} />
+<UserIcon size={20} color="var(--color-accent-9)" />
+<TrashIcon size={16} strokeWidth={1.5} />`}
+>
+  <div className="flex items-center gap-4">
+    <SearchIcon size={20} />
+    <UserIcon size={20} color="var(--color-accent-9)" />
+    <TrashIcon size={16} strokeWidth={1.5} />
+  </div>
+</Example>
+
+## All icons
 
 <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
   {iconEntries.map(({ name, Icon }) => (

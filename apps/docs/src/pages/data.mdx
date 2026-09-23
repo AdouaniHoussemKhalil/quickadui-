@@ -40,7 +40,33 @@ views.
 
 ## Table
 
-<Example>
+<Example
+  code={`<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Status</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Ada Lovelace</TableCell>
+      <TableCell>Active</TableCell>
+    </TableRow>
+    <TableRow selected>
+      <TableCell>Grace Hopper</TableCell>
+      <TableCell>Selected</TableCell>
+    </TableRow>
+  </TableBody>
+  <TableFooter>
+    <TableRow>
+      <TableCell>Total</TableCell>
+      <TableCell>2 people</TableCell>
+    </TableRow>
+  </TableFooter>
+  <TableCaption>A list of people and their current status.</TableCaption>
+</Table>`}
+>
   <Table>
     <TableHeader>
       <TableRow>
@@ -76,7 +102,33 @@ views.
 
 ## Pagination
 
-<Example>
+<Example
+  code={`<Pagination>
+  <PaginationContent>
+    <PaginationItem>
+      <PaginationPrevious href="#" />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#">1</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#" isActive>5</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink href="#">6</PaginationLink>
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationNext href="#" />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>`}
+>
   <Pagination>
     <PaginationContent>
       <PaginationItem>
@@ -116,7 +168,24 @@ page numbers — it's purely presentational, not a link.
 
 ## Stepper
 
-<Example>
+<Example
+  code={`<Stepper value={1}>
+  <StepperItem step={0}>
+    <StepperIndicator>1</StepperIndicator>
+    <StepperTitle>Account</StepperTitle>
+  </StepperItem>
+  <StepperSeparator step={0} />
+  <StepperItem step={1}>
+    <StepperIndicator>2</StepperIndicator>
+    <StepperTitle>Profile</StepperTitle>
+  </StepperItem>
+  <StepperSeparator step={1} />
+  <StepperItem step={2}>
+    <StepperIndicator>3</StepperIndicator>
+    <StepperTitle>Review</StepperTitle>
+  </StepperItem>
+</Stepper>`}
+>
   <Stepper value={1} className="w-full">
     <StepperItem step={0}>
       <StepperIndicator>1</StepperIndicator>
@@ -144,7 +213,23 @@ page numbers — it's purely presentational, not a link.
 
 ## Timeline
 
-<Example>
+<Example
+  code={`<Timeline>
+  <TimelineItem>
+    <TimelineSeparator>
+      <TimelineDot variant="accent" />
+      <TimelineConnector />
+    </TimelineSeparator>
+    <TimelineContent>Order placed</TimelineContent>
+  </TimelineItem>
+  <TimelineItem>
+    <TimelineSeparator>
+      <TimelineDot variant="success" />
+    </TimelineSeparator>
+    <TimelineContent>Delivered</TimelineContent>
+  </TimelineItem>
+</Timeline>`}
+>
   <Timeline className="w-full max-w-sm">
     <TimelineItem>
       <TimelineSeparator>
@@ -162,9 +247,25 @@ page numbers — it's purely presentational, not a link.
   </Timeline>
 </Example>
 
+`TimelineConnector` draws the line down to the *next* item — the last
+item in a timeline omits it, same as the example above.
+
+<PropsTable
+  rows={[
+    { name: "variant", type: '"default" | "accent" | "success" | "warning" | "danger"', default: '"default"', description: "TimelineDot only — visual style of the dot." },
+  ]}
+/>
+
 ## Tree view
 
-<Example>
+<Example
+  code={`<TreeView defaultExpandedIds={["src"]}>
+  <TreeViewItem nodeId="src" label="src">
+    <TreeViewItem nodeId="index" label="index.ts" />
+    <TreeViewItem nodeId="app" label="App.tsx" />
+  </TreeViewItem>
+</TreeView>`}
+>
   <TreeView defaultExpandedIds={["src"]} className="w-full max-w-sm">
     <TreeViewItem nodeId="src" label="src">
       <TreeViewItem nodeId="index" label="index.ts" />

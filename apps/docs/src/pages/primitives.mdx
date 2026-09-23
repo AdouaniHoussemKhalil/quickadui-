@@ -16,7 +16,21 @@ is exactly what a consumer building directly on `primitives` (skipping
 `core`) is expected to do. For QuickadUI's own default, already-styled
 version of the same component, see the [Core](#core) page's `Accordion`.
 
-<Example>
+<Example
+  code={`<Accordion type="single" collapsible>
+  <AccordionItem value="item-1" className="border-b">
+    <AccordionHeader>
+      <AccordionTrigger className="flex w-full items-center justify-between py-3 text-sm font-medium">
+        Is it unstyled by default?
+      </AccordionTrigger>
+    </AccordionHeader>
+    <AccordionContent className="pb-3 text-sm">
+      Yes — every part here gets a data-slot, nothing else. Styling is
+      @quickadui/core's job.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>`}
+>
   <Accordion type="single" collapsible className="w-full max-w-sm">
     <AccordionItem value="item-1" className="border-b border-neutral-6">
       <AccordionHeader>
@@ -37,7 +51,16 @@ building blocks — `Tabs`, for instance, since its trigger is QuickadUI's
 own visible tab button, not a generic thing a consumer composes their own
 button into:
 
-<Example>
+<Example
+  code={`<Tabs defaultValue="one">
+  <TabsList>
+    <TabsTrigger value="one">One</TabsTrigger>
+    <TabsTrigger value="two">Two</TabsTrigger>
+  </TabsList>
+  <TabsContent value="one">First panel.</TabsContent>
+  <TabsContent value="two">Second panel.</TabsContent>
+</Tabs>`}
+>
   <Tabs defaultValue="one">
     <TabsList>
       <TabsTrigger value="one">One</TabsTrigger>

@@ -53,7 +53,38 @@ outermost layout element on a real page. The embedded demo below overrides
 that with a fixed height so it fits on this page instead; a real
 integration renders it unconstrained, at the top of the app tree.
 
-<Example>
+<Example
+  code={`<DashboardLayout
+  navbar={
+    <Navbar>
+      <SidebarTrigger />
+      <NavbarBrand>Acme</NavbarBrand>
+      <NavbarContent />
+      <NavbarActions>
+        <Badge variant="soft">Beta</Badge>
+      </NavbarActions>
+    </Navbar>
+  }
+  sidebar={
+    <Sidebar>
+      <SidebarHeader>Workspace</SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Overview</SidebarGroupLabel>
+          <SidebarNavItem active>Dashboard</SidebarNavItem>
+          <SidebarNavItem>Reports</SidebarNavItem>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <span>v1.0.0</span>
+      </SidebarFooter>
+    </Sidebar>
+  }
+  footer={<Footer>v1.0.0</Footer>}
+>
+  <StatCard label="Active users" value="2,431" trend={{ direction: "up", label: "+12%" }} />
+</DashboardLayout>`}
+>
   <DashboardLayout
     className="h-[420px] overflow-hidden rounded-lg border border-neutral-6"
     navbar={
@@ -112,7 +143,24 @@ to reorder it, the new order is just local `useState` in this demo.
 Omitting `onReorder` renders a plain grid instead, with no `DndContext`
 mounted at all.
 
-<Example>
+<Example
+  code={`function WidgetGridDemo() {
+  const [items, setItems] = useState(["a", "b", "c"]);
+  return (
+    <WidgetGrid items={items} onReorder={setItems} columns={3}>
+      <Widget id="a" title="Revenue">
+        <StatCard label="Revenue" value="$18.2K" trend={{ direction: "up", label: "+8%" }} />
+      </Widget>
+      <Widget id="b" title="Signups">
+        <StatCard label="Signups" value="341" trend={{ direction: "down", label: "-3%" }} />
+      </Widget>
+      <Widget id="c" title="Churn">
+        <StatCard label="Churn" value="1.2%" />
+      </Widget>
+    </WidgetGrid>
+  );
+}`}
+>
   <WidgetGridDemo />
 </Example>
 
